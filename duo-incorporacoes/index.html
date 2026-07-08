@@ -6158,7 +6158,8 @@
                (.nupe-li) e substituído por `.nupe-link`, uma linha própria na altura do Gerente. */
             [data-slide="duo-p3-a"] .tree li.nupe-li::before,
             [data-slide="duo-p3-a"] .tree li.nupe-li::after { display:none; }
-            [data-slide="duo-p3-a"] .nupe-link { content:''; position:absolute; top:32px; left:-152px; width:152px; height:0; border-top:2px dashed var(--primary); opacity:.6; }
+            [data-slide="duo-p3-a"] .tree li:has(+ .nupe-li)::after { display:none; }
+            [data-slide="duo-p3-a"] .nupe-link { content:''; position:absolute; top:64px; left:-40px; width:40px; height:0; border-top:2px dashed var(--primary); opacity:.6; }
             [data-slide="duo-p3-a"] .node--nupe { min-width:118px; max-width:150px; padding:6px 12px; background:rgba(232,123,30,.06); border:1.5px dashed var(--primary); }
             [data-slide="duo-p3-a"] .node--nupe b { font-size:14px; font-weight:800; color:var(--primary); letter-spacing:.02em; }
             [data-slide="duo-p3-a"] .node--nupe span { font-size:10px; line-height:1.2; }
