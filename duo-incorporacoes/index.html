@@ -5300,7 +5300,7 @@
               <div class="capa-geo__block-2 cascade-item"></div>
             </div>
             <div class="doisa-capa-logo">
-              <img class="brand-logo brand-logo--on-dark" src="assets/brand/doisa-logo-white.png" alt="Dois A">
+              <img class="brand-logo brand-logo--on-dark" src="assets/brand/duo-logo-ondark.png?v=1" alt="DUO Incorporações">
             </div>
             <div class="doisa-capa-logo-line"></div>
             <div class="capa-inner">
@@ -5365,7 +5365,7 @@
             <div class="duo-intro__bracket-tr cascade-item"></div>
             <div class="duo-intro__bracket-bl cascade-item"></div>
             <div class="duo-intro__logo-tr cascade-item">
-              <img class="brand-logo brand-logo--on-dark" src="assets/brand/doisa-logo.png" alt="Dois A">
+              <img class="brand-logo brand-logo--on-dark" src="assets/brand/duo-logo.png?v=1" alt="DUO Incorporações">
             </div>
             <div class="duo-intro__head">
               <p class="duo-intro__eyebrow cascade-item">INTRODUÇÃO&nbsp;&nbsp;·&nbsp;&nbsp;ROTEIRO DESTA APRESENTAÇÃO</p>
@@ -5600,7 +5600,7 @@
             <div class="ch-divider__bracket-tr cascade-item"></div>
             <div class="ch-divider__bracket-bl cascade-item"></div>
             <div class="ch-divider__logo-tr cascade-item">
-              <img class="brand-logo brand-logo--on-dark" src="assets/brand/doisa-logo.png" alt="Dois A">
+              <img class="brand-logo brand-logo--on-dark" src="assets/brand/duo-logo.png?v=1" alt="DUO Incorporações">
             </div>
             <div class="ch-divider__inner">
               <p class="ch-divider__eyebrow cascade-item">PLANO DE DESENVOLVIMENTO MCMV</p>
@@ -6095,7 +6095,7 @@
             <div class="ch-divider__bracket-tr cascade-item"></div>
             <div class="ch-divider__bracket-bl cascade-item"></div>
             <div class="ch-divider__logo-tr cascade-item">
-              <img class="brand-logo brand-logo--on-dark" src="assets/brand/doisa-logo.png" alt="Dois A">
+              <img class="brand-logo brand-logo--on-dark" src="assets/brand/duo-logo.png?v=1" alt="DUO Incorporações">
             </div>
             <div class="ch-divider__inner">
               <p class="ch-divider__eyebrow cascade-item">ESTRUTURA ORGANIZACIONAL</p>
@@ -6148,9 +6148,17 @@
             [data-slide="duo-p3-a"] .node--est b { font-size:13px; font-weight:600; color:#54607a; }
             /* NUPE: peer do Gerente de Incorporações (mesmo nível na árvore) — vínculo funcional/matricial
                com o núcleo técnico, não hierárquico; por isso borda tracejada laranja em vez do padrão
-               sólido azul dos demais nós. Corrigido 08/07/2026: antes estava aninhado como filho do
-               Analista de Engenharia (nível de Estagiário) — Álvaro reportou 3x que a posição estava
-               errada antes de eu enxergar que era estrutural (DOM), não artefato visual de sessão MCP. */
+               sólido azul dos demais nós. Corrigido 08/07/2026 (2 rodadas): 1ª rodada — estava aninhado
+               como filho do Analista de Engenharia (nível de Estagiário), corrigido pra virar li-irmão
+               de Gerente sob Diretor Técnico. 2ª rodada — Álvaro apontou que mesmo como irmão, herdar o
+               conector padrão da árvore fazia a linha "descer de cima" (do Diretor Técnico), o que lia
+               como vínculo hierárquico; ele pediu a linha "embaixo" — um conector horizontal tracejado
+               direto do Gerente, na altura do Gerente, não do Diretor Técnico (mais fiel ao vínculo
+               matricial/dupla-lotação). Por isso o conector padrão da árvore é desligado só pra esta li
+               (.nupe-li) e substituído por `.nupe-link`, uma linha própria na altura do Gerente. */
+            [data-slide="duo-p3-a"] .tree li.nupe-li::before,
+            [data-slide="duo-p3-a"] .tree li.nupe-li::after { display:none; }
+            [data-slide="duo-p3-a"] .nupe-link { content:''; position:absolute; top:32px; left:-152px; width:152px; height:0; border-top:2px dashed var(--primary); opacity:.6; }
             [data-slide="duo-p3-a"] .node--nupe { min-width:118px; max-width:150px; padding:6px 12px; background:rgba(232,123,30,.06); border:1.5px dashed var(--primary); }
             [data-slide="duo-p3-a"] .node--nupe b { font-size:14px; font-weight:800; color:var(--primary); letter-spacing:.02em; }
             [data-slide="duo-p3-a"] .node--nupe span { font-size:10px; line-height:1.2; }
@@ -6215,7 +6223,8 @@
                         </li>
                       </ul>
                     </li>
-                    <li>
+                    <li class="nupe-li">
+                      <span class="nupe-link"></span>
                       <div class="node node--nupe"><b>NUPE</b><span>dupla lotação — processos/orçamento p/ todo o grupo</span></div>
                     </li>
                   </ul>
@@ -6954,7 +6963,7 @@
             <div class="doisa-frame__kicker">${kicker}</div>
             <div class="doisa-frame__sep"></div>
             <div class="doisa-frame__logo">
-              <img class="brand-logo" src="assets/brand/doisa-logo.png" alt="Dois A">
+              <img class="brand-logo" src="assets/brand/duo-logo.png?v=1" alt="DUO Incorporações">
             </div>
             <div class="doisa-frame__footer-line"></div>
             <div class="doisa-frame__footer-text">DOIS A&nbsp;&nbsp;|&nbsp;&nbsp;Confidencial &amp; Proprietary</div>
