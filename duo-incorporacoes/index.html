@@ -5308,7 +5308,7 @@
               <h1 class="capa-wordmark cascade-item">DUO INCORPORAÇÕES</h1>
               <div class="capa-info-card cascade-item">INCORPORAÇÕES</div>
               <div class="capa-credit-text cascade-item">
-                <div class="capa-credit-name"><strong>Elaborado por:</strong>&nbsp;&nbsp;Eduardo Azevedo</div>
+                <div class="capa-credit-name"><strong>Elaborado por:</strong>&nbsp;&nbsp;Luis Azevedo</div>
                 <div class="capa-credit-date" style="margin-top:8px;">NUPE — Núcleo de Processos e Engenharia</div>
                 <div class="capa-credit-date" style="margin-top:8px; font-size:15px !important; font-weight:400 !important; opacity:0.6 !important;">Julho / 2026</div>
               </div>
@@ -5652,7 +5652,7 @@
             [data-slide="duo-p2-b"] .lot-table tbody tr:nth-child(even) { background:#f0f4fc; }
             [data-slide="duo-p2-b"] .lot-table td { padding:4px 10px; text-align:center; color:#1a1a1a; }
             [data-slide="duo-p2-b"] .lot-table td.td-local { text-align:left; font-weight:600; }
-            [data-slide="duo-p2-b"] .lot-table tr.lot-total { background:var(--brand-blue-deep); }
+            [data-slide="duo-p2-b"] .lot-table tbody tr.lot-total { background:var(--brand-blue-deep); }
             [data-slide="duo-p2-b"] .lot-table tr.lot-total td { color:#fff; font-weight:700; }
             [data-slide="duo-p2-b"] .lot-table tr.lot-total td.td-local { color:var(--primary); }
             [data-slide="duo-p2-b"] .mac-kpis { flex:0 0 254px; display:flex; flex-direction:column; gap:16px; align-items:stretch; justify-content:center; }
@@ -5665,7 +5665,7 @@
           </style>
           <div class="mac-hero">
             <div class="mac-left">
-              <p class="mac-eyebrow cascade-item">MVP · Validação do modelo SPE 50/50 · Goianinha / RN</p>
+              <p class="mac-eyebrow cascade-item">MVP · Fase 1 · Validação do modelo SPE 50/50 · Goianinha / RN</p>
               <h1 class="mac-name cascade-item">Parque<em> América</em></h1>
               <p class="mac-lead cascade-item">
                 Goianinha/RN · <strong>30 casas MCMV Faixa 2/3</strong><br>
@@ -5685,7 +5685,8 @@
                     <tr><td class="td-local">Produto</td><td>30 casas · MCMV Faixa 2/3</td></tr>
                     <tr><td class="td-local">Preço unitário</td><td>R$ 158.000</td></tr>
                     <tr><td class="td-local">Estrutura societária</td><td>SPE 50/50 · DUO + "Atta"</td></tr>
-                    <tr class="lot-total"><td class="td-local">Status</td><td>Aprovação em andamento · terreno adquirido · lançamento em até 90 dias</td></tr>
+                    <tr><td class="td-local">Fase</td><td>Fase 1 (30 casas)</td></tr>
+                    <tr class="lot-total"><td class="td-local">Status</td><td>Aprovação em andamento · terreno adquirido · lançamento previsto para agosto/2026</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -6137,6 +6138,8 @@
             [data-slide="duo-p3-a"] .tree li:last-child::before { border-right:2px solid var(--brand-blue-deep); border-radius:0 6px 0 0; opacity:.5; }
             [data-slide="duo-p3-a"] .tree li:first-child::after { border-radius:6px 0 0 0; }
             [data-slide="duo-p3-a"] .tree ul ul::before { content:''; position:absolute; top:0; left:50%; border-left:2px solid var(--brand-blue-deep); width:0; height:8px; opacity:.5; }
+            @keyframes p3aTreeUlNudge { from { outline-color: transparent; } to { outline-color: transparent; } }
+            [data-slide="duo-p3-a"] .tree ul ul { animation: p3aTreeUlNudge .01s; }
             [data-slide="duo-p3-a"] .tree > li { padding-top:0; }
             /* nós */
             [data-slide="duo-p3-a"] .node { display:inline-flex; flex-direction:column; gap:2px; align-items:center; justify-content:center; padding:6px 15px; border-radius:11px; background:#fff; border:1.5px solid rgba(45,79,158,.25); box-shadow:0 4px 13px rgba(16,32,73,.09); min-width:144px; }
