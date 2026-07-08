@@ -6146,8 +6146,11 @@
             [data-slide="duo-p3-a"] .node--an { background:rgba(45,79,158,.06); border-color:rgba(45,79,158,.3); }
             [data-slide="duo-p3-a"] .node--est { min-width:100px; padding:5px 10px; background:#f6f8fc; border-color:rgba(45,79,158,.16); }
             [data-slide="duo-p3-a"] .node--est b { font-size:13px; font-weight:600; color:#54607a; }
-            /* NUPE: card lateral puxado do Analista de Engenharia (direita) — vínculo funcional/matricial,
-               não hierárquico; por isso borda tracejada laranja em vez do padrão sólido azul dos demais nós. */
+            /* NUPE: peer do Gerente de Incorporações (mesmo nível na árvore) — vínculo funcional/matricial
+               com o núcleo técnico, não hierárquico; por isso borda tracejada laranja em vez do padrão
+               sólido azul dos demais nós. Corrigido 08/07/2026: antes estava aninhado como filho do
+               Analista de Engenharia (nível de Estagiário) — Álvaro reportou 3x que a posição estava
+               errada antes de eu enxergar que era estrutural (DOM), não artefato visual de sessão MCP. */
             [data-slide="duo-p3-a"] .node--nupe { min-width:118px; max-width:150px; padding:6px 12px; background:rgba(232,123,30,.06); border:1.5px dashed var(--primary); }
             [data-slide="duo-p3-a"] .node--nupe b { font-size:14px; font-weight:800; color:var(--primary); letter-spacing:.02em; }
             [data-slide="duo-p3-a"] .node--nupe span { font-size:10px; line-height:1.2; }
@@ -6208,10 +6211,12 @@
                           <div class="node node--an"><b>Analista de Engenharia</b><span>CLT · R$ 5.000 · obras / otimização</span></div>
                           <ul>
                             <li><div class="node node--est"><b>Estagiário</b></div></li>
-                            <li><div class="node node--nupe"><b>NUPE</b><span>dupla lotação — processos/orçamento p/ todo o grupo</span></div></li>
                           </ul>
                         </li>
                       </ul>
+                    </li>
+                    <li>
+                      <div class="node node--nupe"><b>NUPE</b><span>dupla lotação — processos/orçamento p/ todo o grupo</span></div>
                     </li>
                   </ul>
                 </li>
