@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex,nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indicadores de Viabilidade — Conceitos e Margens | Dois A</title>
+  <style>
+    /* ─── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Tipografia ─────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 11pt;
+      color: #1A1A2E;
+      background: #ffffff;
+      line-height: 1.6;
+    }
+
+    /* ─── Página A4 ──────────────────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── Cabeçalho ──────────────────────────────────────── */
+    .page-header {
+      background: #1B3464;
+      padding: 16px 24px 14px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+
+    .header-text { flex: 1; }
+
+    .header-text .sistema {
+      font-size: 7.5pt;
+      font-weight: 500;
+      color: #E87B1E;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .header-text .doc-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .header-meta { text-align: right; flex-shrink: 0; }
+
+    .header-meta .ref {
+      font-size: 7.5pt;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+    }
+
+    .header-meta .rev {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: #E87B1E;
+    }
+
+    /* ─── Faixa de identificação ─────────────────────────── */
+    .doc-id-bar {
+      background: #F0F4FC;
+      border-bottom: 2px solid #E87B1E;
+      padding: 10px 24px;
+      display: flex;
+      gap: 32px;
+    }
+
+    .doc-id-item { display: flex; flex-direction: column; gap: 2px; }
+
+    .doc-id-item .label {
+      font-size: 7pt;
+      font-weight: 600;
+      color: #6E7E9E;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .doc-id-item .value {
+      font-size: 9pt;
+      font-weight: 500;
+      color: #1A1A2E;
+    }
+
+    /* ─── Corpo do documento ─────────────────────────────── */
+    .page-body { flex: 1; padding: 24px 24px 16px; }
+
+    /* ─── Seções e headings ──────────────────────────────── */
+    .section { margin-bottom: 28px; }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 2px solid #1B3464;
+      padding-bottom: 5px;
+      margin-bottom: 14px;
+    }
+
+    .section-number {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #E87B1E;
+      min-width: 24px;
+      line-height: 1;
+    }
+
+    .section-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #1B3464;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .subsection-heading {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #1B3464;
+      margin: 14px 0 8px;
+      padding-left: 8px;
+      border-left: 3px solid #E87B1E;
+    }
+
+    p { margin-bottom: 10px; text-align: justify; hyphens: auto; }
+
+    /* ─── Tabelas ────────────────────────────────────────── */
+    .table-wrapper {
+      margin: 14px 0;
+      overflow: hidden;
+      border-radius: 4px;
+      border: 1px solid #C5CDE0;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+
+    thead tr th {
+      background: #1B3464;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 8px 10px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+
+    thead tr th:last-child { border-right: none; }
+
+    tbody tr { border-bottom: 1px solid #C5CDE0; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(odd) td { background: #ffffff; }
+    tbody tr:nth-child(even) td { background: #E4EAF5; }
+
+    tbody td {
+      padding: 7px 10px;
+      border-right: 1px solid #C5CDE0;
+      vertical-align: middle;
+      text-align: left;
+    }
+
+    tbody td:first-child { text-align: center; font-weight: 600; }
+    tbody td:last-child { border-right: none; text-align: center; }
+
+    /* Pill de status */
+    .pill {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 99px;
+      font-size: 7.5pt;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .pill-ok      { background: #D1FAE5; color: #065F46; }
+    .pill-alerta  { background: #FEF3C7; color: #92400E; }
+    .pill-critico { background: #FEE2E2; color: #991B1B; }
+    .pill-info    { background: #E4EAF5; color: #1B3464; }
+
+    /* ─── Callout box ────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid #E87B1E;
+      background: #FFF3E8;
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 14px 0;
+    }
+
+    .callout-title {
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #E87B1E;
+      margin-bottom: 4px;
+    }
+
+    .callout p { font-size: 9.5pt; color: #1A1A2E; margin: 0; text-align: left; }
+    .callout p + p { margin-top: 6px; }
+
+    /* ─── Grid de indicadores ────────────────────────────── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .kpi-card {
+      background: #F0F4FC;
+      border: 1px solid #C5CDE0;
+      border-top: 3px solid #E87B1E;
+      border-radius: 4px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .kpi-label {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: #6E7E9E;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value { font-size: 20pt; font-weight: 700; color: #1B3464; line-height: 1; }
+    .kpi-unit { font-size: 9pt; font-weight: 400; color: #6E7E9E; margin-top: 3px; }
+
+    /* ─── Rodapé ─────────────────────────────────────────── */
+    .page-footer {
+      background: #1B3464;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left { font-size: 7.5pt; color: rgba(255,255,255,0.6); }
+    .footer-left strong { color: rgba(255,255,255,0.9); }
+    .footer-right { font-size: 7.5pt; color: rgba(255,255,255,0.6); }
+
+    /* ─── Print ──────────────────────────────────────────── */
+    @media print {
+      body { margin: 0; background: #fff; }
+      .page { width: 210mm; min-height: 297mm; margin: 0; page-break-after: always; }
+      .page-header, .page-footer, .doc-id-bar,
+      thead tr th, tbody tr:nth-child(even) td, .kpi-card, .callout {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      a { text-decoration: none; color: inherit; }
+    }
+
+    @page { size: A4 portrait; margin: 0; }
+
+    @media screen {
+      body { background: #888; padding: 20px 0; }
+      .page { box-shadow: 0 4px 24px rgba(0,0,0,0.35); margin-bottom: 24px; }
+    }
+
+    /* ─── Capa HTML ──────────────────────────────────────── */
+    .cover-page-html {
+      background: #1B3464;
+      color: #ffffff;
+      min-height: 297mm;
+      height: 297mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .cover-top { padding: 20px 28px 0; }
+    .cover-logo-block { display: flex; align-items: flex-start; gap: 14px; }
+
+    .cover-logo-text .cover-sistema {
+      font-size: 8pt;
+      font-weight: 600;
+      color: #E87B1E;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .cover-logo-text .cover-empresa {
+      font-size: 16pt;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .cover-separator { height: 1px; background: #E87B1E; margin-top: 18px; opacity: 0.5; }
+
+    .cover-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 40px 32px;
+    }
+
+    .cover-tipo {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #E87B1E;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .cover-title { font-size: 26pt; font-weight: 700; color: #ffffff; line-height: 1.2; margin-bottom: 10px; }
+    .cover-subtitle { font-size: 11pt; font-weight: 400; color: rgba(255,255,255,0.55); margin-bottom: 44px; }
+
+    .cover-meta { display: flex; flex-direction: column; max-width: 480px; }
+
+    .cover-meta-row {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .cover-meta-row:first-child { border-top: 1px solid rgba(255,255,255,0.12); }
+
+    .cover-meta-label {
+      font-size: 7pt;
+      font-weight: 700;
+      color: #E87B1E;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .cover-meta-value { font-size: 10pt; color: rgba(255,255,255,0.9); }
+
+    .cover-footer {
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .cover-footer-left { font-size: 8pt; color: rgba(255,255,255,0.4); }
+    .cover-footer-date { font-size: 8.5pt; font-weight: 600; color: #E87B1E; }
+
+    @media screen { .cover-page-html { height: auto; min-height: 297mm; } }
+
+    /* ═════════════════════════════════════════════════════════════════════ */
+    /* DOIS A — DARK OVERRIDE (mantém estrutura original; só inverte paleta) */
+    /* ═════════════════════════════════════════════════════════════════════ */
+
+    body { background: #0E1B33 !important; color: #E8ECF5 !important; }
+    .page { background: #0E1B33 !important; }
+
+    .page-header { background: #16284A !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
+    .header-divider { background: rgba(255,255,255,0.18) !important; }
+
+    .doc-id-bar { background: #1F3258 !important; border-bottom: 2px solid #E97132 !important; }
+    .doc-id-item .label { color: #8A9BC4 !important; }
+    .doc-id-item .value { color: #E8ECF5 !important; }
+
+    .section-heading { border-bottom: 2px solid #E97132 !important; }
+    .section-number { color: #E97132 !important; }
+    .section-title  { color: #E8ECF5 !important; }
+    .subsection-heading { color: #E8ECF5 !important; border-left: 3px solid #E97132 !important; }
+
+    p { color: #E8ECF5 !important; }
+
+    .table-wrapper { border: 1px solid #2A3D5E !important; }
+
+    thead tr th { background: #1F3258 !important; color: #E8ECF5 !important; border-right: 1px solid rgba(255,255,255,0.08) !important; }
+    tbody tr { border-bottom: 1px solid #2A3D5E !important; }
+    tbody tr:nth-child(odd) td { background: #16284A !important; color: #E8ECF5 !important; }
+    tbody tr:nth-child(even) td { background: #1F3258 !important; color: #E8ECF5 !important; }
+    tbody td { border-right: 1px solid #2A3D5E !important; }
+
+    .pill-ok      { background: #064E3B !important; color: #6EE7B7 !important; }
+    .pill-alerta  { background: #78350F !important; color: #FCD34D !important; }
+    .pill-critico { background: #7F1D1D !important; color: #FCA5A5 !important; }
+    .pill-info    { background: #1E3A8A !important; color: #BFDBFE !important; }
+
+    .callout { background: rgba(233,113,50,0.08) !important; border-left: 4px solid #E97132 !important; }
+    .callout-title { color: #E97132 !important; }
+    .callout p     { color: #E8ECF5 !important; }
+
+    .kpi-card { background: #16284A !important; border: 1px solid #2A3D5E !important; border-top: 3px solid #E97132 !important; }
+    .kpi-label { color: #8A9BC4 !important; }
+    .kpi-value { color: #E8ECF5 !important; }
+    .kpi-unit  { color: #8A9BC4 !important; }
+
+    .page-footer { background: #16284A !important; border-top: 1px solid rgba(255,255,255,0.06) !important; }
+    .footer-left, .footer-right { color: rgba(255,255,255,0.6) !important; }
+    .footer-left strong { color: #E8ECF5 !important; }
+
+    .cover-page-html { background: #0E1B33 !important; }
+
+    @media screen {
+      body { background: #050A16 !important; }
+      .page { box-shadow: 0 4px 24px rgba(0,0,0,0.55) !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ CAPA ═══════════════ -->
+<div class="page cover-page-html">
+  <div class="cover-top">
+    <div class="cover-logo-block">
+      <div class="cover-logo-text">
+        <div class="cover-sistema">Viabilidade &mdash; Dois A Incorporações</div>
+        <div class="cover-empresa">Dois A Incorporações</div>
+      </div>
+    </div>
+    <div class="cover-separator"></div>
+  </div>
+
+  <div class="cover-body">
+    <div class="cover-tipo">RELATÓRIO TÉCNICO</div>
+    <h1 class="cover-title">Indicadores de Viabilidade<br>Conceitos Técnicos e Margens de Referência</h1>
+    <p class="cover-subtitle">Guia consolidado — indicadores arquitetônicos (A01–A11) e financeiros (F01–F17)</p>
+
+    <div class="cover-meta">
+      <div class="cover-meta-row">
+        <span class="cover-meta-label">Escopo</span>
+        <span class="cover-meta-value">Régua de indicadores de viabilidade do portfólio Dois A</span>
+      </div>
+      <div class="cover-meta-row">
+        <span class="cover-meta-label">Elaborado por</span>
+        <span class="cover-meta-value">Dois A Incorporações — Equipe de Viabilidade</span>
+      </div>
+      <div class="cover-meta-row">
+        <span class="cover-meta-label">Data</span>
+        <span class="cover-meta-value">09/07/2026</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <span class="cover-footer-left">Dois A Incorporações &nbsp;&middot;&nbsp; CONFIDENCIAL — uso externo autorizado</span>
+    <span class="cover-footer-date">09/07/2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════ PÁGINA 2 — METODOLOGIA ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">1</span>
+        <span class="section-title">O que é este documento</span>
+      </div>
+      <p>Este relatório apresenta a régua de indicadores usada pela Dois A para avaliar a viabilidade de um empreendimento imobiliário: o que cada indicador mede (conceito técnico) e qual a margem de referência — a faixa de valores considerada ótima, aceitável ou insatisfatória (o "bom/ruim" de cada um). O documento cobre os indicadores arquitetônicos (relações de área) e os financeiros (retorno, exposição de caixa e margem de lucro).</p>
+      <p>O conteúdo reflete o estado mais recente e fechado da validação — não um histórico de como se chegou até aqui. Onde uma margem ainda não foi travada em definitivo, isso é indicado de forma explícita, sem arredondar para uma certeza que ainda não existe.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Indicadores validados</div>
+          <div class="kpi-value">34</div>
+          <div class="kpi-unit">11 arquitetônicos + 17 financeiros + 6 candidatos analisados</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Fontes de pesquisa</div>
+          <div class="kpi-value">~496</div>
+          <div class="kpi-unit">156 Brasil + 340 internacionais (EUA/China/Rússia)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Com margem calibrada</div>
+          <div class="kpi-value">33/34</div>
+          <div class="kpi-unit">fórmula e/ou faixa validadas contra fonte real</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Margens em definição</div>
+          <div class="kpi-value">2</div>
+          <div class="kpi-unit">F14 (margem) e F16 (ponto de equilíbrio)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">2</span>
+        <span class="section-title">Como ler as margens</span>
+      </div>
+      <p>Cada indicador é tratado de um destes três jeitos, e o relatório identifica qual se aplica a cada linha:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:22%">Tipo</th><th style="width:48%">O que significa</th><th style="width:30%">Exemplo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="pill pill-ok">Faixa</span></td><td>Uma margem numérica (mínimo / desejado / máximo) que classifica o resultado como ótimo, aceitável ou ruim.</td><td>Peso da área comum: ≤30% ótimo</td></tr>
+            <tr><td><span class="pill pill-info">Critério</span></td><td>Uma regra de aceitação, não uma faixa — o indicador só precisa cumprir uma condição.</td><td>VPL &gt; 0</td></tr>
+            <tr><td><span class="pill pill-alerta">Condicionado</span></td><td>Conceito e fórmula fechados, mas a margem numérica ainda depende de uma decisão de convenção ou de fonte adicional.</td><td>Margem de lucro (F14)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 2 de 8</div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PÁGINA 3 — ARQUITETÔNICOS (calculados hoje) ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">3</span>
+        <span class="section-title">Indicadores Arquitetônicos — em uso ativo</span>
+      </div>
+      <p>Medem relações entre tipos de área (privativa, comum, coberta, descoberta) de um empreendimento. Fórmulas ancoradas na NBR 12721 (área equivalente de custo). Estes 7 têm dado real hoje no painel de indicadores da Dois A.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:8%">Cód.</th>
+              <th style="width:34%">O que mede</th>
+              <th style="width:38%">Margem de referência (vertical)</th>
+              <th style="width:20%">Confiança</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A03</td>
+              <td>Aproveitamento da área coberta — de tudo que tem telhado/laje, quanto vira produto vendável vs. área comum coberta.</td>
+              <td>≥78% ótimo · 70–78% bom · &lt;70% ruim</td>
+              <td><span class="pill pill-alerta">Média-Alta</span></td>
+            </tr>
+            <tr>
+              <td>A04</td>
+              <td>Eficiência econômica — de tudo que se paga para construir (ponderado por custo), quanto vira área vendável. Indicador mais bem calibrado da régua.</td>
+              <td>≥70% ótimo · 63–70% bom · &lt;60% ruim</td>
+              <td><span class="pill pill-alerta">Conceito alto / faixa em calibração</span></td>
+            </tr>
+            <tr>
+              <td>A04-B</td>
+              <td>Variante do A04 usando só a área privativa coberta (exclui varandas/terraços/quintais). Sempre ≤ A04.</td>
+              <td>≥65% ótimo · 58–65% bom · &lt;55% ruim (estimada)</td>
+              <td><span class="pill pill-critico">Baixa</span></td>
+            </tr>
+            <tr>
+              <td>A05</td>
+              <td>Peso da área comum — quanto do prédio é uso coletivo (hall, lazer, garagem) em vez de vendável.</td>
+              <td>≤30% ótimo · 30–40% bom · 40–45% intermediário · &gt;45% ruim</td>
+              <td><span class="pill pill-alerta">Média-Alta</span></td>
+            </tr>
+            <tr>
+              <td>A06</td>
+              <td>Peso da garagem coberta — quanto a garagem e demais área comum coberta pesam sobre o produto vendável.</td>
+              <td>≤35% ótimo · 35–43% bom · &gt;43% ruim</td>
+              <td><span class="pill pill-alerta">Média</span></td>
+            </tr>
+            <tr>
+              <td>A06-B</td>
+              <td>Percentual de área comum — complemento matemático do A04 (100 − A04); não é uma nova medição.</td>
+              <td>Sem faixa própria — espelha o A04</td>
+              <td><span class="pill pill-ok">Alta (identidade matemática)</span></td>
+            </tr>
+            <tr>
+              <td>A10</td>
+              <td>Área comum a céu aberto — quanto de área comum sem telhado (recuos, vias, lazer externo) existe por m² vendável.</td>
+              <td>Sem semáforo absoluto — comparativo entre projetos (mediana da carteira: 14,1%)</td>
+              <td><span class="pill pill-ok">Alta (sobre não haver norma)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">Nota de leitura</div>
+        <p>As margens acima valem para produto vertical. Produto horizontal (Pipa, Tibau, Jacumã) tem comportamento estrutural diferente em A03 e A10 e não é comparável na mesma escala — a régua não distingue isso hoje.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 3 de 8</div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PÁGINA 4 — ARQUITETÔNICOS (documentados, fora do painel) ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">4</span>
+        <span class="section-title">Indicadores Arquitetônicos — conceito fechado, fora do painel</span>
+      </div>
+      <p>Estes 6 têm fórmula, margem e fonte de pesquisa já fechadas conceitualmente, mas ainda não entraram no painel automatizado por dependerem de dados de entrada (garagem, circulação, fachada) que a planilha atual não discrimina separadamente.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:12%">Cód.</th>
+              <th style="width:34%">O que mede</th>
+              <th style="width:34%">Margem de referência</th>
+              <th style="width:20%">Confiança</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A01</td>
+              <td>Circulação (hall+escada+elevador) ÷ área privativa do pavimento tipo.</td>
+              <td>&lt;8% ótimo · 8–12% bom · &gt;12% ruim (base bruta)</td>
+              <td><span class="pill pill-ok">Alta</span></td>
+            </tr>
+            <tr>
+              <td>A01-H</td>
+              <td>Circulação horizontal (vias internas + passeios) ÷ área privativa dos lotes — versão para produto horizontal.</td>
+              <td>&lt;18% · 18–25% · &gt;25% (proxy)</td>
+              <td><span class="pill pill-critico">Baixa</span></td>
+            </tr>
+            <tr>
+              <td>A07 (físico)</td>
+              <td>Área de estacionamento + vias ÷ número de vagas.</td>
+              <td>25–28 m²/vaga ótimo · 28–32 bom · &gt;32 ruim</td>
+              <td><span class="pill pill-ok">Alta</span></td>
+            </tr>
+            <tr>
+              <td>A07 (custo)</td>
+              <td>Custo da garagem ÷ número de vagas (R$ por vaga).</td>
+              <td>Superfície ≤R$20k · pilotis R$35–46k · subsolo R$70–130k</td>
+              <td><span class="pill pill-critico">Baixa</span></td>
+            </tr>
+            <tr>
+              <td>A08</td>
+              <td>Eficiência de fachada (Wall-to-Floor Ratio) — área de parede externa ÷ área de piso.</td>
+              <td>&lt;0,45 ótimo · 0,45–0,60 bom · 0,60–0,75 · &gt;0,75 ruim</td>
+              <td><span class="pill pill-ok">Alta</span></td>
+            </tr>
+            <tr>
+              <td>A11 (CA)</td>
+              <td>Aproveitamento do terreno — área construída computável ÷ área do terreno, medido contra o coeficiente de aproveitamento máximo do lote.</td>
+              <td>≥90% do CA máx. ótimo · 70–90% bom · &lt;60% ruim</td>
+              <td><span class="pill pill-ok">Alta</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">Sobre o A11 (CA)</div>
+        <p>Está temporariamente desligado do cálculo automático por um erro de fórmula (o resultado bruto saía acima de 1000%). O conserto já está redigido; falta apenas a aprovação final da regra de referência.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 4 de 8</div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PÁGINA 5 — FINANCEIROS: CRITÉRIOS E VALORES ABSOLUTOS ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">5</span>
+        <span class="section-title">Indicadores Financeiros — critérios de decisão</span>
+      </div>
+      <p>Não são faixas: são regras de aceitação. Um empreendimento "passa" ou "não passa" nesses critérios — não faz sentido pedir um mínimo/desejado/máximo para eles.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:10%">Cód.</th><th style="width:42%">O que mede</th><th style="width:48%">Critério de aceitação</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>F05</td><td>Valor Presente Líquido — soma dos fluxos de caixa trazidos a valor presente.</td><td><span class="pill pill-info">VPL &gt; 0</span></td></tr>
+            <tr><td>F02</td><td>MTIR (TIR Modificada / MIRR) — retorno ajustado pela taxa de reinvestimento.</td><td><span class="pill pill-info">MTIR &gt; taxa-barreira (TMA/WACC)</span></td></tr>
+            <tr><td>F01</td><td>TIR — Taxa Interna de Retorno do empreendimento.</td><td><span class="pill pill-info">TIR &gt; TMA</span> · banda residencial de referência: 15/18–22/&gt;25% a.a.</td></tr>
+            <tr><td>F03</td><td>TIR do Investidor × Retorno — relação entre capital investido e retorno do investidor.</td><td><span class="pill pill-info">&gt; TMA</span> · banda residencial: 15/18–22%</td></tr>
+            <tr><td>F04</td><td>Conversão de TIR trimestral para anual (ou vice-versa).</td><td><span class="pill pill-info">Conversão composta (1+i)⁴−1 — não linear ×4</span></td></tr>
+            <tr><td>F07</td><td>VGV — Valor Geral de Vendas (número de unidades × preço de venda).</td><td><span class="pill pill-info">Valor absoluto — sem faixa; comparar via VGV/m²</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">6</span>
+        <span class="section-title">Indicadores Financeiros — valores por projeto</span>
+      </div>
+      <p>Medem exposição de caixa e volume de investimento. São valores específicos de cada projeto — a margem, quando existe, é uma faixa de sanidade, não um alvo universal.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:10%">Cód.</th><th style="width:42%">O que mede</th><th style="width:30%">Margem de referência</th><th style="width:18%">Confiança</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>F10</td><td>Exposição Máxima de Caixa — maior desembolso líquido acumulado no ciclo.</td><td>Sem faixa — valor específico do projeto</td><td><span class="pill pill-critico">Sem base</span></td></tr>
+            <tr><td>F11</td><td>Exposição média de caixa ao longo do ciclo.</td><td>Sem faixa — valor específico do projeto (R$)</td><td><span class="pill pill-alerta">Conceito ok / sem faixa</span></td></tr>
+            <tr><td>F12</td><td>Investimento máximo (pico de exposição) — capital próprio no ponto mais exigente do fluxo.</td><td>Equity de 25–40% do custo total como faixa de sanidade de alavancagem</td><td><span class="pill pill-alerta">Média</span></td></tr>
+            <tr><td>F13</td><td>Investimento total do empreendimento.</td><td>Terreno: 15–30% do VGV (sub-parcela com faixa; o total não tem faixa própria)</td><td><span class="pill pill-alerta">Média</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 5 de 8</div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PÁGINA 6 — FINANCEIROS: FAIXAS DE REFERÊNCIA ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">7</span>
+        <span class="section-title">Indicadores Financeiros — bandas de retorno</span>
+      </div>
+      <p>Indicadores de retorno com uma banda de referência de mercado, usados junto do critério "maior que a TMA" (não como faixa fixa isolada).</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:10%">Cód.</th><th style="width:42%">O que mede</th><th style="width:30%">Margem de referência</th><th style="width:18%">Confiança</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>F06</td><td>Payback (simples e descontado) — tempo até recuperar o capital investido.</td><td>&lt;6 meses ótimo · até metade do ciclo bom · ~8 anos alerta</td><td><span class="pill pill-alerta">Média</span></td></tr>
+            <tr><td>F08</td><td>Múltiplo do Capital (Equity Multiple) — quanto o capital investido retorna ao final.</td><td>1,3x piso indicativo · 1,5–2,0x bom · 3,0x (benchmark internacional)</td><td><span class="pill pill-alerta">Média</span></td></tr>
+            <tr><td>F09</td><td>Yield — retorno bruto anualizado sobre o investimento (residencial).</td><td>4,1% piso · 5,9–6,0% bom · 8,4% a.a. topo (yield bruto)</td><td><span class="pill pill-alerta">Média</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">8</span>
+        <span class="section-title">Indicadores novos incorporados à régua</span>
+      </div>
+      <p>Além dos 34 originais, a validação identificou candidatos de mercado; destes, três foram efetivamente adotados.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:10%">Cód.</th><th style="width:42%">O que mede</th><th style="width:30%">Margem de referência</th><th style="width:18%">Confiança</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>D01</td><td>Preço médio (ticket) por m² — preço de venda ÷ área privativa. É o multiplicando que, com o nº de unidades, forma o VGV.</td><td>Valor de mercado geográfico — sem faixa de saúde universal (usar séries ABRAINC/FIPE/FipeZAP)</td><td><span class="pill pill-ok">Alta</span></td></tr>
+            <tr><td>N04</td><td>Taxa de área útil vendável (得房率) — eficiência de área a nível de empreendimento e de pavimento-tipo.</td><td>BR ~57% (prédio inteiro) / ~91% (pavimento-tipo) · referência China 78–95%</td><td><span class="pill pill-alerta">Média</span></td></tr>
+            <tr><td>N06</td><td>Velocidade de vendas (VSO) — ritmo de absorção das unidades no mercado.</td><td>Mensal: 11,4% referência / &gt;15–20% saudável · 12 meses: 56,9%</td><td><span class="pill pill-ok">Alta</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 6 de 8</div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PÁGINA 7 — MARGENS DE LUCRO (núcleo) ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">9</span>
+        <span class="section-title">Margem de lucro e ponto de equilíbrio</span>
+      </div>
+      <p>Estes são os indicadores que definem quanto o empreendimento efetivamente lucra e quando esse lucro se realiza. O conceito de cada um está fechado; a margem numérica de dois deles ainda depende de uma decisão de convenção.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th style="width:10%">Cód.</th><th style="width:36%">O que mede</th><th style="width:36%">Margem de referência</th><th style="width:18%">Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>F14</td>
+              <td>Margem — lucro do empreendimento (Resultado ÷ Receita ou Resultado ÷ Custo, conforme a convenção).</td>
+              <td>Margem líquida (sobre receita): 5/10–20/25% · Profit-on-cost (sobre custo): 15–25%</td>
+              <td><span class="pill pill-alerta">Em definição</span></td>
+            </tr>
+            <tr>
+              <td>F15</td>
+              <td>EBITDA / Margem EBITDA — resultado operacional antes de juros, impostos, depreciação e amortização.</td>
+              <td>~12% piso · 15–25% bom · ~35% topo (benchmark internacional)</td>
+              <td><span class="pill pill-alerta">Média</span></td>
+            </tr>
+            <tr>
+              <td>F16</td>
+              <td>Ponto de Equilíbrio (Break Even) — momento em que a receita acumulada cobre o custo acumulado.</td>
+              <td>Momento (incorporação-venda): mês 49 piso / 50–51 bom / 68 alerta · Ocupação (renda/locação): 60–85%</td>
+              <td><span class="pill pill-alerta">Em definição</span></td>
+            </tr>
+            <tr>
+              <td>F17</td>
+              <td>Lucro / retornos relativos — mede o mesmo resultado sob três bases de comparação diferentes.</td>
+              <td>Margem líquida ~8,6% / &gt;15–18% · ROE ~11,7% · Profit-on-cost 15/20/22,5%</td>
+              <td><span class="pill pill-alerta">Média</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">Por que F14 e F16 seguem em definição</div>
+        <p><strong>F14 — Margem:</strong> existem duas convenções de mercado incompatíveis para medir a margem de uma incorporadora — margem líquida (lucro dividido pela receita/venda) e "profit-on-cost" (lucro dividido pelo custo total de desenvolvimento). Dependendo de qual convenção se usa, o mesmo resultado financeiro produz um número de margem 2 a 2,5 vezes diferente. As faixas acima mostram as duas leituras lado a lado porque a Dois A ainda não fixou qual denominador usar oficialmente — travar essa escolha é o único passo que falta para a margem virar uma faixa única e definitiva.</p>
+        <p><strong>F16 — Ponto de Equilíbrio:</strong> a estrutura conceitual está definida (para incorporação-venda, é um momento no tempo; para renda/locação, é uma razão de ocupação), mas a acepção usada pela Dois A ainda não foi formalmente fixada, e a amostra que sustenta a faixa de "momento" é pequena (uma referência).</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 7 de 8</div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PÁGINA 8 — FECHAMENTO ═══════════════════ -->
+<div class="page">
+  <header class="page-header">
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <div class="sistema">Viabilidade &mdash; Dois A Incorporações</div>
+      <div class="doc-title">Indicadores de Viabilidade — Conceitos e Margens</div>
+    </div>
+    <div class="header-meta">
+      <div class="ref">Ref.: DOC-VIABIL-2026-07</div>
+      <div class="ref">Emissão: 09/07/2026</div>
+      <div class="rev">Rev. 01</div>
+    </div>
+  </header>
+
+  <div class="doc-id-bar">
+    <div class="doc-id-item"><span class="label">Escopo</span><span class="value">Portfólio Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Período de Referência</span><span class="value">Consolidado até 07/2026</span></div>
+    <div class="doc-id-item"><span class="label">Responsável</span><span class="value">Equipe de Viabilidade — Dois A</span></div>
+    <div class="doc-id-item"><span class="label">Classificação</span><span class="value">Confidencial — uso externo</span></div>
+  </div>
+
+  <div class="page-body">
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">10</span>
+        <span class="section-title">Resumo</span>
+      </div>
+      <p>A régua de indicadores da Dois A tem 34 métricas: 11 arquitetônicas (relações de área, com base na NBR 12721) e 17 financeiras (retorno, exposição de caixa e margem), além de 3 novas métricas de mercado adotadas (preço por m², taxa de área útil e velocidade de vendas). Trinta e três das 34 têm conceito e margem de referência fechados. Duas — margem de lucro (F14) e ponto de equilíbrio (F16) — têm o conceito fechado, mas a margem numérica final depende de uma única decisão pendente: qual convenção de denominador a Dois A adota para medir lucro.</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th style="width:50%">Família</th><th style="width:25%">Qtd.</th><th style="width:25%">Status</th></tr></thead>
+          <tbody>
+            <tr><td>Arquitetônicos (A01–A11, com variantes)</td><td>13</td><td><span class="pill pill-ok">Conceito e margem fechados</span></td></tr>
+            <tr><td>Financeiros — critérios de decisão</td><td>6</td><td><span class="pill pill-ok">Fechados (regra de aceitação)</span></td></tr>
+            <tr><td>Financeiros — valores por projeto</td><td>4</td><td><span class="pill pill-ok">Fechados (sem faixa universal)</span></td></tr>
+            <tr><td>Financeiros — bandas de retorno</td><td>3</td><td><span class="pill pill-ok">Fechados</span></td></tr>
+            <tr><td>Margem e ponto de equilíbrio</td><td>4</td><td><span class="pill pill-alerta">2 em definição (F14, F16)</span></td></tr>
+            <tr><td>Novos indicadores de mercado</td><td>3</td><td><span class="pill pill-ok">Fechados</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">Base de evidência</div>
+        <p>Validação construída sobre ~496 fontes de pesquisa (156 brasileiras + 340 internacionais — EUA, China e Rússia), incluindo normas técnicas (NBR 12721, leis municipais de uso do solo), consultorias de mercado e dados reais de 23 empreendimentos do portfólio Dois A e de referência.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left"><strong>Dois A Incorporações</strong> &nbsp;|&nbsp; DOC-VIABIL-2026-07 &nbsp;|&nbsp; Rev. 01</div>
+    <div class="footer-right">Página 8 de 8</div>
+  </footer>
+</div>
+
+</body>
+</html>
