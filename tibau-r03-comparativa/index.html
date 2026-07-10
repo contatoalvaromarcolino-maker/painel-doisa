@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Análise Comparativa — Tibau do Sul R03 — DOIS A</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',Arial,sans-serif;font-size:11pt;color:#E8ECF5;background:#0E1B33;line-height:1.6;}
+.page{width:275mm;min-height:297mm;margin:0 auto 20px;background:#0E1B33;display:flex;flex-direction:column;break-after:page;}
+.page-header{background:#16284A;padding:14px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.hdr-divider{width:1px;height:28px;background:rgba(255,255,255,0.18);flex-shrink:0;}
+.hdr-text .hdr-sys{font-size:7.5pt;font-weight:600;color:#E97132;letter-spacing:.08em;text-transform:uppercase;}
+.hdr-text .hdr-doc{font-size:11.5pt;font-weight:700;color:#E8ECF5;margin-top:1px;}
+.hdr-meta{margin-left:auto;text-align:right;font-size:7.5pt;color:rgba(255,255,255,0.55);line-height:1.8;}
+.hdr-meta strong{color:#E97132;}
+.page-body{flex:1;padding:24px 28px 20px;}
+.page-footer{background:#16284A;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);font-size:7.5pt;color:rgba(255,255,255,0.55);}
+.page-footer strong{color:#E8ECF5;}
+
+/* CAPA */
+.cover-page{background:#0E1B33;min-height:297mm;height:297mm;display:flex;flex-direction:column;justify-content:space-between;}
+.cover-top{padding:22px 28px 0;}
+.cover-sys{font-size:8pt;font-weight:600;color:#E97132;letter-spacing:.10em;text-transform:uppercase;margin-bottom:2px;}
+.cover-empresa{font-size:15pt;font-weight:700;color:#E8ECF5;line-height:1.15;}
+.cover-sep{height:1px;background:#E97132;margin-top:16px;opacity:.45;}
+.cover-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 40px 28px;}
+.cover-tipo{font-size:7.5pt;font-weight:700;letter-spacing:.18em;color:#E97132;text-transform:uppercase;margin-bottom:12px;}
+.cover-title{font-size:24pt;font-weight:700;color:#E8ECF5;line-height:1.2;margin-bottom:8px;}
+.cover-subtitle{font-size:11pt;color:rgba(255,255,255,0.50);margin-bottom:42px;}
+.cover-meta{display:flex;flex-direction:column;max-width:480px;}
+.cover-meta-row{display:flex;flex-direction:column;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.10);}
+.cover-meta-row:first-child{border-top:1px solid rgba(255,255,255,0.10);}
+.cover-meta-label{font-size:7pt;font-weight:700;letter-spacing:.12em;color:#E97132;text-transform:uppercase;margin-bottom:3px;}
+.cover-meta-value{font-size:10pt;font-weight:500;color:#E8ECF5;}
+.cover-footer-bar{background:#16284A;padding:12px 28px;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;color:rgba(255,255,255,0.50);}
+.cover-footer-bar strong{color:#E8ECF5;font-weight:600;}
+
+/* SEÇÕES */
+.section{margin-bottom:28px;}
+.section-heading{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid #E87B1E;padding-bottom:6px;margin-bottom:20px;}
+.section-number{font-size:14pt;font-weight:700;color:#E87B1E;line-height:1;}
+.section-title{font-size:11pt;font-weight:700;color:#E8ECF5;text-transform:uppercase;letter-spacing:0.05em;}
+.subsection-heading{font-size:9.5pt;font-weight:600;color:#E8ECF5;margin:20px 0 12px;padding:8px 12px;border-left:3px solid #E87B1E;background:#16284A;border-radius:0 4px 4px 0;letter-spacing:0.03em;text-transform:uppercase;}
+.subsection-heading.accent-orange{border-left-color:#E87B1E;background:rgba(232,123,30,0.08);}
+.subsection-heading.accent-blue{border-left-color:#93C5FD;background:rgba(147,197,253,0.06);}
+.subsection-heading.accent-gray{border-left-color:rgba(255,255,255,0.30);background:rgba(255,255,255,0.04);}
+.subsection-heading.accent-green{border-left-color:#6EE7B7;background:rgba(110,231,183,0.06);}
+
+/* KPI CARDS */
+.kpi-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.kpi-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;}
+.kpi-card-h{background:#16284A;border:1px solid #2A3D5E;border-radius:6px;overflow:hidden;}
+.kpi-card-h.top-orange{border-top:3px solid #E87B1E;animation:neonOrange 3s ease-in-out infinite;}
+.kpi-card-h.top-blue{border-top:3px solid #93C5FD;animation:neonBlue 3.4s ease-in-out infinite;}
+.kpi-card-h.top-green{border-top:3px solid #6EE7B7;animation:neonGreen 2.8s ease-in-out infinite;}
+.kpi-card-h.top-gray{border-top:3px solid rgba(255,255,255,0.25);}
+.kpi-card-label{font-size:7.5pt;font-weight:700;color:#E97132;text-transform:uppercase;letter-spacing:0.07em;padding:9px 14px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.07);}
+.kpi-studies{display:flex;}
+.kpi-study{flex:1;padding:10px 14px 12px;position:relative;}
+.kpi-study+.kpi-study::before{content:'';position:absolute;left:0;top:10%;height:80%;width:1px;background:rgba(255,255,255,0.12);}
+.study-label{font-size:7pt;font-weight:600;color:rgba(255,255,255,0.70);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;text-align:center;}
+.study-value{font-size:15pt;font-weight:700;color:#ffffff;line-height:1.15;text-align:center;display:block;}
+.study-value.value-lg{font-size:16pt;}
+.study-value.best{color:#6EE7B7;}
+.study-value.worst{color:#FCA5A5;}
+.study-value.mid{color:#FCD34D;}
+.study-sub{font-size:7.5pt;color:rgba(255,255,255,0.45);margin-top:3px;line-height:1.3;text-align:center;}
+
+/* TABELAS */
+.table-wrapper{overflow:hidden;border-radius:4px;border:1px solid #2A3D5E;margin:12px 0;}
+table{width:100%;border-collapse:collapse;font-size:9.5pt;}
+thead tr th{background:#1F3258;color:#E8ECF5;font-weight:600;font-size:8.5pt;text-transform:uppercase;letter-spacing:0.05em;padding:9px 14px;text-align:center;border-right:1px solid rgba(255,255,255,0.08);}
+thead tr th:first-child{text-align:left;}
+thead tr th:last-child{border-right:none;}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.07);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:nth-child(odd) td{background:#16284A;}
+tbody tr:nth-child(even) td{background:#1F3258;}
+tbody td{padding:8px 14px;border-right:1px solid rgba(255,255,255,0.07);vertical-align:middle;color:#E8ECF5;text-align:center;}
+tbody td:first-child{text-align:left;color:rgba(255,255,255,0.75);font-size:9pt;}
+tbody td:last-child{border-right:none;}
+tr.group-header td{background:rgba(232,123,30,0.14)!important;color:#E87B1E!important;font-weight:700;font-size:8pt;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid rgba(232,123,30,0.25)!important;}
+td.best{color:#6EE7B7!important;font-weight:700!important;}
+td.worst{color:#FCA5A5!important;}
+td.mid{color:#FCD34D!important;}
+
+/* BLOCOS */
+.rec-box{background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.20);border-left:4px solid #6EE7B7;border-radius:0 6px 6px 0;padding:16px 20px;margin:16px 0;}
+.rec-title{font-size:9pt;font-weight:700;color:#6EE7B7;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+.rec-body{font-size:10pt;color:#E8ECF5;line-height:1.7;}
+.rec-body strong{color:#6EE7B7;}
+.warn-box{background:rgba(252,211,77,0.06);border:1px solid rgba(252,211,77,0.20);border-left:4px solid #FCD34D;border-radius:0 6px 6px 0;padding:12px 16px;margin:10px 0;}
+.warn-title{font-size:8.5pt;font-weight:700;color:#FCD34D;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.warn-body{font-size:9.5pt;color:rgba(255,255,255,0.80);line-height:1.6;}
+.section-note{font-size:7.5pt;color:rgba(255,255,255,0.38);margin-top:10px;padding-left:2px;line-height:1.5;}
+p.body-text{font-size:9.5pt;color:rgba(255,255,255,0.80);line-height:1.75;margin-bottom:10px;}
+
+/* NEON */
+@keyframes neonOrange{0%,100%{box-shadow:0 0 8px rgba(233,113,50,0.20),0 0 20px rgba(233,113,50,0.10);}50%{box-shadow:0 0 18px rgba(233,113,50,0.55),0 0 40px rgba(233,113,50,0.25),0 0 70px rgba(233,113,50,0.10);}}
+@keyframes neonBlue{0%,100%{box-shadow:0 0 8px rgba(147,197,253,0.20),0 0 20px rgba(147,197,253,0.10);}50%{box-shadow:0 0 18px rgba(147,197,253,0.55),0 0 40px rgba(147,197,253,0.25),0 0 70px rgba(147,197,253,0.10);}}
+@keyframes neonGreen{0%,100%{box-shadow:0 0 8px rgba(110,231,183,0.20),0 0 20px rgba(110,231,183,0.10);}50%{box-shadow:0 0 18px rgba(110,231,183,0.55),0 0 40px rgba(110,231,183,0.25);}}
+@media screen{body{background:#888!important;padding:20px 0!important;}.page{width:275mm!important;box-shadow:0 4px 24px rgba(0,0,0,0.35)!important;margin-bottom:24px!important;}}
+@media print{body{background:#0E1B33;}.page{margin:0;break-after:page;box-shadow:none;}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PÁGINA 1 — CAPA
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page cover-page">
+  <div class="cover-top">
+    <div class="cover-sys">INCO — Gestão de Incorporações</div>
+    <div class="cover-empresa">DOIS A Empreendimentos</div>
+    <div class="cover-sep"></div>
+  </div>
+  <div class="cover-body">
+    <div class="cover-tipo">Análise de Viabilidade Imobiliária</div>
+    <div class="cover-title">Análise Comparativa<br>Tibau do Sul R03</div>
+    <div class="cover-subtitle">3 Cenários de Régua de Vendas — Simulação 04 · 15.000 m²</div>
+    <div class="cover-meta">
+      <div class="cover-meta-row">
+        <div class="cover-meta-label">Cenários Analisados</div>
+        <div class="cover-meta-value">E1: 10/20/70 &nbsp;·&nbsp; E2: 10/30/60 &nbsp;·&nbsp; E3: 10/40/50</div>
+      </div>
+      <div class="cover-meta-row">
+        <div class="cover-meta-label">VGV Bruto</div>
+        <div class="cover-meta-value">R$ 329.625.105 — idêntico nos 3 cenários</div>
+      </div>
+      <div class="cover-meta-row">
+        <div class="cover-meta-label">Produto</div>
+        <div class="cover-meta-value">329 UH — Tibau do Sul / RN</div>
+      </div>
+      <div class="cover-meta-row">
+        <div class="cover-meta-label">Permuta</div>
+        <div class="cover-meta-value">18,11% do VGV &nbsp;·&nbsp; R$ 59.689.818</div>
+      </div>
+      <div class="cover-meta-row">
+        <div class="cover-meta-label">Referência</div>
+        <div class="cover-meta-value">DOISA-VIAB-R03 &nbsp;·&nbsp; Revisão R01 &nbsp;·&nbsp; Maio/2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-footer-bar">
+    <span>Confidencial — uso interno</span>
+    <strong>DOIS A &nbsp;·&nbsp; Maio/2026</strong>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PÁGINA 2 — RESUMO EXECUTIVO
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="hdr-divider"></div>
+    <div class="hdr-text">
+      <div class="hdr-sys">INCO — Gestão de Incorporações</div>
+      <div class="hdr-doc">Análise Comparativa de Viabilidade — Tibau do Sul R03</div>
+    </div>
+    <div class="hdr-meta">
+      <div><strong>Ref</strong> DOISA-VIAB-R03 &nbsp;|&nbsp; <strong>Rev</strong> R01</div>
+      <div>Emissão: Maio/2026</div>
+    </div>
+  </div>
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">1</span>
+        <span class="section-title">Resumo Executivo</span>
+      </div>
+
+      <div class="subsection-heading accent-orange">1.1 — Os 3 Cenários</div>
+      <p class="body-text">As três simulações testam diferentes <strong style="color:#E97132;">regras de vendas</strong> sobre o mesmo produto — 329 unidades habitacionais em Tibau do Sul/RN, VGV Bruto de R$ 329,6M. A única variável entre os cenários é o <strong style="color:#E97132;">timing do fluxo de caixa</strong>: quanto o comprador paga na assinatura, durante a obra e na entrega das chaves. O produto, os custos e o VGV são idênticos nos 3 estudos.</p>
+      <p class="body-text">E1 (10/20/70) é a régua mais conservadora — 70% na entrega. E3 (10/40/50) concentra mais receita durante a obra — 40% em parcelas mensais. E2 (10/30/60) é a posição intermediária. Maior receita durante a obra significa menor exposição de capital e melhor TIR, pois o dinheiro entra mais cedo.</p>
+
+      <div class="subsection-heading accent-blue">1.2 — Síntese dos 5 KPIs Decisivos</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>E1 &nbsp;·&nbsp; 10/20/70</th>
+              <th>E2 &nbsp;·&nbsp; 10/30/60</th>
+              <th>E3 &nbsp;·&nbsp; 10/40/50</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TIR a.a. (sem financiamento)</td>
+              <td class="worst">66,69%</td>
+              <td class="mid">99,83%</td>
+              <td class="best">157,55%</td>
+            </tr>
+            <tr>
+              <td>VPL — 12% a.a.</td>
+              <td class="worst">R$ 28.938.706</td>
+              <td class="mid">R$ 31.215.922</td>
+              <td class="best">R$ 33.743.353</td>
+            </tr>
+            <tr>
+              <td>Pay-Back</td>
+              <td class="worst">59º mês (Mar/2031)</td>
+              <td class="mid">56º mês (Dez/2030)</td>
+              <td class="best">32º mês (Dez/2028)</td>
+            </tr>
+            <tr>
+              <td>Exposição Máxima (VP)</td>
+              <td class="worst">R$ 24.628.472</td>
+              <td class="mid">R$ 15.372.554</td>
+              <td class="best">R$ 11.384.453</td>
+            </tr>
+            <tr>
+              <td>Margem EBITDA</td>
+              <td class="best">30,90%</td>
+              <td class="mid">30,68%</td>
+              <td class="worst">30,66%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note">Verde = melhor resultado &nbsp;·&nbsp; Vermelho = pior resultado &nbsp;·&nbsp; Amarelo = intermediário &nbsp;·&nbsp; Margem EBITDA: diferença de 0,24 p.p. entre E1 e E3 — irrelevante para decisão</p>
+
+      <div class="rec-box">
+        <div class="rec-title">✦ Cenário Recomendado: E3 (10/40/50)</div>
+        <div class="rec-body">
+          E3 domina E1 e E2 em todos os critérios financeiros relevantes: <strong>TIR 157,55% a.a.</strong> (+90,86 p.p. sobre E1), <strong>VPL R$ 33,7M</strong> (+R$ 4,8M), <strong>Exposição Máxima R$ 11,4M</strong> — 54% menor que E1 — e <strong>Payback no 32º mês</strong>, antes da entrega das chaves. E1 nunca deve ser a escolha padrão: é dominado por E2 em todos os critérios. E2 funciona como posição defensiva caso o mercado não absorva 40% de parcelas durante a obra.
+        </div>
+      </div>
+
+      <div class="warn-box">
+        <div class="warn-title">⚠ Pré-condição de E3</div>
+        <div class="warn-body">Compradores devem aceitar 40% do imóvel parcelado durante a obra. O perfil investidor/segunda residência de Tibau do Sul é favorável a essa estrutura, mas deve ser validado comercialmente com a equipe de vendas antes de adotar como régua padrão.</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>DOIS A Empreendimentos &nbsp;·&nbsp; Confidencial</span>
+    <strong>Pág. 2</strong>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PÁGINA 3 — ANÁLISE DE RETORNO
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="hdr-divider"></div>
+    <div class="hdr-text">
+      <div class="hdr-sys">INCO — Gestão de Incorporações</div>
+      <div class="hdr-doc">Análise Comparativa de Viabilidade — Tibau do Sul R03</div>
+    </div>
+    <div class="hdr-meta">
+      <div><strong>Ref</strong> DOISA-VIAB-R03 &nbsp;|&nbsp; <strong>Rev</strong> R01</div>
+      <div>Emissão: Maio/2026</div>
+    </div>
+  </div>
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">2</span>
+        <span class="section-title">Análise de Retorno</span>
+      </div>
+
+      <div class="subsection-heading accent-orange">2.1 — Sem Financiamento (Valor Presente)</div>
+      <div class="kpi-grid-2">
+        <div class="kpi-card-h top-orange">
+          <div class="kpi-card-label">TIR a.a.</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">66,69%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">99,83%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">157,55%</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-orange">
+          <div class="kpi-card-label">MTIR a.a.</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">21,38%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">24,48%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">27,26%</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-orange">
+          <div class="kpi-card-label">VPL (12% a.a.)</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst value-lg">R$ 28,9 M</div>
+              <div class="study-sub">R$ 28.938.706</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid value-lg">R$ 31,2 M</div>
+              <div class="study-sub">R$ 31.215.922</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best value-lg">R$ 33,7 M</div>
+              <div class="study-sub">R$ 33.743.353</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-orange">
+          <div class="kpi-card-label">Exposição Máxima (VP)</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">R$ 24,6 M</div>
+              <div class="study-sub">53º mês</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">R$ 15,4 M</div>
+              <div class="study-sub">31º mês</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">R$ 11,4 M</div>
+              <div class="study-sub">31º mês</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-orange">
+          <div class="kpi-card-label">Pay-Back</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">59º mês</div>
+              <div class="study-sub">Mar/2031</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">56º mês</div>
+              <div class="study-sub">Dez/2030</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">32º mês</div>
+              <div class="study-sub">Dez/2028</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-orange">
+          <div class="kpi-card-label">Lucro (VP)</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value">R$ 27,5 M</div>
+              <div class="study-sub">R$ 27.513.840</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value">R$ 27,2 M</div>
+              <div class="study-sub">R$ 27.245.705</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value">R$ 27,2 M</div>
+              <div class="study-sub">R$ 27.220.795</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection-heading accent-blue">2.2 — Com Financiamento (80% obra · 11% a.a.)</div>
+      <div class="kpi-grid-2">
+        <div class="kpi-card-h top-blue">
+          <div class="kpi-card-label">TIR pós-Juros a.a.</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">55,94%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">89,93%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">147,41%</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-blue">
+          <div class="kpi-card-label">VPL pós-Juros</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst value-lg">R$ 25,0 M</div>
+              <div class="study-sub">R$ 25.026.955</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid value-lg">R$ 29,8 M</div>
+              <div class="study-sub">R$ 29.776.085</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best value-lg">R$ 33,9 M</div>
+              <div class="study-sub">R$ 33.902.096</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-blue">
+          <div class="kpi-card-label">Exposição pós-Juros</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">R$ 28,5 M</div>
+              <div class="study-sub">53º mês</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">R$ 16,7 M</div>
+              <div class="study-sub">31º mês</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">R$ 12,3 M</div>
+              <div class="study-sub">31º mês</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-blue">
+          <div class="kpi-card-label">VPL / Exposição Máxima</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">87,69%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">178,79%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">275,14%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>DOIS A Empreendimentos &nbsp;·&nbsp; Confidencial</span>
+    <strong>Pág. 3</strong>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PÁGINA 4 — RECEITAS, CUSTOS E NOMINAL
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="hdr-divider"></div>
+    <div class="hdr-text">
+      <div class="hdr-sys">INCO — Gestão de Incorporações</div>
+      <div class="hdr-doc">Análise Comparativa de Viabilidade — Tibau do Sul R03</div>
+    </div>
+    <div class="hdr-meta">
+      <div><strong>Ref</strong> DOISA-VIAB-R03 &nbsp;|&nbsp; <strong>Rev</strong> R01</div>
+      <div>Emissão: Maio/2026</div>
+    </div>
+  </div>
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">3</span>
+        <span class="section-title">Receitas, Custos e Resultados Nominais</span>
+      </div>
+
+      <div class="subsection-heading accent-orange">3.1 — VGV e Receitas</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Rubrica</th><th>E1 · 10/20/70</th><th>E2 · 10/30/60</th><th>E3 · 10/40/50</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>VGV Bruto</td><td>R$ 329.625.105</td><td>R$ 329.625.105</td><td>R$ 329.625.105</td></tr>
+            <tr><td>VGV Permutas (18,11%)</td><td>R$ 59.689.818</td><td>R$ 59.689.818</td><td>R$ 59.689.818</td></tr>
+            <tr><td>VGV Líquido</td><td>R$ 269.935.286</td><td>R$ 269.935.286</td><td>R$ 269.935.286</td></tr>
+            <tr><td>Receita Total (DRE)</td><td class="worst">R$ 154.023.019</td><td class="mid">R$ 156.681.413</td><td class="best">R$ 159.339.804</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note">VGV Bruto, Permutas e Líquido são idênticos nos 3 cenários. A Receita Total DRE varia porque o cronograma de vendas altera o reconhecimento de receita no período de análise.</p>
+
+      <div class="subsection-heading accent-blue">3.2 — Estrutura de Custos e EBITDA</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Rubrica</th><th>E1 · 10/20/70</th><th>E2 · 10/30/60</th><th>E3 · 10/40/50</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Custo de Obra</td><td>R$ 100.672.179</td><td>R$ 100.672.179</td><td>R$ 100.672.179</td></tr>
+            <tr><td>Custo Efetivo Terreno (Venda)</td><td class="best">R$ 35.819.054</td><td class="mid">R$ 36.406.895</td><td class="worst">R$ 36.994.736</td></tr>
+            <tr><td>EBITDA</td><td class="best">R$ 77.436.819</td><td class="mid">R$ 76.881.978</td><td class="worst">R$ 76.830.432</td></tr>
+            <tr><td>Margem EBITDA</td><td class="best">30,90%</td><td class="mid">30,68%</td><td class="worst">30,66%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note">Custo de Obra idêntico nos 3 cenários. EBITDA e Margem ligeiramente maiores em E1 — diferença de R$ 606k (1,05%) irrelevante frente ao custo de oportunidade do capital.</p>
+
+      <div class="subsection-heading accent-gray">3.3 — Resultados Nominais</div>
+      <div class="kpi-grid-2">
+        <div class="kpi-card-h top-gray">
+          <div class="kpi-card-label">Lucro Nominal</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value best value-lg">R$ 58,5 M</div>
+              <div class="study-sub">R$ 58.544.436</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid value-lg">R$ 58,0 M</div>
+              <div class="study-sub">R$ 57.989.595</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value worst value-lg">R$ 57,9 M</div>
+              <div class="study-sub">R$ 57.938.049</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-gray">
+          <div class="kpi-card-label">Lucro / VGV Bruto</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value best">17,76%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">17,59%</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value worst">17,58%</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-gray">
+          <div class="kpi-card-label">Exposição Máxima Nominal</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">R$ 35,9 M</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">R$ 19,1 M</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">R$ 14,1 M</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card-h top-gray">
+          <div class="kpi-card-label">Payback Nominal</div>
+          <div class="kpi-studies">
+            <div class="kpi-study">
+              <div class="study-label">E1 · 10/20/70</div>
+              <div class="study-value worst">58º mês</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E2 · 10/30/60</div>
+              <div class="study-value mid">56º mês</div>
+            </div>
+            <div class="kpi-study">
+              <div class="study-label">E3 · 10/40/50</div>
+              <div class="study-value best">32º mês</div>
+              <div class="study-sub">Dez/2028</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>DOIS A Empreendimentos &nbsp;·&nbsp; Confidencial</span>
+    <strong>Pág. 4</strong>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PÁGINA 5 — COMPARATIVO FINAL E RECOMENDAÇÃO
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="hdr-divider"></div>
+    <div class="hdr-text">
+      <div class="hdr-sys">INCO — Gestão de Incorporações</div>
+      <div class="hdr-doc">Análise Comparativa de Viabilidade — Tibau do Sul R03</div>
+    </div>
+    <div class="hdr-meta">
+      <div><strong>Ref</strong> DOISA-VIAB-R03 &nbsp;|&nbsp; <strong>Rev</strong> R01</div>
+      <div>Emissão: Maio/2026</div>
+    </div>
+  </div>
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-number">4</span>
+        <span class="section-title">Comparativo Final e Recomendação</span>
+      </div>
+
+      <div class="subsection-heading accent-orange">4.1 — Tabela Comparativa Completa</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Indicador</th><th>E1 · 10/20/70</th><th>E2 · 10/30/60</th><th>E3 · 10/40/50</th></tr>
+          </thead>
+          <tbody>
+            <tr class="group-header"><td colspan="4">Receitas e VGV</td></tr>
+            <tr><td>VGV Bruto</td><td>R$ 329.625.105</td><td>R$ 329.625.105</td><td>R$ 329.625.105</td></tr>
+            <tr><td>VGV Líquido</td><td>R$ 269.935.286</td><td>R$ 269.935.286</td><td>R$ 269.935.286</td></tr>
+            <tr><td>Receita Total DRE</td><td class="worst">R$ 154.023.019</td><td class="mid">R$ 156.681.413</td><td class="best">R$ 159.339.804</td></tr>
+            <tr class="group-header"><td colspan="4">Custos e Margem</td></tr>
+            <tr><td>Custo de Obra</td><td>R$ 100.672.179</td><td>R$ 100.672.179</td><td>R$ 100.672.179</td></tr>
+            <tr><td>EBITDA</td><td class="best">R$ 77.436.819</td><td class="mid">R$ 76.881.978</td><td class="worst">R$ 76.830.432</td></tr>
+            <tr><td>Margem EBITDA</td><td class="best">30,90%</td><td class="mid">30,68%</td><td class="worst">30,66%</td></tr>
+            <tr class="group-header"><td colspan="4">Retorno sem Financiamento (VP)</td></tr>
+            <tr><td>TIR a.a.</td><td class="worst">66,69%</td><td class="mid">99,83%</td><td class="best">157,55%</td></tr>
+            <tr><td>MTIR a.a.</td><td class="worst">21,38%</td><td class="mid">24,48%</td><td class="best">27,26%</td></tr>
+            <tr><td>VPL (12%)</td><td class="worst">R$ 28.938.706</td><td class="mid">R$ 31.215.922</td><td class="best">R$ 33.743.353</td></tr>
+            <tr><td>Exposição Máxima VP</td><td class="worst">R$ 24.628.472 (53º)</td><td class="mid">R$ 15.372.554 (31º)</td><td class="best">R$ 11.384.453 (31º)</td></tr>
+            <tr><td>Pay-Back</td><td class="worst">59º mês / Mar/2031</td><td class="mid">56º mês / Dez/2030</td><td class="best">32º mês / Dez/2028</td></tr>
+            <tr class="group-header"><td colspan="4">Retorno com Financiamento (80% obra · 11% a.a.)</td></tr>
+            <tr><td>TIR pós-Juros</td><td class="worst">55,94%</td><td class="mid">89,93%</td><td class="best">147,41%</td></tr>
+            <tr><td>VPL pós-Juros</td><td class="worst">R$ 25.026.955</td><td class="mid">R$ 29.776.085</td><td class="best">R$ 33.902.096</td></tr>
+            <tr><td>Exposição pós-Juros</td><td class="worst">R$ 28.540.223 (53º)</td><td class="mid">R$ 16.654.117 (31º)</td><td class="best">R$ 12.321.686 (31º)</td></tr>
+            <tr><td>VPL / Exp. Máxima</td><td class="worst">87,69%</td><td class="mid">178,79%</td><td class="best">275,14%</td></tr>
+            <tr class="group-header"><td colspan="4">Resultados Nominais</td></tr>
+            <tr><td>Lucro Nominal</td><td class="best">R$ 58.544.436</td><td class="mid">R$ 57.989.595</td><td class="worst">R$ 57.938.049</td></tr>
+            <tr><td>Lucro / VGV Bruto</td><td class="best">17,76%</td><td class="mid">17,59%</td><td class="worst">17,58%</td></tr>
+            <tr><td>Exposição Máx. Nominal</td><td class="worst">R$ 35.919.830</td><td class="mid">R$ 19.094.075</td><td class="best">R$ 14.091.189</td></tr>
+            <tr><td>Payback Nominal</td><td class="worst">58º mês</td><td class="mid">56º mês</td><td class="best">32º mês / Dez/2028</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection-heading accent-gray">4.2 — Por que E1 nunca deve ser escolha padrão</div>
+      <p class="body-text">E1 é dominado por E2 em todos os critérios: TIR +33,14 p.p., VPL +R$ 2,3M, Exposição −R$ 9,3M, Payback −3 meses. O único ponto a favor de E1 é R$ 606k de Lucro Nominal a mais — 1,05% de diferença, irrelevante frente ao custo de capital adicional de R$ 9,3M de exposição. Adotar E1 como régua significa imobilizar capital extra sem retorno proporcional.</p>
+
+      <div class="subsection-heading accent-blue">4.3 — E2 como posição defensiva</div>
+      <p class="body-text">Se o mercado de Tibau do Sul não absorver 40% de parcelas durante a obra, E2 ainda entrega TIR de 99,83% a.a., VPL de R$ 31,2M e Exposição de R$ 15,4M — com uma régua de vendas conservadora (30% obras). Funciona como piso mínimo aceitável de retorno para o projeto.</p>
+
+      <div class="subsection-heading accent-green">4.4 — E3 como cenário base recomendado</div>
+      <p class="body-text">E3 é a escolha ótima sob qualquer critério financeiro relevante. O payback no <strong style="color:#6EE7B7;">32º mês</strong> — antes da entrega das chaves — é uma estrutura rara que elimina o risco de liquidez pós-obra. A exposição máxima de <strong style="color:#6EE7B7;">R$ 11,4M</strong> representa apenas 3,5% do VGV Bruto, indicando uso extremamente eficiente de capital.</p>
+
+      <div class="rec-box">
+        <div class="rec-title">✦ Decisão Recomendada</div>
+        <div class="rec-body">
+          Adotar <strong>E3 (10/40/50)</strong> como régua padrão de vendas, condicionado à validação comercial da aceitação de 40% de parcelas durante a obra pelo perfil de comprador de Tibau do Sul. Caso a pesquisa de vendas aponte resistência, adotar <strong>E2 (10/30/60)</strong> como posição defensiva. <strong>E1 não deve ser considerado</strong> em nenhum cenário — é universalmente dominado por E2.
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>DOIS A Empreendimentos &nbsp;·&nbsp; Confidencial &nbsp;·&nbsp; Fonte: DRE Padrão e Cashflow auditados — Maio/2026</span>
+    <strong>Pág. 5</strong>
+  </div>
+</div>
+
+</body>
+</html>
