@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perguntas para Álvaro — Monitor IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0E0E0E;
+    color: #EDEDED;
+    font-family: 'Barlow', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 60px 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: #EDEDED;
+  }
+
+  .subtitle {
+    color: #888;
+    font-size: 15px;
+  }
+
+  .gold { color: #C9A84C; }
+  .green { color: #7CA36E; }
+  .red { color: #C86A5A; }
+
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 24px;
+  }
+
+  .question-block {
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-left: 3px solid #C9A84C;
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+
+  .question-block.answered {
+    border-left-color: #7CA36E;
+    opacity: 0.7;
+  }
+
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #C9A84C;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .question-block.answered .q-number {
+    color: #7CA36E;
+  }
+
+  .q-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #EDEDED;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .q-context {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 14px 18px;
+  }
+
+  .option-label {
+    font-weight: 600;
+    font-size: 15px;
+    color: #EDEDED;
+    margin-bottom: 4px;
+  }
+
+  .option-desc {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.5;
+  }
+
+  .answered-badge {
+    display: inline-block;
+    background: #1a2e1a;
+    border: 1px solid #7CA36E;
+    color: #7CA36E;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+
+  .answer-text {
+    font-size: 16px;
+    color: #7CA36E;
+    font-weight: 600;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #1e1e1e;
+    margin: 40px 0;
+  }
+
+  .footer {
+    border-top: 1px solid #2a2a2a;
+    padding-top: 24px;
+    margin-top: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #444;
+  }
+
+  .block-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    margin-top: 32px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge-blocker { background: #2e1a1a; color: #C86A5A; border: 1px solid #C86A5A; }
+  .badge-important { background: #2a1e0e; color: #C9A84C; border: 1px solid #C9A84C; }
+  .badge-minor { background: #1a1a2e; color: #6A9BC8; border: 1px solid #6A9BC8; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Monitor IA · Wave 2 · 22 Abril 2026</div>
+  <h1>Perguntas para o <span class="gold">Álvaro</span></h1>
+  <p class="subtitle">Responda por áudio. Cada pergunta tem número — pode falar "pergunta 1: opção B" ou à vontade.</p>
+</div>
+
+<!-- BLOCO 1: JÁ RESPONDIDO -->
+<div class="block-title">Já respondido</div>
+
+<div class="question-block answered">
+  <div class="answered-badge">✓ RESPONDIDO</div>
+  <div class="q-number">PERGUNTA 01</div>
+  <div class="q-text">O grupo CDG deve entrar no Monitor IA?</div>
+  <div class="answer-text">Sim — com agente novo (vault e identidade exclusivos para CDG)</div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOCO 2: BLOQUEANTES -->
+<div class="block-title">Bloqueantes — impedem execução <span class="badge badge-blocker">PRECISO AGORA</span></div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 02</div>
+  <div class="q-text">CDG novo agente: qual nome e identidade?</div>
+  <div class="q-context">
+    Já decidimos que CDG terá agente exclusivo. Preciso saber como chamá-lo e como ele se apresenta.
+    O vault vai em <code>/root/.openclaw/agents/cdg/workspace</code> na VPS Dois A.
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) INCO-CDG</div>
+      <div class="option-desc">Extensão do INCO. Mesmo estilo, mas com contexto CDG. Mais rápido de configurar.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) Nome próprio — ex: "CDG Assistente"</div>
+      <div class="option-desc">Agente com nome específico para CDG. Identidade separada, mais profissional para o Robson ver.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Você escolhe o nome</div>
+      <div class="option-desc">Me diga o nome/apelido que quer dar ao agente CDG e eu uso esse.</div>
+    </div>
+  </div>
+</div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 03</div>
+  <div class="q-text">Nos tópicos 2, 3 e 4 do grupo CDG — qual é a função de cada um?</div>
+  <div class="q-context">
+    O grupo CDG tem pelo menos os tópicos 2, 3 e 4. O agente CDG precisa saber em qual tópico responder, e se cada tópico tem um propósito diferente.
+    Exemplo: tópico 2 = perguntas gerais, tópico 3 = obras, tópico 4 = documentos.
+    Se não souber de cabeça, não precisa ser exato — aproximado já ajuda.
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) Todos os tópicos respondem igual</div>
+      <div class="option-desc">Sem distinção — o agente CDG responde qualquer mensagem nos 3 tópicos.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) Só um tópico principal (me diga qual)</div>
+      <div class="option-desc">O agente CDG fica restrito a 1 tópico. Os outros são para uso interno seu, sem IA respondendo.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Não sei de cabeça — preciso verificar</div>
+      <div class="option-desc">Tudo bem. Deixo o agente respondendo em todos por enquanto e você ajusta depois.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOCO 3: IMPLEMENTAÇÃO -->
+<div class="block-title">Implementação — define o que faço esta sessão <span class="badge badge-important">IMPORTANTE</span></div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 04</div>
+  <div class="q-text">Qual upgrade implementar primeiro?</div>
+  <div class="q-context">
+    A pesquisa da comunidade encontrou 3 upgrades críticos. Preciso saber a ordem para esta sessão.
+    <br><br>
+    <strong>Memória real</strong> corrige um bug existente desde sempre: hoje o Monitor nunca carrega o histórico de conversa após reiniciar a VPS. Com o fix, cada usuário tem continuidade real.<br><br>
+    <strong>Streaming</strong> faz o Claude "digitar" ao vivo no Telegram — igual ao chat.claude.ai. Hoje a resposta só aparece quando termina.<br><br>
+    <strong>P0 fixes</strong> são 3 bugs conhecidos de 1 linha cada, ~15 min, que existem há dias.
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) Memória real primeiro (--resume + SQLite) — Recomendado</div>
+      <div class="option-desc">Maior impacto. Corrige o bug mais grave. ~3-4h. Streaming fica para próxima sessão.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) P0 fixes primeiro, depois memória</div>
+      <div class="option-desc">Limpar os bugs pequenos antes de avançar. 15 min nos P0, depois ~3-4h na memória.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Memória + Streaming nesta sessão</div>
+      <div class="option-desc">Tudo de uma vez. ~5-6h. Mais risco de bug simultâneo, mas entrega completa.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">D) Só streaming por enquanto</div>
+      <div class="option-desc">Melhora visual imediata. Memória fica para próxima sessão.</div>
+    </div>
+  </div>
+</div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 05</div>
+  <div class="q-text">Como devem funcionar os botões Claude / ChatGPT?</div>
+  <div class="q-context">
+    Hoje o spec diz: botões aparecem só quando o usuário inicia nova demanda. O usuário escolhe o modelo e ele fica fixo até pedir troca.
+    A pesquisa mostrou que alguns projetos removeram os botões completamente (Claude sempre, GPT só no fallback silencioso).
+    O que você prefere?
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) Manter como está — botões só na abertura da demanda</div>
+      <div class="option-desc">Spec atual. Usuário escolhe no início, persiste até /nova. Menos atrito do que a cada mensagem.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) Remover botões — Claude sempre, GPT só no fallback</div>
+      <div class="option-desc">Zero burocracia. Claude responde sempre. Se Claude falhar, GPT entra automaticamente sem o usuário saber.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Botões a qualquer momento com /claude e /gpt</div>
+      <div class="option-desc">Usuário troca de modelo quando quiser, sem precisar abrir nova demanda. Mais flexível.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOCO 4: MÉDIO PRAZO -->
+<div class="block-title">Médio prazo — não bloqueiam hoje, mas definem roadmap <span class="badge badge-minor">PLANEJAMENTO</span></div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 06</div>
+  <div class="q-text">Replicar o Monitor IA para a VPS Arvo — quando?</div>
+  <div class="q-context">
+    Hoje o monitor roda 100% na VPS Dois A. As mensagens do grupo Arvo chegam via Telethon na Dois A e o Claude roda por SSH na Arvo.
+    Tecnicamente a arquitetura já suporta replicação. A questão é prioridade.
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) Depois que Dois A estiver estável</div>
+      <div class="option-desc">Prioridade: consolidar memória + streaming em Dois A. Arvo fica para Wave 4 (próximas semanas).</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) Junto com esta Wave 2</div>
+      <div class="option-desc">Replicar já nesta sessão junto com os outros upgrades. ~1h adicional.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Arvo não precisa — Dois A centralizado resolve</div>
+      <div class="option-desc">Arquitetura atual já cobre Arvo via SSH. Não precisa de instância separada.</div>
+    </div>
+  </div>
+</div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 07</div>
+  <div class="q-text">Briefings diários automáticos — implementar quando?</div>
+  <div class="q-context">
+    O spec prevê que o monitor envie um resumo diário automático para cada grupo (ex: "Bom dia, aqui estão as pendências de hoje").
+    Hoje isso não existe. Implementar requer JobQueue interno (APScheduler integrado ao python-telegram-bot).
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) Wave 3 — depois da memória e streaming</div>
+      <div class="option-desc">Briefings são úteis mas não urgentes. Primeiro consolidar o núcleo do monitor.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) É prioridade — fazer junto com Wave 2</div>
+      <div class="option-desc">Briefings diários têm impacto direto na operação dos clientes. Quer incluir agora.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Não precisa por enquanto</div>
+      <div class="option-desc">Briefings manuais são suficientes. Não implementar ainda.</div>
+    </div>
+  </div>
+</div>
+
+<div class="question-block">
+  <div class="q-number">PERGUNTA 08</div>
+  <div class="q-text">healthchecks.io — instalar monitoramento do bot?</div>
+  <div class="q-context">
+    healthchecks.io é um serviço gratuito que te manda uma notificação (email/Telegram) se o Monitor IA parar de funcionar.
+    O bot "bate ponto" a cada 5 minutos. Se parar de bater, você recebe alerta automaticamente.
+    Hoje você só descobre que o bot caiu quando alguém reclama.
+  </div>
+  <div class="options">
+    <div class="option">
+      <div class="option-label">A) Sim — instalar junto com Wave 2</div>
+      <div class="option-desc">5 minutos de configuração. Você recebe alerta no Telegram se o bot cair. Vale a pena.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">B) Depois — Wave 3</div>
+      <div class="option-desc">Não é urgente. O watchdog interno já reinicia o bot sozinho em caso de crash.</div>
+    </div>
+    <div class="option">
+      <div class="option-label">C) Não precisa</div>
+      <div class="option-desc">O systemd + watchdog são suficientes. Não instalar.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Monitor IA · Perguntas Wave 2 · 22 Abril 2026 · 8 perguntas · 1 já respondida
+</div>
+
+</body>
+</html>
