@@ -220,6 +220,8 @@ td.num{font-variant-numeric:tabular-nums}
 .node.f1{background:var(--crit-bg); border-color:#C0392B; color:#9B241B}
 .node.f2{background:var(--info-bg); border-color:#2E5FB0; color:#274E9E}
 .node.f3{background:var(--warn-bg); border-color:#C6902F; color:var(--warn-fg)}
+    .node.f4{background:#EFE9FB; border-color:#7B4FD0; color:#5B37A6}
+    .pill.ph4{background:#EFE9FB; border:1px solid #7B4FD0; color:#5B37A6}
 .node.apoio{background:#F1F4FA; border-color:#B7BFD3; color:#4B5470}
 .node.apoio .role{color:var(--muted)}
 .node-group{border:1px dashed var(--line); border-radius:10px; padding:8px; display:flex; flex-direction:column; gap:6px; background:#fff}
@@ -230,6 +232,7 @@ td.num{font-variant-numeric:tabular-nums}
 .lg .sw.f1{background:var(--crit-bg); border-color:#C0392B}
 .lg .sw.f2{background:var(--info-bg); border-color:#2E5FB0}
 .lg .sw.f3{background:var(--warn-bg); border-color:#C6902F}
+    .sw.f4{background:#EFE9FB; border-color:#7B4FD0}
 .lg .sw.apoio{background:#F1F4FA; border-color:#B7BFD3}
 
 /* ═══ FLOW (transformação bruto → líquido → TAC) ═══ */
@@ -537,7 +540,7 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
       <div class="slide-body">
         <div class="sec-title"><span class="num">02</span><span class="tt">Onde a Brisa precisa estar em 2036</span></div>
         <p class="sec-lead lead-wide">O plano tem um destino. Em dez anos a Brisa deixa de ser uma incorporadora enxuta e vira um grupo verticalizado de referência no Ceará. O caminho são cinco fases, e cada uma só começa quando a anterior cumpre o marco que a sustenta.</p>
-        <div style="display:flex;gap:12px;margin:6px 0 4px"><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #3C3F99;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05)"><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#3C3F99">2026&ndash;2028</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Prepara&ccedil;&atilde;o</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">N&uacute;cleo executivo montado &middot; Golf Ville F1 em obra</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">ERP implantado &middot; PCO rodando &middot; 1&ordf; contrata&ccedil;&atilde;o no M0</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 18 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #5457c9;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05);position:relative"><span class="why" style="position:absolute;top:-9px;right:-9px;z-index:70" data-why="O PBQP-H foi inserido nesta fase (2028), como o Gustavo pediu — antes estava previsto para 2030.">!</span><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#5457c9">2028&ndash;2030</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Escala</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">Construtora pr&oacute;pria operando &middot; verticaliza&ccedil;&atilde;o parcial</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px"><b style="color:#5457c9">PBQP-H deve rodar ainda em 2028</b> &middot; obra sob bandeira Brisa</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 34 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #00B0F2;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05)"><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#00B0F2">2030&ndash;2032</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Consolida&ccedil;&atilde;o</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">ERP e BI maduros &middot; governan&ccedil;a plena</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">P&oacute;s-obra estruturado &middot; controladoria consolidada</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 48 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #f5a623;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05)"><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#f5a623">2032&ndash;2034</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Maturidade</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">Pipeline cont&iacute;nuo &middot; 2 lan&ccedil;amentos/ano</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">Diversifica&ccedil;&atilde;o de produto &middot; margem sustentada</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 60 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #FF8728;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05);position:relative"><span class="why" style="position:absolute;top:-9px;right:-9px;z-index:70" data-why="Foi retirada a parte que dizia que a construtora atende a terceiros, como o Gustavo pediu — agora a construtora atende só a si própria.">!</span><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#FF8728">2034&ndash;2036</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Lideran&ccedil;a</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">Grupo Brisa entre os l&iacute;deres do Cear&aacute;</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">2 lan&ccedil;amentos/ano sustentados &middot; margem sustentada</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 72+ pessoas</div></div></div>
+        <div style="display:flex;gap:12px;margin:6px 0 4px"><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #3C3F99;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05)"><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#3C3F99">2026&ndash;2028</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Prepara&ccedil;&atilde;o</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">N&uacute;cleo executivo montado &middot; Golf Ville F1 em obra</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">ERP implantado &middot; PCO rodando &middot; 1&ordf; contrata&ccedil;&atilde;o no M0</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 17 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #5457c9;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05);position:relative"><span class="why" style="position:absolute;top:-9px;right:-9px;z-index:70" data-why="O PBQP-H foi inserido nesta fase (2028), como o Gustavo pediu — antes estava previsto para 2030.">!</span><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#5457c9">2028&ndash;2030</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Escala</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">Construtora pr&oacute;pria operando &middot; verticaliza&ccedil;&atilde;o parcial</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px"><b style="color:#5457c9">PBQP-H deve rodar ainda em 2028</b> &middot; obra sob bandeira Brisa</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 18 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #00B0F2;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05)"><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#00B0F2">2030&ndash;2032</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Consolida&ccedil;&atilde;o</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">ERP e BI maduros &middot; governan&ccedil;a plena</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">P&oacute;s-obra estruturado &middot; controladoria consolidada</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 21 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #f5a623;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05)"><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#f5a623">2032&ndash;2034</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Maturidade</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">Pipeline cont&iacute;nuo &middot; 2 lan&ccedil;amentos/ano</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">Diversifica&ccedil;&atilde;o de produto &middot; margem sustentada</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 21 pessoas</div></div><div style="flex:1;min-width:0;background:#fff;border:1px solid #e7eaf3;border-top:4px solid #FF8728;border-radius:12px;padding:15px 15px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(28,33,64,.05);position:relative"><span class="why" style="position:absolute;top:-9px;right:-9px;z-index:70" data-why="Foi retirada a parte que dizia que a construtora atende a terceiros, como o Gustavo pediu — agora a construtora atende só a si própria.">!</span><div style="font-size:15px;font-weight:800;letter-spacing:.04em;color:#FF8728">2034&ndash;2036</div><div style="font-size:19px;font-weight:800;color:#1b2140;line-height:1.05">Lideran&ccedil;a</div><div style="font-size:13px;color:#5b6180;line-height:1.32;flex:1">Grupo Brisa entre os l&iacute;deres do Cear&aacute;</div><div style="font-size:11.5px;color:#8a90ad;line-height:1.3;border-top:1px dashed #e7eaf3;padding-top:6px">2 lan&ccedil;amentos/ano sustentados &middot; margem sustentada</div><div style="margin-top:2px;font-size:12.5px;font-weight:700;color:var(--indigo);background:rgba(60,63,153,.07);border-radius:20px;padding:5px 12px;align-self:flex-start">Equipe 21 pessoas</div></div></div>
         <div style="display:flex;gap:22px;margin-top:16px;align-items:stretch">
           <div style="flex:1.35;background:#fff;border:1px solid #e7eaf3;border-radius:12px;padding:14px 20px 6px">
             <div style="font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:2px">Marcos invioláveis · nenhuma fase começa antes da anterior fechar</div>
@@ -710,7 +713,7 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
     <section class="sec" id="sec-08" data-group="sec-08">
       <div class="slide-body">
         <div class="sec-title"><span class="num">08</span><span class="tt">O organograma-alvo por fase</span></div>
-        <p class="sec-lead">A estrutura parte do <b>Conselho</b> e se abre em <b>três diretorias</b>: Incorporação e Engenharia, Comercial e Marketing, e Administrativa e Financeira. As caixas estão coloridas pela <b>fase de contratação</b>: <b>vermelho</b> na Fase 01 (fundação, M0–M12), <b>azul</b> na Fase 02 (crescimento, M12–M36) e <b>âmbar</b> na Fase 03 (consolidação, M36–M60). Abaixo estão as <b>posições-âncora</b> de cada diretoria — o quadro completo vem nos três próximos slides.</p>
+        <p class="sec-lead">A estrutura parte do <b>Conselho</b> e se abre em <b>três diretorias</b>: Incorporação e Engenharia, Comercial e Marketing, e Administrativa e Financeira. As caixas estão coloridas pela <b>fase de contratação</b>: <b>vermelho</b> na Fase 01 (fundação, M0–M12), <b>azul</b> na Fase 02 (crescimento, M12–M36) e <b>âmbar</b> na Fase 03 (consolidação, M36–M60) e <b>roxo</b> na Fase 04 (maturidade, M60+). Abaixo estão as <b>posições-âncora</b> de cada diretoria — o quadro completo vem nos três próximos slides.</p>
         <div class="org">
           <div class="org-top">
             <div class="org-conselho"><div class="t">Conselho</div><div class="m">Sócios · Diretor de Incorporação e Engenharia</div></div>
@@ -725,7 +728,7 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
               <div class="dir-body">
                 <div class="node f1">Gerente de Engenharia &amp; Obras<span class="role">Fase 01 · 1ª contratação · Dimitry</span></div>
                 <div class="node f2">Gerente de Incorporação<span class="role">Fase 02 · M30</span></div>
-                <div class="node f3">Diretor de Engenharia<span class="role">Fase 03 · M60</span></div>
+                <div class="node f4">Diretor de Engenharia<span class="role">Fase 04 · M60</span></div>
               </div>
             </div>
             <div class="org-col">
@@ -735,7 +738,7 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
               <div class="dir-body">
                 <div class="node f2">Gerente Comercial e Marketing<span class="role">Fase 02 · M14</span></div>
                 <div class="node f2">Analista de Marketing Digital<span class="role">Fase 02 · M14</span></div>
-                <div class="node f3">Diretor Comercial<span class="role">Fase 03 · M60</span></div>
+                <div class="node f4">Diretor Comercial<span class="role">Fase 04 · M60</span></div>
               </div>
             </div>
             <div class="org-col">
@@ -745,14 +748,14 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
               <div class="dir-body">
                 <div class="node f2">Coord. Financeiro<span class="role">Fase 02 · M18</span></div>
                 <div class="node f2">Controller<span class="role">Fase 02 · M18</span></div>
-                <div class="node f3">Diretor Financeiro<span class="role">Fase 03 · M60</span></div>
+                <div class="node f4">Diretor Financeiro<span class="role">Fase 04 · M60</span></div>
               </div>
             </div>
           </div>
           <div class="org-legend">
             <div class="lg"><span class="sw f1"></span> Fase 01 · fundação (M0–M12)</div>
             <div class="lg"><span class="sw f2"></span> Fase 02 · crescimento (M12–M36)</div>
-            <div class="lg"><span class="sw f3"></span> Fase 03 · consolidação (M36–M60)</div>
+            <div class="lg"><span class="sw f3"></span> Fase 03 · consolidação (M36–M60)</div><div class="lg"><span class="sw f4"></span> Fase 04 · maturidade (M60+)</div>
           </div>
         </div>
         <div class="two-col even">
@@ -859,13 +862,13 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px">
             <div class="node f2">Coord. de Vendas<span class="role">showroom + corretores &middot; 2027</span></div>
             <div class="node f2">Coord. de Marketing Digital<span class="role">2027</span></div>
-            <div class="node f2">Coord. de Relacionamento &amp; CRM<span class="role">2029</span></div>
+            <div class="node f3">Coord. de Relacionamento &amp; CRM<span class="role">Fase 3 &middot; 2029</span></div>
           </div>
           <div style="text-align:center;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:2px 0 7px">Operação · CLT &nbsp;&middot;&nbsp; Terceiros</div>
           <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
             <div class="node f2">SDR &middot; Pré-vendedor<span class="role">CLT &middot; 2027</span></div>
             <div class="node f2">Analista Comercial<span class="role">CLT &middot; 2027</span></div>
-            <div class="node f2">Analista de Marketing<span class="role">CLT &middot; 2027</span></div>
+            <div class="node f3">Analista de Marketing<span class="role">Fase 3 &middot; CLT &middot; 2027</span></div>
             <div class="node apoio">Agência Digital<span class="role">terceiro &middot; fee + performance</span></div>
             <div class="node apoio">Imobiliárias parceiras<span class="role">terceiro &middot; por VGV</span></div>
           </div>
@@ -877,10 +880,10 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
               <tr class="hl"><td><b>Gerente Comercial e Marketing</b></td><td>Fase 2 &middot; Jan/2027</td><td>PJ</td><td>10.000</td><td>13.000 + comiss&atilde;o de venda</td><td>VGV vendido/ano &ge; R$ 200 mi (Golf Ville F1)</td></tr>
               <tr><td>Coord. de Vendas (showroom + corretores)</td><td>Fase 2 &middot; 2027</td><td>PJ</td><td>5.000</td><td>6.000</td><td>Venda 50% no 1º ano · 25% no 2º · 25% no 3º</td></tr>
               <tr><td>Coord. de Marketing Digital</td><td>Fase 2 &middot; 2027</td><td>PJ</td><td>5.000</td><td>6.000</td><td>CPL &le; R$ 150 &middot; ROAS &ge; 4</td></tr>
-              <tr><td>Coord. de Relacionamento e CRM</td><td>Fase 2 &middot; 2029</td><td>PJ</td><td>7.000</td><td>8.000</td><td>NPS &ge; 70 &middot; renegocia&ccedil;&atilde;o &le; 5%</td></tr>
+              <tr><td>Coord. de Relacionamento e CRM</td><td>Fase 3 &middot; 2029</td><td>PJ</td><td>7.000</td><td>8.000</td><td>NPS &ge; 70 &middot; renegocia&ccedil;&atilde;o &le; 5%</td></tr>
               <tr><td>SDR (Pr&eacute;-vendedor)</td><td>Fase 2 &middot; 2027</td><td>CLT</td><td>2.000 + vari&aacute;vel</td><td>6.400&ndash;8.800 + 1&ndash;2% comiss&atilde;o</td><td>&ge; 80 leads qualificados/m&ecirc;s</td></tr>
               <tr><td>Analista Comercial</td><td>Fase 2 &middot; 2027</td><td>CLT</td><td>5.000</td><td>8.000&ndash;11.200</td><td>Relat&oacute;rios semanais de funil</td></tr>
-              <tr><td>Analista de Marketing</td><td>Fase 2 &middot; 2027</td><td>CLT</td><td>5.000</td><td>8.000&ndash;11.200</td><td>3 campanhas/m&ecirc;s com KPI documentado</td></tr>
+              <tr><td>Analista de Marketing</td><td>Fase 3 &middot; 2027</td><td>CLT</td><td>5.000</td><td>8.000&ndash;11.200</td><td>3 campanhas/m&ecirc;s com KPI documentado</td></tr>
             </tbody>
           </table>
         </div>
@@ -938,28 +941,28 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
     <section class="sec" id="sec-09" data-group="sec-09">
       <div class="slide-body">
         <div class="sec-title"><span class="num">09</span><span class="tt">Leitura das cores e ordem de contratação</span></div>
-        <p class="sec-lead">A mesma estrutura em forma de lista, agrupada pela <b>fase de contratação</b> do desenho do Gustavo. A cor comunica <b>quando</b> cada cargo entra — não o destaque: <b>vermelho</b> a Fase 01 (o núcleo imediato), <b>azul</b> a Fase 02 (o crescimento) e <b>âmbar</b> a Fase 03 (a consolidação). O mês exato de cada cargo está no cronograma dos próximos slides.</p>
+        <p class="sec-lead">A mesma estrutura em forma de lista, agrupada pela <b>fase de contratação</b> do desenho do Gustavo. A cor comunica <b>quando</b> cada cargo entra — não o destaque: <b>vermelho</b> a Fase 01 (o núcleo imediato), <b>azul</b> a Fase 02 (o crescimento) e <b>roxo</b> a Fase 04 (as diretorias, M60+). O mês exato de cada cargo está no cronograma dos próximos slides.</p>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Fase</th><th>Janela</th><th>Cargos que entram nesta fase</th><th class="num">Nº</th></tr></thead>
             <tbody>
               <tr><td><span class="pill crit">Fase 01</span></td><td>M0–M12</td><td>Gerente de Engenharia &amp; Obras (Dimitry) &middot; Contas a Pagar (já existe) &middot; Analista de Projetos e Legalização (2 vagas) &middot; Estagiário de Eng./BIM (2 vagas) &middot; Analista de Orçamento &middot; Comprador Sênior &middot; Coordenador SGQ &middot; Coord. BIM Pleno</td><td class="num">8</td></tr>
               <tr><td><span class="pill info">Fase 02</span></td><td>M12–M36</td><td>Gerente Comercial e Marketing &middot; Analista de Marketing Digital &middot; Analista de Contas a Receber &middot; Coord. Administrativo &middot; Analista de Planejamento &middot; Controller &middot; Coord. Financeiro &middot; Gerente de Incorporação</td><td class="num">8</td></tr>
-              <tr><td><span class="pill warn">Fase 03</span></td><td>M36–M60</td><td>Diretor de Engenharia &middot; Diretor Comercial &middot; Diretor Financeiro</td><td class="num">3</td></tr>
+              <tr><td><span class="pill ph4">Fase 04</span></td><td>M60+</td><td>Diretor de Engenharia &middot; Diretor Comercial &middot; Diretor Financeiro</td><td class="num">3</td></tr>
             </tbody>
           </table>
         </div>
         <div class="two-col even">
           <div class="card">
             <h4>Como ler as cores</h4>
-            <p><b>Vermelho</b> = Fase 01 (fundação, imediata); <b>azul</b> = Fase 02 (crescimento); <b>âmbar</b> = Fase 03 (consolidação). Esta é a única peça do pacote em que a cor substitui o acento laranja padrão, a pedido do cliente, para deixar a ordem de montagem evidente à primeira vista.</p>
+            <p><b>Vermelho</b> = Fase 01 (fundação, imediata); <b>azul</b> = Fase 02 (crescimento); <b>âmbar</b> = Fase 03 (consolidação, sem novas entradas) e <b>roxo</b> = Fase 04 (maturidade, M60+). Esta é a única peça do pacote em que a cor substitui o acento laranja padrão, a pedido do cliente, para deixar a ordem de montagem evidente à primeira vista.</p>
           </div>
           <div class="card">
             <h4>Onde o PCO entra</h4>
             <p>A ordem abre pelo <b>Gerente de Engenharia</b> (Dimitry, M0). Planejamento, custo e orçamento (<b>PCO</b>) <b>não entram na onda imediata</b> (M0–M4): entram ainda na fundação, a partir do <b>M9</b>, quando já há obra para planejar.</p>
           </div>
         </div>
-        <div class="callout info"><div class="ct">Base do desenho</div><p>Estrutura conforme o modelo desenhado na consultoria da <b>Arvo</b>, adequada ao arquivo de governança. As <b>19 posições do quadro próprio</b> (21 pessoas — os cargos de Analista de Projetos e de Estagiário entram em dobro) estão na tabela. Um cuidado de leitura: este <b>Fase 01–03</b> é a ordem de montagem da equipe, diferente das <b>Fases estratégicas F1–F4</b> do negócio (o destino em 2036, a linha do tempo e o mapa do pipeline). Meses, regimes e salários de cada cargo estão nos próximos slides e na planilha Custo-TAC v8; onde o desenho e o cronograma divergem, vale o cronograma.</p></div>
+        <div class="callout info"><div class="ct">Base do desenho</div><p>Estrutura conforme o modelo desenhado na consultoria da <b>Arvo</b>, adequada ao arquivo de governança. As <b>19 posições do quadro próprio</b> (21 pessoas — os cargos de Analista de Projetos e de Estagiário entram em dobro) estão na tabela. Um cuidado de leitura: este <b>Fase 01–04</b> é a ordem de montagem da equipe, diferente das <b>Fases estratégicas F1–F4</b> do negócio (o destino em 2036, a linha do tempo e o mapa do pipeline). Meses, regimes e salários de cada cargo estão nos próximos slides e na planilha Custo-TAC v8; onde o desenho e o cronograma divergem, vale o cronograma.</p></div>
       </div>
     </section>
 
@@ -980,7 +983,7 @@ tbody tr.sub td{background:rgba(60,63,153,.06);font-weight:800;color:var(--indig
                 <tr><td>Onda 1 &middot; Funda&ccedil;&atilde;o</td><td>F1</td><td>M0&ndash;M1</td><td class="num">6</td><td class="num">91.400</td><td>N&uacute;cleo de engenharia e financeiro</td></tr>
                 <tr><td>Onda 2 &middot; Or&ccedil;amento</td><td>F1</td><td>M9</td><td class="num">7</td><td class="num">108.630</td><td>Or&ccedil;amento e controle de custos</td></tr>
                 <tr><td>Onda 3 &middot; Crescimento</td><td>F1&ndash;F2</td><td>M12&ndash;M18</td><td class="num">17</td><td class="num">284.825</td><td>Suprimentos, qualidade, comercial e controladoria</td></tr>
-                <tr><td>Onda 4 &middot; Consolida&ccedil;&atilde;o</td><td>F2&ndash;F3</td><td>M30&ndash;M60</td><td class="num">21</td><td class="num">422.845</td><td>Incorpora&ccedil;&atilde;o e diretorias</td></tr>
+                <tr><td>Onda 4 &middot; Consolida&ccedil;&atilde;o</td><td>F2&ndash;F4</td><td>M30&ndash;M60</td><td class="num">21</td><td class="num">422.845</td><td>Incorpora&ccedil;&atilde;o e diretorias</td></tr>
                 <tr class="total"><td>Total</td><td>&mdash;</td><td>M0&ndash;M60</td><td class="num">21</td><td class="num">422.845</td><td>Folha mensal da estrutura completa</td></tr>
               </tbody>
             </table>
