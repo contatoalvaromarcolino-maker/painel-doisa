@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>DUO Incorporações — Auditoria do Fluxo de Processos MCMV</title>
+<style>
+:root{
+  --bg:#080B12; --surface:rgba(255,255,255,0.04); --surface-hover:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.08); --border-accent:rgba(232,123,30,0.35);
+  --primary:#1B3464; --accent:#E87B1E; --accent-rgb:232,123,30;
+  --text:#F0F4FF; --text-muted:rgba(240,244,255,0.55); --text-dim:rgba(240,244,255,0.28);
+  --ok:#22c55e; --ok-bg:rgba(34,197,94,0.12); --warn:#f59e0b; --warn-bg:rgba(245,158,11,0.12);
+  --info:#3b82f6; --info-bg:rgba(59,130,246,0.12);
+  --orb-1:rgba(27,52,100,0.5); --orb-2:rgba(232,123,30,0.15);
+  --ease:cubic-bezier(0.34,1.56,0.64,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text); min-height:100vh;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-feature-settings:'cv02','cv03','cv04','cv11'; line-height:1.5; overflow-x:hidden;
+}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}
+.orb-1{width:600px;height:600px;top:-200px;left:-120px;background:radial-gradient(circle,var(--orb-1) 0%,transparent 70%);animation:breathe 16s ease-in-out infinite}
+.orb-2{width:440px;height:440px;bottom:-120px;right:-120px;background:radial-gradient(circle,var(--orb-2) 0%,transparent 70%);animation:breathe 11s ease-in-out 3s infinite}
+@keyframes breathe{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.topbar{position:sticky;top:0;z-index:100;height:60px;padding:0 clamp(16px,4vw,40px);display:flex;align-items:center;gap:14px;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--border)}
+.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--primary),#0d1a33);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;letter-spacing:-.5px;border:1px solid rgba(255,255,255,.1)}
+.logo b{color:var(--accent)}
+.topbar .t{font-weight:600;font-size:15px;letter-spacing:-.3px}
+.topbar .sep{width:1px;height:20px;background:var(--border)}
+.topbar .m{font-size:12px;color:var(--text-muted)}
+.topbar .m2{margin-left:auto;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:clamp(24px,5vw,56px) clamp(16px,4vw,40px) 80px}
+section{margin-bottom:clamp(40px,6vw,72px);animation:rise .8s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.kick{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:10px}
+h1{font-size:clamp(30px,6vw,52px);font-weight:300;letter-spacing:-1.5px;line-height:1.04;margin-bottom:18px}
+h1 b{font-weight:800}
+h2{font-size:clamp(20px,3.4vw,26px);font-weight:700;letter-spacing:-.6px;margin-bottom:6px}
+.lead{font-size:clamp(15px,2.2vw,18px);color:var(--text-muted);max-width:70ch;line-height:1.6}
+.sub{font-size:13px;color:var(--text-dim);margin-bottom:26px}
+.hero-card{background:var(--surface);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;padding:clamp(24px,4vw,40px);
+  box-shadow:0 8px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08),0 0 60px rgba(var(--accent-rgb),.05)}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:28px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-bottom:2px solid var(--accent);border-radius:14px;padding:20px;backdrop-filter:blur(24px);
+  box-shadow:0 8px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08),0 0 40px rgba(var(--accent-rgb),.08)}
+.kpi .l{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted)}
+.kpi .v{font-size:clamp(30px,5vw,46px);font-weight:800;line-height:1;margin:8px 0 4px}
+.kpi .d{font-size:12px;color:var(--text-muted)}
+.cards{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.card{background:var(--surface);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:14px;padding:22px;transition:all .3s var(--ease);position:relative;overflow:hidden}
+.card:hover{background:var(--surface-hover);border-color:var(--border-accent);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4),0 0 80px rgba(var(--accent-rgb),.1)}
+.card .n{position:absolute;top:14px;right:18px;font-size:34px;font-weight:800;color:rgba(var(--accent-rgb),.18);line-height:1}
+.card h3{font-size:16px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px;padding-right:34px}
+.card p{font-size:13.5px;color:var(--text-muted);line-height:1.55}
+.card .src{margin-top:12px;font-size:11px;color:var(--text-dim)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.chip-ord{background:var(--info-bg);color:var(--info);border:1px solid rgba(59,130,246,.3)}
+.chip-add{background:var(--ok-bg);color:var(--ok);border:1px solid rgba(34,197,94,.3)}
+.chip-adj{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(245,158,11,.3)}
+.chip-accent{background:rgba(var(--accent-rgb),.15);color:var(--accent);border:1px solid var(--border-accent)}
+table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:14px;overflow:hidden;backdrop-filter:blur(24px);font-size:13px;margin-top:8px}
+thead th{background:rgba(var(--accent-rgb),.08);border-bottom:1px solid var(--border-accent);padding:12px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted)}
+tbody td{padding:13px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+tbody tr:hover td{background:rgba(var(--accent-rgb),.05)}
+.tbl-wrap{overflow-x:auto;border-radius:14px}
+.hl{color:var(--accent);font-weight:700}
+.ref-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:8px}
+.ref{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.ref .rl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);font-weight:700;margin-bottom:8px}
+.ref ul{list-style:none;font-size:13px;color:var(--text-muted)}
+.ref li{padding:3px 0;display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.ref li b{color:var(--text);font-weight:700}
+.links{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.linkcard{flex:1 1 260px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .3s var(--ease)}
+.linkcard:hover{border-color:var(--border-accent);transform:translateY(-3px)}
+.linkcard .lt{font-size:14px;font-weight:700;margin-bottom:4px}
+.linkcard .lu{font-size:12px;color:var(--text-muted);word-break:break-all}
+.note{background:rgba(var(--accent-rgb),.06);border:1px solid var(--border-accent);border-radius:12px;padding:16px 20px;font-size:13.5px;color:var(--text-muted);line-height:1.6}
+.note b{color:var(--text)}
+ul.clean{list-style:none;margin-top:10px}
+ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:14px;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,.04)}
+ul.clean li::before{content:'';position:absolute;left:2px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--text)}
+footer{border-top:1px solid var(--border);padding:28px 0 8px;font-size:12px;color:var(--text-dim);text-align:center;line-height:1.8}
+.badge{display:inline-block;padding:3px 9px;border-radius:6px;background:rgba(var(--accent-rgb),.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.5px}
+@media(max-width:640px){.topbar .m{display:none}h1{letter-spacing:-1px}}
+</style>
+</head>
+<body>
+<div class="orb orb-1" aria-hidden="true"></div>
+<div class="orb orb-2" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="logo">D<b>A</b></div>
+  <span class="t">DUO Incorporações</span>
+  <span class="sep"></span>
+  <span class="m">Auditoria do Fluxo de Processos · MCMV</span>
+  <span class="m2">Grupo Dois A</span>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="kick">Relatório técnico · Julho 2026</div>
+    <h1>Seu mapa de processos, <b>auditado contra a realidade do MCMV</b>.</h1>
+    <p class="lead">Reconstruímos no ClickUp o fluxo que você desenhou no Excel e o comparamos com ~275 fontes reais sobre o Minha Casa Minha Vida — leis, Caixa Econômica, Ministério das Cidades e as maiores incorporadoras do país. A boa notícia primeiro: <b style="color:var(--text)">seu mapa está muito bom.</b> Não refizemos nada. Este documento explica só o que ajustamos e acrescentamos, e de onde tiramos cada informação.</p>
+    <div class="grid kpis">
+      <div class="kpi"><div class="l">Processos mapeados</div><div class="v">125</div><div class="d">10 fases + 2 trilhas, fiéis ao seu Excel</div></div>
+      <div class="kpi"><div class="l">Fontes pesquisadas</div><div class="v">~275</div><div class="d">prioridade a fontes oficiais</div></div>
+      <div class="kpi"><div class="l">Achados estruturais</div><div class="v">6</div><div class="d">ajustes de ordem e ênfase</div></div>
+      <div class="kpi"><div class="l">Melhorias no ClickUp</div><div class="v">+8</div><div class="d">gates e reforços adicionados</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kick">O veredito geral</div>
+    <h2>Espinha dorsal preservada — 6 ajustes cirúrgicos</h2>
+    <p class="sub">Nada do que você fez está "errado" a ponto de refazer. São ajustes de ordem, de ênfase e alguns processos que faltavam.</p>
+    <div class="grid cards">
+      <div class="card"><span class="n">1</span><span class="chip chip-ord">Reordenar</span><h3 style="margin-top:10px">Loteamento antes da incorporação</h3><p>A fase 07 juntava "parcelamento/incorporação" como se fossem a mesma coisa. São passos <b style="color:var(--text)">encadeados</b>: primeiro registra-se o loteamento (o terreno vira lotes com matrícula), só depois a incorporação das casas.</p><div class="src">Lei 6.766/79 + art. 68 da Lei 14.382/22 · ConJur, ANOREG</div></div>
+      <div class="card"><span class="n">2</span><span class="chip chip-add">Acrescentar</span><h3 style="margin-top:10px">4 pontos de decisão (Gates)</h3><p>As grandes incorporadoras não avançam sem um "sim" formal em cada virada: terreno só passa com as 5 viabilidades; enquadramento na Caixa antes de comprar; obra só inicia com 30–50% vendido; venda só após registrar.</p><div class="src">Célere, Tarjab · crédito associativo Caixa</div></div>
+      <div class="card"><span class="n">3</span><span class="chip chip-adj">Destacar</span><h3 style="margin-top:10px">Habilitação da empresa é a base</h3><p>GERIC (a análise de risco da Caixa, rating mínimo D) e o PBQP-h são pré-requisito de <b style="color:var(--text)">tudo</b> — sem eles nenhum empreendimento anda. No seu mapa aparecem no meio; sugerimos deixá-los como base, com validade (GERIC vale 12 meses).</p><div class="src">Consultorias jurídicas + Caixa (Apoio à Produção)</div></div>
+      <div class="card"><span class="n">4</span><span class="chip chip-adj">Confirmar</span><h3 style="margin-top:10px">A sigla "RHP"</h3><p>"RHP" aparece em 3 processos, mas <b style="color:var(--text)">não existe em nenhuma norma do MCMV</b> (pesquisamos 6 frentes). Pode ser um nome interno seu ou uma troca por HMP (Habitação de Mercado Popular) / HIS. Só precisamos que você confirme — não inventamos significado.</p><div class="src">Ministério das Cidades, Caixa, DOU (não localizado)</div></div>
+      <div class="card"><span class="n">5</span><span class="chip chip-add">Acrescentar</span><h3 style="margin-top:10px">Terreno, seguros e caixa</h3><p>O imóvel MCMV precisa de área com infraestrutura consolidada; há 3 seguros obrigatórios (SGTO / SRE / SGPE); e a empresa banca 8–15% do VGV antes da 1ª liberação. Bom deixar visível para não virar surpresa.</p><div class="src">Caixa · benchmark de exposição de caixa (Makasí)</div></div>
+      <div class="card"><span class="n">6</span><span class="chip chip-adj">Ajustar</span><h3 style="margin-top:10px">Medições e sistemas da Caixa</h3><p>A liberação é por medição mensal (engenheiro atesta a obra) via sistema <b style="color:var(--text)">SIOBR</b>, com retenção final de 5% até o Habite-se. "SIAPI" é de outro programa (FIES), não se aplica a habitação.</p><div class="src">Telas oficiais da Caixa · fichas FT-04/05</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kick">Tabela de mudanças</div>
+    <h2>O que mudou, em palavras simples</h2>
+    <p class="sub">Cada linha aponta a fonte. O que veio só de fonte secundária ou ficou a confirmar está sinalizado.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Onde</th><th>Tipo</th><th>Por que mudou</th><th>De onde tiramos</th></tr></thead>
+      <tbody>
+        <tr><td><b>Fase 07</b></td><td><span class="chip chip-ord">Reordenar</span></td><td>Loteamento e incorporação são passos em sequência, não a mesma coisa. Registrar o loteamento é pré-requisito da incorporação das casas.</td><td>Lei 6.766/79; Lei 14.382/22 (art. 68); ConJur, ANOREG</td></tr>
+        <tr><td><b>Gates 0–3</b></td><td><span class="chip chip-add">Acrescentar</span></td><td>4 decisões GO/NO-GO: 5 viabilidades na prospecção; enquadramento antes de comprar; 30–50% de vendas para iniciar obra; registro antes de vender. Protege o caixa.</td><td>Célere/Tarjab; crédito associativo</td></tr>
+        <tr><td><b>8.1 / B.4</b></td><td><span class="chip chip-adj">Destacar</span></td><td>GERIC + PBQP-h como base pré-requisito de tudo, com validade (GERIC 12 meses; SiAC 3 anos).</td><td>Consultorias/Caixa</td></tr>
+        <tr><td><b>1.5 / 4.7 / C1.3</b></td><td><span class="chip chip-adj">Confirmar</span></td><td>"RHP" não aparece em norma do MCMV. Confirmar se é nome interno ou HMP/HIS.</td><td>Pesquisa em 6 frentes não achou</td></tr>
+        <tr><td><b>9.6</b></td><td><span class="chip chip-adj">Ajustar</span></td><td>Liberação por medição mensal + retenção de 5% até o Habite-se; risco de atraso de repasse (prever capital de giro).</td><td>Fichas Caixa FT-04/05</td></tr>
+        <tr><td><b>Terreno</b></td><td><span class="chip chip-add">Acrescentar</span></td><td>Elegibilidade (infraestrutura consolidada), seguros SGTO/SRE/SGPE e exposição de caixa 8–15% do VGV.</td><td>Caixa; Makasí</td></tr>
+        <tr><td><b>Sistemas</b></td><td><span class="chip chip-adj">Ajustar</span></td><td>Trocar "SIAPI" por SIOPI (propostas) + SIOBR (obras).</td><td>Telas oficiais da Caixa</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <div class="kick">Dados confirmados · 2026</div>
+    <h2>Números de referência para o seu fluxo</h2>
+    <p class="sub">Valores oficiais vigentes, úteis para viabilidade e política comercial. Onde ainda falta confirmação nominal, está marcado.</p>
+    <div class="grid ref-grid">
+      <div class="ref"><div class="rl">Faixas de renda (Portaria MCID 333/2026)</div><ul>
+        <li>Faixa 1 <b>até R$ 3.200</b></li><li>Faixa 2 <b>até R$ 5.000</b></li><li>Faixa 3 <b>até R$ 9.600</b></li><li>Teto urbano <b>R$ 13.000</b></li></ul></div>
+      <div class="ref"><div class="rl">Teto do imóvel por porte (CCFGTS)</div><ul>
+        <li>Cidade 300–750k <b>R$ 255 mil</b></li><li>Capital regional (Natal) <b>R$ 260 mil</b></li><li>Metrópole <b>R$ 270 mil</b></li><li>Faixa 3 / Faixa 4 <b>R$ 400 / 600 mil</b></li></ul></div>
+      <div class="ref"><div class="rl">Financiamento à produção (Caixa)</div><ul>
+        <li>Financia até <b>100% do custo</b></li><li>Prazo de obra <b>36 meses</b></li><li>Carência <b>9 meses</b></li><li>Retenção final <b>5%</b></li></ul></div>
+      <div class="ref"><div class="rl">Benchmarks de mercado</div><ul>
+        <li>Margem bruta piso <b>30–35%</b></li><li>Líderes (Cury/Direcional) <b>39–45%</b></li><li>Padronização corta custo <b>15–20%</b></li><li>e prazo <b>até 50%</b></li></ul></div>
+    </div>
+    <div class="note" style="margin-top:16px"><b>Atenção — Macaíba/RN:</b> Natal se classifica como capital regional (população ~784 mil), o que aponta teto de <b>R$ 260 mil</b> para Faixas 1 e 2. Macaíba, por integrar o arranjo metropolitano de Natal, provavelmente herda essa classificação — mas isso precisa ser confirmado na lista oficial nominal por município da Caixa/MCID antes de fechar a viabilidade. É a variável que mais impacta o preço-teto do produto.</div>
+  </section>
+
+  <section>
+    <div class="kick">Como ficou no ClickUp</div>
+    <h2>Dois workspaces, lado a lado</h2>
+    <p class="sub">Montamos tudo no team "Incorporações - Dois A", com a mesma nomenclatura e acentuação do padrão que você já usa.</p>
+    <div class="links">
+      <div class="linkcard"><span class="chip chip-accent">v2 · produto final</span><div class="lt" style="margin-top:10px">DUO Incorporações</div><div class="lu">133 tarefas = 125 do seu mapa + 8 melhorias da auditoria (marcadas com a tag <span class="hl">melhoria-auditoria</span>). É o workspace para operar.</div></div>
+      <div class="linkcard"><span class="chip chip-ord">v1 · comparação</span><div class="lt" style="margin-top:10px">DUO — v1 (Excel original)</div><div class="lu">125 tarefas, espelho 100% fiel ao seu Excel, sem nenhuma alteração. Mantido para você comparar antes e depois.</div></div>
+    </div>
+    <div class="note" style="margin-top:16px"><b>1 passo manual pendente:</b> os campos personalizados (Nível, Meta, Status POP, Responsável, etc.) precisam ser criados por você na interface do ClickUp — a API não cria campos, só preenche. Preparamos o roteiro de cliques e um script que preenche automaticamente as 133 tarefas assim que os campos existirem. Por enquanto, essas informações já estão visíveis na descrição de cada tarefa.</div>
+  </section>
+
+  <section>
+    <div class="kick">Método e honestidade</div>
+    <h2>De onde veio cada informação</h2>
+    <ul class="clean">
+      <li><b>~275 fontes reais</b> catalogadas em 6 frentes: habilitação da empresa, sistemas e dossiê da Caixa, crédito à produção e medições, faixas e tetos, arcabouço jurídico/registro, e benchmarks das incorporadoras.</li>
+      <li><b>Prioridade a fontes oficiais</b> — Caixa, gov.br/Ministério das Cidades, DOU, leis (Planalto/Câmara), registradores (IRIB/ANOREG). O que veio só de fonte secundária está sinalizado no relatório técnico.</li>
+      <li><b>O que ficou a confirmar</b> (2ª rodada regional recomendada): o teto MCMV nominal de Macaíba; o significado de "RHP"; os prazos reais de aprovação na prefeitura de Macaíba e de enquadramento na Caixa; e o custo/m² de referência do Nordeste.</li>
+      <li><b>Zero invenção:</b> a versão v1 é cópia literal do seu Excel; nenhum número foi criado. Onde a pesquisa não fechou em fonte oficial, dissemos que falta confirmar em vez de preencher com achismo.</li>
+    </ul>
+  </section>
+
+  <footer>
+    DUO Incorporações — braço MCMV do Grupo Dois A · Auditoria do fluxo de processos<br>
+    <span class="badge">HORUS · Julho 2026</span> · Documento técnico de apoio — os valores de teto/faixa devem ser reconfirmados na Caixa antes de decisões de viabilidade.
+  </footer>
+
+</div>
+</body>
+</html>
