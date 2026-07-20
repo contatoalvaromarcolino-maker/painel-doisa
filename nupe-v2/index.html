@@ -6142,9 +6142,10 @@
   </p>
 
 <script>
-(function(){
+(function bootChart(){
   var el = document.getElementById('dsr1-curvas');
-  if(!el || typeof echarts === 'undefined') return;
+  if(!el) return;
+  if(typeof echarts === 'undefined'){ setTimeout(bootChart, 60); return; }
   var chart = echarts.init(el);
   chart.setOption({
     animationDuration: 900,
@@ -6450,9 +6451,10 @@
   </p>
 
 <script>
-(function(){
+(function bootChart(){
   var el = document.getElementById('dsr2b-tornado');
-  if(!el || typeof echarts === 'undefined') return;
+  if(!el) return;
+  if(typeof echarts === 'undefined'){ setTimeout(bootChart, 60); return; }
   var chart = echarts.init(el);
 
   var rows = [
@@ -6617,9 +6619,10 @@
   </div>
 
 <script>
-(function(){
+(function bootChart(){
   var el = document.getElementById('dsr3-gantt');
-  if(!el || typeof echarts === 'undefined') return;
+  if(!el) return;
+  if(typeof echarts === 'undefined'){ setTimeout(bootChart, 60); return; }
   var chart = echarts.init(el);
 
   function d(s){ var p = s.split('/'); return new Date(2000 + (+p[2]), (+p[1]) - 1, (+p[0])).getTime(); }
@@ -7402,6 +7405,30 @@
         if (cs.position === 'static') s.style.position = 'relative';
         s.appendChild(badge);
       });
+    })();
+  </script>
+
+  <script>
+    /* Fix 20/07: graficos ECharts nascem com largura 0 quando o slide esta fora
+       da viewport (deck usa translateX com todos os slides no DOM). Redimensiona
+       ao trocar de slide e no resize da janela. */
+    (function(){
+      function resizeAllEcharts(){
+        if (typeof echarts === 'undefined') return;
+        document.querySelectorAll('[_echarts_instance_]').forEach(function(el){
+          var inst = echarts.getInstanceByDom(el);
+          if (inst) { try { inst.resize(); } catch(e){} }
+        });
+      }
+      window.resizeAllEcharts = resizeAllEcharts;
+      function wire(){
+        if (window.shell && window.shell.on) {
+          window.shell.on('slidechange', function(){ setTimeout(resizeAllEcharts, 80); });
+        } else { setTimeout(wire, 100); }
+      }
+      wire();
+      window.addEventListener('resize', resizeAllEcharts);
+      [400, 1200, 2500].forEach(function(t){ setTimeout(resizeAllEcharts, t); });
     })();
   </script>
 </body>
