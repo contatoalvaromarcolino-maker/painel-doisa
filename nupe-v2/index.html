@@ -7048,6 +7048,21 @@
       position: relative;
       opacity: 0;
       box-shadow: 0 4px 16px rgba(0,0,0,.38);
+      /* SCROLL REAL (correção 20/07): a bolha nasce com altura ZERO e cresce.
+         Ao crescer ela EMPURRA as anteriores para cima — é o próprio fluxo
+         flex-end que produz a rolagem, como num app de verdade. Sem isso as
+         6 bolhas ocupavam espaço desde o frame 0 e o topo saía fatiado.
+         `margin-bottom:-9px` cancela o `gap` enquanto a bolha está oculta. */
+      box-sizing: border-box;
+      overflow: hidden;
+      max-height: 0;
+      margin-bottom: -9px;
+      /* CAUSA-RAIZ do "corte" reclamado: como itens flex encolhem por padrão
+         (flex-shrink:1), quando a conversa inteira passava da altura do palco
+         o navegador ESPREMIA as bolhas e o texto saía cortado por dentro.
+         Travando o shrink, o excedente sai pelo TOPO (esmaecido pela máscara)
+         — que é o comportamento de um app de mensagem de verdade.          */
+      flex: 0 0 auto;
     }
     [data-slide="inov-ind-1"] .ind1-msg--out {
       align-self: flex-end;
@@ -7196,6 +7211,11 @@
       background: #182533;
       box-shadow: 0 4px 14px rgba(0,0,0,.35);
       opacity: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+      max-height: 0;
+      margin-bottom: -9px;
+      flex: 0 0 auto;
     }
     [data-slide="inov-ind-1"] .ind1-typing i {
       width: 7px; height: 7px;
@@ -7218,42 +7238,61 @@
 
     /* ── a conversa em loop · ciclo único de 14s, um keyframe por bolha ──
        Todas somem juntas em 95–100% para o loop reiniciar limpo.          */
-    [data-slide="inov-ind-1"] .ind1-m1     { animation: ind1M1 14s ease-in-out infinite; }
-    [data-slide="inov-ind-1"] .ind1-m2     { animation: ind1M2 14s ease-in-out infinite; }
-    [data-slide="inov-ind-1"] .ind1-m3     { animation: ind1M3 14s ease-in-out infinite; }
-    [data-slide="inov-ind-1"] .ind1-typing { animation: ind1Typ 14s ease-in-out infinite; }
-    [data-slide="inov-ind-1"] .ind1-m4     { animation: ind1M4 14s ease-in-out infinite; }
-    [data-slide="inov-ind-1"] .ind1-m5     { animation: ind1M5 14s ease-in-out infinite; }
+    /* CICLO 30s (era 14s). Motivo da mudança (feedback 20/07): a ANÁLISE
+       passava rápido demais para ser lida. Agora ela entra aos 15,6s e fica
+       ESTÁTICA e legível até 29,1s → ~12s de leitura confortável.
+       Cada bolha anima 3 propriedades juntas: max-height (a rolagem),
+       margin-bottom (cancela o gap enquanto oculta) e opacity (o fade). */
+    [data-slide="inov-ind-1"] .ind1-m1     { animation: ind1M1 30s ease-in-out infinite; }
+    [data-slide="inov-ind-1"] .ind1-m2     { animation: ind1M2 30s ease-in-out infinite; }
+    [data-slide="inov-ind-1"] .ind1-m3     { animation: ind1M3 30s ease-in-out infinite; }
+    [data-slide="inov-ind-1"] .ind1-typing { animation: ind1Typ 30s ease-in-out infinite; }
+    [data-slide="inov-ind-1"] .ind1-m4     { animation: ind1M4 30s ease-in-out infinite; }
+    [data-slide="inov-ind-1"] .ind1-m5     { animation: ind1M5 30s ease-in-out infinite; }
 
+    /* 1 · a planilha — entra em 0,6s */
     @keyframes ind1M1 {
-      0%, 3%   { opacity: 0; transform: translateY(10px); }
-      8%, 95%  { opacity: 1; transform: translateY(0); }
-      100%     { opacity: 0; transform: translateY(0); }
+      0%       { opacity: 0; max-height: 0;     margin-bottom: -9px; }
+      2%       { opacity: 0; max-height: 0;     margin-bottom: -9px; }
+      6%       { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      97%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      100%     { opacity: 0; max-height: 200px; margin-bottom: 0; }
     }
+    /* 2 · o dry-run — entra em 3,6s */
     @keyframes ind1M2 {
-      0%, 17%  { opacity: 0; transform: translateY(10px); }
-      23%, 95% { opacity: 1; transform: translateY(0); }
-      100%     { opacity: 0; transform: translateY(0); }
+      0%, 12%  { opacity: 0; max-height: 0;     margin-bottom: -9px; }
+      16%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      97%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      100%     { opacity: 0; max-height: 200px; margin-bottom: 0; }
     }
+    /* 3 · a confirmação humana — entra em 6,6s */
     @keyframes ind1M3 {
-      0%, 36%  { opacity: 0; transform: translateY(10px); }
-      41%, 95% { opacity: 1; transform: translateY(0); }
-      100%     { opacity: 0; transform: translateY(0); }
+      0%, 22%  { opacity: 0; max-height: 0;     margin-bottom: -9px; }
+      26%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      97%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      100%     { opacity: 0; max-height: 200px; margin-bottom: 0; }
     }
+    /* 4 · "digitando" — 9s a 12s, some quando a resposta chega */
     @keyframes ind1Typ {
-      0%, 47%   { opacity: 0; }
-      50%, 58%  { opacity: 1; }
-      61%, 100% { opacity: 0; }
+      0%, 30%   { opacity: 0; max-height: 0;    margin-bottom: -9px; }
+      33%       { opacity: 1; max-height: 60px; margin-bottom: 0; }
+      39%       { opacity: 1; max-height: 60px; margin-bottom: 0; }
+      41%, 100% { opacity: 0; max-height: 0;    margin-bottom: -9px; }
     }
+    /* 5 · gravado + republicado — entra em 12,3s */
     @keyframes ind1M4 {
-      0%, 61%  { opacity: 0; transform: translateY(10px); }
-      66%, 95% { opacity: 1; transform: translateY(0); }
-      100%     { opacity: 0; transform: translateY(0); }
+      0%, 41%  { opacity: 0; max-height: 0;     margin-bottom: -9px; }
+      45%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      97%      { opacity: 1; max-height: 200px; margin-bottom: 0; }
+      100%     { opacity: 0; max-height: 200px; margin-bottom: 0; }
     }
+    /* 6 · a ANÁLISE (herói) — entra em 15,6s, 100% visível a partir de 17,1s
+       e ESTÁTICA até 29,1s: ~12 segundos de leitura. */
     @keyframes ind1M5 {
-      0%, 78%  { opacity: 0; transform: translateY(10px); }
-      83%, 95% { opacity: 1; transform: translateY(0); }
-      100%     { opacity: 0; transform: translateY(0); }
+      0%, 52%  { opacity: 0; max-height: 0;     margin-bottom: -9px; }
+      57%      { opacity: 1; max-height: 420px; margin-bottom: 0; }
+      97%      { opacity: 1; max-height: 420px; margin-bottom: 0; }
+      100%     { opacity: 0; max-height: 420px; margin-bottom: 0; }
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -7318,6 +7357,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      /* as capturas novas são de PÁGINA INTEIRA (muito mais altas que a
+         antiga 1280×449): ancorar no topo mantém em quadro o cabeçalho do
+         painel + a faixa de velocímetros, que é o que interessa aqui. */
+      object-position: center top;
       display: block;
     }
 
@@ -7334,19 +7377,25 @@
       overflow: hidden;
       background: #0B0E17;
     }
+    /* NITIDEZ (correção 20/07): antes este pane esticava a captura do painel
+       INTEIRO a 320% — 1280px de origem ampliados ~3,2× = borrão. Agora usa
+       RECORTES DEDICADOS e NATIVOS da faixa dos velocímetros, capturados a
+       4884×1335 (viewport 1920 @ device_scale_factor 3). Como a imagem é
+       exibida MENOR que sua resolução real, são pixels de sobra: zero
+       interpolação, zero `image-rendering` hack.                          */
     [data-slide="inov-ind-1"] .ind1-zoom img {
       position: absolute;
-      top: -12%;
-      left: 0;
-      width: 320%;
-      height: auto;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left top;
       display: block;
-      image-rendering: -webkit-optimize-contrast;
     }
     [data-slide="inov-ind-1"] .ind1-zoom__lbl {
       position: absolute;
       left: 10px;
-      top: 8px;
+      bottom: 10px;
       z-index: 6;
       font: 700 9px/1 'Inter', sans-serif;
       letter-spacing: .1em;
@@ -7367,16 +7416,18 @@
       pointer-events: none;
       background: linear-gradient(180deg, transparent, rgba(8,11,18,.92));
     }
-    [data-slide="inov-ind-1"] .ind1-shot__a { animation: ind1ShotA 13.5s ease-in-out infinite; }
-    [data-slide="inov-ind-1"] .ind1-shot__b { opacity: 0; animation: ind1ShotB 13.5s ease-in-out infinite; }
+    /* sincronizado ao ciclo de 30s do chat: a troca de estado acontece
+       junto com a bolha "Painel republicado" (m4, 41–45%). */
+    [data-slide="inov-ind-1"] .ind1-shot__a { animation: ind1ShotA 30s ease-in-out infinite; }
+    [data-slide="inov-ind-1"] .ind1-shot__b { opacity: 0; animation: ind1ShotB 30s ease-in-out infinite; }
     @keyframes ind1ShotA {
-      0%, 38%   { opacity: 1; }
-      46%, 92%  { opacity: 0; }
+      0%, 40%   { opacity: 1; }
+      47%, 97%  { opacity: 0; }
       100%      { opacity: 1; }
     }
     @keyframes ind1ShotB {
-      0%, 38%   { opacity: 0; }
-      46%, 92%  { opacity: 1; }
+      0%, 40%   { opacity: 0; }
+      47%, 97%  { opacity: 1; }
       100%      { opacity: 0; }
     }
 
@@ -7391,11 +7442,11 @@
       background: rgba(255,122,46,.30);
       box-shadow: 0 0 12px rgba(255,122,46,.75);
       opacity: 0;
-      animation: ind1Hl 13.5s ease-in-out infinite;
+      animation: ind1Hl 30s ease-in-out infinite;
     }
     @keyframes ind1Hl {
-      0%, 30%   { opacity: 0; transform: scale(.9); }
-      36%, 50%  { opacity: 1; transform: scale(1); }
+      0%, 33%   { opacity: 0; transform: scale(.9); }
+      38%, 52%  { opacity: 1; transform: scale(1); }
       60%, 100% { opacity: 0; transform: scale(1); }
     }
 
@@ -7406,15 +7457,15 @@
       width: 17px; height: 17px;
       pointer-events: none;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
-      animation: ind1Cursor 13.5s var(--ease-io) infinite;
+      animation: ind1Cursor 30s var(--ease-io) infinite;
     }
     @keyframes ind1Cursor {
       0%   { top: 74%; left: 62%; opacity: 0; }
-      8%   { top: 74%; left: 62%; opacity: 1; }
-      30%  { top: 46%; left: 4.5%; opacity: 1; }
-      36%  { top: 46%; left: 4.5%; opacity: 1; }
-      58%  { top: 40%; left: 26%; opacity: 1; }
-      88%  { top: 40%; left: 26%; opacity: .85; }
+      10%  { top: 74%; left: 62%; opacity: 1; }
+      33%  { top: 46%; left: 4.5%; opacity: 1; }
+      40%  { top: 46%; left: 4.5%; opacity: 1; }
+      60%  { top: 40%; left: 26%; opacity: 1; }
+      92%  { top: 40%; left: 26%; opacity: .85; }
       100% { top: 74%; left: 62%; opacity: 0; }
     }
     /* anel do "clique" */
@@ -7427,12 +7478,12 @@
       border-radius: 50%;
       border: 2px solid rgba(255,122,46,.9);
       opacity: 0;
-      animation: ind1ClickRing 13.5s ease-out infinite;
+      animation: ind1ClickRing 30s ease-out infinite;
     }
     @keyframes ind1ClickRing {
-      0%, 32%  { opacity: 0; transform: scale(.3); }
-      35%      { opacity: 1; transform: scale(.5); }
-      44%      { opacity: 0; transform: scale(2.2); }
+      0%, 35%  { opacity: 0; transform: scale(.3); }
+      38%      { opacity: 1; transform: scale(.5); }
+      46%      { opacity: 0; transform: scale(2.2); }
       100%     { opacity: 0; transform: scale(2.2); }
     }
 
@@ -7448,11 +7499,11 @@
       padding: 4px 8px;
       border-radius: 4px;
       background: rgba(0,0,0,.5);
-      animation: ind1Stamp 13.5s ease-in-out infinite;
+      animation: ind1Stamp 30s ease-in-out infinite;
     }
     @keyframes ind1Stamp {
-      0%, 8%    { opacity: 0; }
-      12%, 92%  { opacity: 1; }
+      0%, 43%   { opacity: 0; }
+      47%, 97%  { opacity: 1; }
       100%      { opacity: 0; }
     }
 
@@ -7470,7 +7521,7 @@
       left: 0; top: 0;
       height: 100%; width: 0%;
       background: linear-gradient(90deg, #FF7A2E, #FFB47A);
-      animation: ind1Prog 14s linear infinite;
+      animation: ind1Prog 30s linear infinite;
     }
     @keyframes ind1Prog { 0% { width: 0%; } 100% { width: 100%; } }
 
@@ -7620,10 +7671,10 @@
         <!-- pane 2 · o mesmo painel, ampliado na faixa dos velocímetros -->
         <div class="ind1-zoom">
           <span class="ind1-zoom__lbl">detalhe · velocímetros por indicador</span>
-          <img class="ind1-shot__a" src="assets/parte1/painel-real-estado1.png"
-               alt="Detalhe ampliado dos velocímetros do painel com os 22 empreendimentos selecionados"/>
-          <img class="ind1-shot__b" src="assets/parte1/painel-real-estado2.png"
-               alt="Detalhe ampliado dos velocímetros do painel com apenas Campos Sales 1 R07 selecionado"/>
+          <img class="ind1-shot__a" src="assets/parte1/painel-zoom-estado1.png"
+               alt="Detalhe dos velocímetros do painel com os 23 empreendimentos selecionados"/>
+          <img class="ind1-shot__b" src="assets/parte1/painel-zoom-estado2.png"
+               alt="Detalhe dos velocímetros do painel com apenas Campos Sales 1 R07 selecionado"/>
         </div>
 
         <span class="ind1-bi__stamp">✓ republicado 08:18 BRT</span>
@@ -7649,505 +7700,6 @@
      100% CSS/SVG — zero <video>, zero imagem externa, zero CDN.
      Todo seletor escopado por [data-slide="inov-ind-2"].
      ═══════════════════════════════════════════════════════════════════════ -->
-<section class="slide-section" data-slide="inov-ind-2">
-  <style>
-    /* ══════════ 0 · cabeça ══════════ */
-    [data-slide="inov-ind-2"] .v5-headline h1 {
-      font-size: clamp(20px, 2.05vw, 28px);
-      margin: 0 0 6px 0;
-    }
-    [data-slide="inov-ind-2"] .v5-headline .v5-sub {
-      font-size: clamp(12.5px, 1.02vw, 15px);
-      margin: 0 0 12px 0;
-    }
-
-    /* ══════════ 1 · os quatro fatos ══════════ */
-    [data-slide="inov-ind-2"] .ind2-facts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      width: 100%;
-    }
-    [data-slide="inov-ind-2"] .ind2-fact {
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: rgba(14,39,80,.38);
-      border: 1px solid rgba(184,196,219,.12);
-      border-left: 3px solid rgba(232,123,30,.55);
-      text-align: left;
-    }
-    [data-slide="inov-ind-2"] .ind2-fact b {
-      display: block;
-      font: 800 clamp(17px, 1.6vw, 23px)/1.1 'Inter', sans-serif;
-      color: #E87B1E;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -.01em;
-      margin-bottom: 3px;
-    }
-    [data-slide="inov-ind-2"] .ind2-fact span {
-      display: block;
-      font: 500 clamp(10px, .82vw, 12px)/1.42 'Inter', sans-serif;
-      color: #3A3A3A;
-    }
-    [data-slide="inov-ind-2"] .ind2-fact em {
-      font-style: normal;
-      color: #7A8299;
-      font-weight: 600;
-    }
-    /* o fato que fala de robustez ganha o verde da IA */
-    [data-slide="inov-ind-2"] .ind2-fact--green { border-left-color: rgba(46,139,69,.6); }
-    [data-slide="inov-ind-2"] .ind2-fact--green b { color: #2E8B45; }
-
-    /* a regra do método, embaixo dos fatos */
-    [data-slide="inov-ind-2"] .ind2-rule {
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: 2px;
-      padding: 8px 12px;
-      border-radius: 9px;
-      background: rgba(232,123,30,.07);
-      border: 1px solid rgba(232,123,30,.22);
-      font: 500 clamp(10.5px, .84vw, 12.5px)/1.45 'Inter', sans-serif;
-      color: #E2E8F0;
-      text-align: left;
-    }
-    [data-slide="inov-ind-2"] .ind2-rule strong { color: #E87B1E; font-weight: 800; }
-
-    /* ══════════ 2 · o palco (esteira de simulações) ══════════ */
-    [data-slide="inov-ind-2"] .ind2-stage {
-      position: relative;
-      width: 100%;
-      max-width: 560px;
-      height: clamp(310px, 42vh, 410px);
-      box-sizing: border-box;
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      background: linear-gradient(180deg, #0F1320 0%, #080B12 100%);
-      border: 1px solid rgba(255,255,255,.07);
-      box-shadow: 0 28px 74px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);
-      isolation: isolate;
-    }
-    [data-slide="inov-ind-2"] .ind2-stage::before {
-      content: "";
-      position: absolute;
-      inset: -36px -26px;
-      background: radial-gradient(60% 55% at 50% 45%, rgba(91,229,132,.10), rgba(255,122,46,.06) 55%, transparent 76%);
-      filter: blur(15px);
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* SISTEMA VIVO 1/3 · estado piscando */
-    [data-slide="inov-ind-2"] .ind2-live {
-      position: absolute;
-      top: 10px; right: 12px;
-      z-index: 6;
-      font: 700 9px/1 'Inter', sans-serif;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #5BE584;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(91,229,132,.10);
-      border: 1px solid rgba(91,229,132,.35);
-      animation: ind2Live 1.6s ease-in-out infinite;
-    }
-    @keyframes ind2Live {
-      0%, 100% { opacity: .55; box-shadow: 0 0 0 0 rgba(91,229,132,.35); }
-      50%      { opacity: 1;   box-shadow: 0 0 0 6px rgba(91,229,132,0); }
-    }
-
-    /* SISTEMA VIVO 2/3 · cronômetro da bateria */
-    [data-slide="inov-ind-2"] .ind2-time {
-      position: absolute;
-      top: 10px; left: 12px;
-      z-index: 6;
-      font: 700 10.5px/1 'Inter', sans-serif;
-      letter-spacing: .07em;
-      color: rgba(255,255,255,.78);
-      padding: 5px 8px;
-      border-radius: 5px;
-      background: rgba(0,0,0,.55);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    [data-slide="inov-ind-2"] .ind2-reel {
-      display: inline-block;
-      height: 11px; line-height: 11px;
-      overflow: hidden;
-      vertical-align: -1px;
-    }
-    [data-slide="inov-ind-2"] .ind2-reel b {
-      display: block;
-      line-height: 11px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }
-    [data-slide="inov-ind-2"] .ind2-reel--t b { animation: ind2ReelT 60s steps(6) infinite; }
-    [data-slide="inov-ind-2"] .ind2-reel--u b { animation: ind2ReelU 10s steps(10) infinite; }
-    @keyframes ind2ReelT { from { transform: translateY(0); } to { transform: translateY(-100%); } }
-    @keyframes ind2ReelU { from { transform: translateY(0); } to { transform: translateY(-100%); } }
-
-    /* SISTEMA VIVO 3/3 · scanline rápida (é máquina rodando) */
-    [data-slide="inov-ind-2"] .ind2-scan {
-      position: absolute;
-      left: 0; right: 0;
-      height: 1.5px;
-      z-index: 5;
-      pointer-events: none;
-      background: linear-gradient(90deg, transparent, rgba(74,222,128,.95) 50%, transparent);
-      box-shadow: 0 0 16px rgba(74,222,128,.85);
-      animation: ind2Scan 2.4s linear infinite;
-    }
-    @keyframes ind2Scan {
-      0%   { top: 0;    opacity: 0; }
-      12%  { opacity: 1; }
-      88%  { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    /* ── contador de simulações ── */
-    [data-slide="inov-ind-2"] .ind2-head {
-      flex: 0 0 auto;
-      padding: 34px 16px 10px;
-      display: flex;
-      align-items: flex-end;
-      gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-    }
-    [data-slide="inov-ind-2"] .ind2-counter {
-      height: 40px;
-      overflow: hidden;
-      flex: 0 0 auto;
-    }
-    [data-slide="inov-ind-2"] .ind2-counter b {
-      display: block;
-      line-height: 40px;
-      font: 800 33px/40px 'Inter', sans-serif;
-      color: #FFFFFF;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -.02em;
-      text-shadow: 0 0 22px rgba(91,229,132,.35);
-      animation: ind2Count 12s steps(6) infinite;
-    }
-    @keyframes ind2Count { from { transform: translateY(0); } to { transform: translateY(-100%); } }
-    [data-slide="inov-ind-2"] .ind2-head__lbl {
-      padding-bottom: 5px;
-      font: 600 10px/1.4 'Inter', sans-serif;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.5);
-    }
-    [data-slide="inov-ind-2"] .ind2-head__lbl i {
-      display: block;
-      font-style: normal;
-      letter-spacing: .02em;
-      text-transform: none;
-      font-size: 10.5px;
-      color: rgba(255,255,255,.38);
-    }
-
-    /* ── a esteira: linhas de simulação subindo em loop ── */
-    [data-slide="inov-ind-2"] .ind2-belt {
-      flex: 1 1 auto;
-      position: relative;
-      overflow: hidden;
-      min-height: 0;
-    }
-    [data-slide="inov-ind-2"] .ind2-belt::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-      background: linear-gradient(180deg,
-        rgba(8,11,18,.92) 0%,
-        rgba(8,11,18,0) 16%,
-        rgba(8,11,18,0) 80%,
-        rgba(8,11,18,.95) 100%);
-    }
-    [data-slide="inov-ind-2"] .ind2-strip {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding: 8px 14px;
-      animation: ind2Belt 16s linear infinite;
-      will-change: transform;
-    }
-    @keyframes ind2Belt {
-      /* a lista é duplicada; -50% volta ao início sem salto */
-      0%   { transform: translateY(0); }
-      100% { transform: translateY(-50%); }
-    }
-    [data-slide="inov-ind-2"] .ind2-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 9px;
-      border-radius: 7px;
-      background: rgba(255,255,255,.035);
-      border: 1px solid rgba(255,255,255,.05);
-      font: 500 10.5px/1.3 'Inter', sans-serif;
-      color: rgba(255,255,255,.72);
-    }
-    [data-slide="inov-ind-2"] .ind2-row__ok {
-      flex: 0 0 15px;
-      width: 15px; height: 15px;
-      border-radius: 50%;
-      background: rgba(91,229,132,.16);
-      border: 1px solid rgba(91,229,132,.5);
-      color: #5BE584;
-      font: 800 9px/13px 'Inter', sans-serif;
-      text-align: center;
-    }
-    [data-slide="inov-ind-2"] .ind2-row__what { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    [data-slide="inov-ind-2"] .ind2-row__st {
-      flex: 0 0 auto;
-      font: 700 8.5px/1 'Inter', sans-serif;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: #5BE584;
-    }
-
-    /* ── medidor de integridade no rodapé do palco ── */
-    [data-slide="inov-ind-2"] .ind2-meter {
-      flex: 0 0 auto;
-      padding: 9px 14px 16px;
-      border-top: 1px solid rgba(255,255,255,.07);
-      background: rgba(0,0,0,.28);
-    }
-    [data-slide="inov-ind-2"] .ind2-meter__top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-    [data-slide="inov-ind-2"] .ind2-meter__lbl {
-      font: 600 9px/1 'Inter', sans-serif;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.5);
-    }
-    [data-slide="inov-ind-2"] .ind2-meter__val {
-      font: 800 14px/1 'Inter', sans-serif;
-      color: #5BE584;
-      font-variant-numeric: tabular-nums;
-    }
-    [data-slide="inov-ind-2"] .ind2-meter__track {
-      position: relative;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.07);
-      overflow: hidden;
-    }
-    [data-slide="inov-ind-2"] .ind2-meter__fill {
-      position: absolute;
-      left: 0; top: 0;
-      height: 100%;
-      width: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #5BE584, #4ade80);
-      box-shadow: 0 0 14px rgba(91,229,132,.55);
-      transform-origin: 0 50%;
-      transform: scaleX(0);
-      animation: ind2Fill 12s cubic-bezier(.22,1,.36,1) infinite;
-    }
-    @keyframes ind2Fill {
-      0%   { transform: scaleX(0); }
-      82%  { transform: scaleX(1); }
-      100% { transform: scaleX(1); }
-    }
-    /* checks acumulando */
-    [data-slide="inov-ind-2"] .ind2-checks {
-      display: flex;
-      gap: 4px;
-      margin-top: 7px;
-      flex-wrap: wrap;
-    }
-    [data-slide="inov-ind-2"] .ind2-checks i {
-      width: 12px; height: 12px;
-      border-radius: 3px;
-      display: block;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.09);
-      animation: ind2Check 12s ease-in-out infinite;
-    }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(1)  { animation-delay: 0.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(2)  { animation-delay: 0.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(3)  { animation-delay: 1.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(4)  { animation-delay: 1.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(5)  { animation-delay: 2.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(6)  { animation-delay: 2.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(7)  { animation-delay: 3.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(8)  { animation-delay: 3.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(9)  { animation-delay: 4.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(10) { animation-delay: 4.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(11) { animation-delay: 5.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(12) { animation-delay: 5.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(13) { animation-delay: 6.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(14) { animation-delay: 6.5s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(15) { animation-delay: 7.0s; }
-    [data-slide="inov-ind-2"] .ind2-checks i:nth-child(16) { animation-delay: 7.5s; }
-    @keyframes ind2Check {
-      0%, 4%    { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.09); box-shadow: 0 0 0 rgba(91,229,132,0); }
-      8%        { background: rgba(91,229,132,.5);   border-color: #5BE584;               box-shadow: 0 0 10px rgba(91,229,132,.7); }
-      12%, 96%  { background: rgba(91,229,132,.22);  border-color: rgba(91,229,132,.55);  box-shadow: 0 0 0 rgba(91,229,132,0); }
-      100%      { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.09); }
-    }
-
-    /* barra de progresso da bateria */
-    [data-slide="inov-ind-2"] .ind2-prog {
-      position: absolute;
-      left: 0; bottom: 0;
-      z-index: 7;
-      height: 3px; width: 100%;
-      background: rgba(255,255,255,.06);
-    }
-    [data-slide="inov-ind-2"] .ind2-prog::after {
-      content: "";
-      position: absolute;
-      left: 0; top: 0;
-      height: 100%; width: 0%;
-      background: linear-gradient(90deg, #5BE584, #4ade80);
-      animation: ind2Prog 12s linear infinite;
-    }
-    @keyframes ind2Prog { 0% { width: 0%; } 100% { width: 100%; } }
-
-    /* ── o veredito ── */
-    [data-slide="inov-ind-2"] .ind2-verdict {
-      width: 100%;
-      max-width: 560px;
-      box-sizing: border-box;
-      margin-top: 10px;
-      padding: 9px 14px;
-      border-radius: 10px;
-      background: rgba(91,229,132,.07);
-      border: 1px solid rgba(91,229,132,.28);
-      text-align: center;
-    }
-    [data-slide="inov-ind-2"] .ind2-verdict p {
-      margin: 0;
-      font: 700 clamp(11.5px, .95vw, 14px)/1.4 'Inter', sans-serif;
-      color: #E2E8F0;
-    }
-    [data-slide="inov-ind-2"] .ind2-verdict strong { color: #5BE584; font-weight: 800; }
-
-    /* ══════════ 3 · responsivo ══════════ */
-    @media (max-width: 980px) {
-      [data-slide="inov-ind-2"] .ind2-facts { grid-template-columns: 1fr; }
-      [data-slide="inov-ind-2"] .ind2-stage { max-width: 100%; height: 320px; }
-      [data-slide="inov-ind-2"] .ind2-fact,
-      [data-slide="inov-ind-2"] .ind2-rule { text-align: left; }
-      [data-slide="inov-ind-2"] .v5-headline { text-align: center; }
-    }
-  </style>
-
-  <div class="slide-inner">
-    <div class="v5-split">
-
-      <!-- ══ ESQUERDA · a tese e os fatos ══ -->
-      <div class="v5-split__col v5-split__col--left">
-
-        <div class="v5-headline">
-          <span class="inov-badge cascade-item" style="--c:var(--primary)">Inov. 2 · Indicadores</span>
-          <h1 class="cascade-item">Por trás dos números, <span class="v5-highlight">a régua que a empresa não tinha</span>.</h1>
-          <p class="v5-sub cascade-item">Antes de virar painel, o indicador teve que virar base técnica: fonte aberta uma a uma, faixa confrontada com obra real e o sistema inteiro atacado até não quebrar.</p>
-        </div>
-
-        <div class="ind2-facts cascade-item">
-          <div class="ind2-fact">
-            <b>1.649</b>
-            <span>fontes pesquisadas <em>(520 + 496 + 633)</em></span>
-          </div>
-          <div class="ind2-fact">
-            <b>23 · 24</b>
-            <span>empreendimentos e estudos medidos — <em>9 deles de um concorrente real</em></span>
-          </div>
-          <div class="ind2-fact">
-            <b>8 de 13</b>
-            <span>indicadores <em>não têm benchmark publicado no mundo</em></span>
-          </div>
-          <div class="ind2-fact ind2-fact--green">
-            <b>3 de 7</b>
-            <span>faixas teóricas <em>se provaram erradas</em> contra a realidade dos 23 empreendimentos</span>
-          </div>
-        </div>
-
-        <div class="ind2-rule cascade-item">
-          A regra da pesquisa: <strong>abrir a URL, conferir o HTTP, copiar o trecho literal</strong>. O que não abriu foi descartado.
-        </div>
-
-      </div>
-
-      <!-- ══ DIREITA · a esteira de simulações ══ -->
-      <div class="v5-split__col v5-split__col--right">
-
-        <div class="ind2-stage cascade-item">
-          <span class="ind2-time">
-            <span class="ind2-reel ind2-reel--t"><b>0<br>1<br>2<br>3<br>4<br>5</b></span><span class="ind2-reel ind2-reel--u"><b>0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</b></span>s de bateria
-          </span>
-          <span class="ind2-live">● ao vivo</span>
-          <div class="ind2-scan"></div>
-
-          <div class="ind2-head">
-            <div class="ind2-counter"><b>0<br>612<br>1.184<br>1.937<br>2.605<br>3.000</b></div>
-            <div class="ind2-head__lbl">
-              simulações
-              <i>100 tipos de erro diferentes</i>
-            </div>
-          </div>
-
-          <div class="ind2-belt">
-            <div class="ind2-strip">
-              <!-- lote 1 -->
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">planilha com aba faltando</span><span class="ind2-row__st">recusada</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">injeção de comando no nome do arquivo</span><span class="ind2-row__st">bloqueada</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">valor NaN / infinito no indicador</span><span class="ind2-row__st">rejeitado</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">processo morto no meio da gravação</span><span class="ind2-row__st">base íntegra</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">nome de empreendimento duplicado</span><span class="ind2-row__st">alertado</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">divergência na fronteira exata da faixa</span><span class="ind2-row__st">correto</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">duas ingestões ao mesmo tempo</span><span class="ind2-row__st">serializado</span></div>
-              <div class="ind2-row"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">publicação interrompida pela metade</span><span class="ind2-row__st">nada no ar</span></div>
-              <!-- lote 2 · duplicata para o loop não dar salto -->
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">planilha com aba faltando</span><span class="ind2-row__st">recusada</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">injeção de comando no nome do arquivo</span><span class="ind2-row__st">bloqueada</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">valor NaN / infinito no indicador</span><span class="ind2-row__st">rejeitado</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">processo morto no meio da gravação</span><span class="ind2-row__st">base íntegra</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">nome de empreendimento duplicado</span><span class="ind2-row__st">alertado</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">divergência na fronteira exata da faixa</span><span class="ind2-row__st">correto</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">duas ingestões ao mesmo tempo</span><span class="ind2-row__st">serializado</span></div>
-              <div class="ind2-row" aria-hidden="true"><span class="ind2-row__ok">✓</span><span class="ind2-row__what">publicação interrompida pela metade</span><span class="ind2-row__st">nada no ar</span></div>
-            </div>
-          </div>
-
-          <div class="ind2-meter">
-            <div class="ind2-meter__top">
-              <span class="ind2-meter__lbl">integridade da base</span>
-              <span class="ind2-meter__val">100%</span>
-            </div>
-            <div class="ind2-meter__track"><div class="ind2-meter__fill"></div></div>
-            <div class="ind2-checks">
-              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-            </div>
-          </div>
-
-          <div class="ind2-prog"></div>
-        </div>
-
-        <div class="ind2-verdict cascade-item">
-          <p><strong>“Nada é capaz de enganar ou quebrar o painel hoje.”</strong></p>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-
 <!-- ═══ slide 03 · Panorama: mercado × Dois A (v5: sem descrições) ═══ -->
       <!-- ═══ slide 04 · Inov. 1 · Agilean / Viabil (v5 split-screen) ═══ -->
       <!-- ═══ slide 05 · Inov. 2 · Luma (v7 · ChatGPT + imagem) ═══ -->
