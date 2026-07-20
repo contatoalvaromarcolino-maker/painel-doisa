@@ -5968,6 +5968,10 @@
 <style>
 [data-slide="doca-sr-1"]{
   background:#FFFFFF;
+  width:100%;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:0;
   padding:34px 56px 26px;
   height:100vh;
   box-sizing:border-box;
@@ -6213,6 +6217,10 @@
 <style>
 [data-slide="doca-sr-2"]{
   background:#FFFFFF;
+  width:100%;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:0;
   padding:32px 56px 22px;
   height:100vh;
   box-sizing:border-box;
@@ -6259,20 +6267,24 @@
   font-weight:700;font-size:12.5px;letter-spacing:0.4px;text-align:center;flex:0 0 auto;
 }
 [data-slide="doca-sr-2"] .dsr2-tablescroll{flex:1 1 auto;min-height:0;overflow:hidden;}
-[data-slide="doca-sr-2"] .dsr2-table{width:100%;border-collapse:collapse;font-size:11px;background:#FFFFFF;}
+[data-slide="doca-sr-2"] .dsr2-table{width:100%;border-collapse:collapse;font-size:12.5px;background:#FFFFFF;table-layout:fixed;}
+[data-slide="doca-sr-2"] .dsr2-table th,
+[data-slide="doca-sr-2"] .dsr2-table td{text-align:center;vertical-align:middle;white-space:nowrap;}
+[data-slide="doca-sr-2"] .dsr2-table col.dsr2-col-etapa{width:32%;}
+[data-slide="doca-sr-2"] .dsr2-table col.dsr2-col-val{width:22.66%;}
 [data-slide="doca-sr-2"] .dsr2-table thead tr{background:#1A3470;color:#FFFFFF;}
 [data-slide="doca-sr-2"] .dsr2-table thead th{
-  padding:5px 10px;font-weight:700;font-size:10px;letter-spacing:0.3px;text-align:right;
+  padding:8px 12px;font-weight:700;font-size:12px;letter-spacing:0.3px;text-align:center;
   color:#FFFFFF;border-right:1px solid rgba(255,255,255,0.16);white-space:nowrap;
 }
-[data-slide="doca-sr-2"] .dsr2-table thead th:first-child{text-align:left;}
+[data-slide="doca-sr-2"] .dsr2-table thead th:first-child{text-align:center;}
 [data-slide="doca-sr-2"] .dsr2-table thead th:last-child{border-right:none;}
 [data-slide="doca-sr-2"] .dsr2-table tbody td{
-  padding:1.8px 10px;border-bottom:1px solid rgba(45,79,158,0.10);
-  border-right:1px solid rgba(45,79,158,0.06);text-align:right;color:#1A1A1A;
-  font-variant-numeric:tabular-nums;white-space:nowrap;font-size:10px;line-height:1.28;
+  padding:5.5px 12px;border-bottom:1px solid rgba(45,79,158,0.10);
+  border-right:1px solid rgba(45,79,158,0.06);text-align:center;color:#1A1A1A;
+  font-variant-numeric:tabular-nums;white-space:nowrap;font-size:14px;line-height:1.28;
 }
-[data-slide="doca-sr-2"] .dsr2-table tbody td:first-child{text-align:left;font-weight:600;}
+[data-slide="doca-sr-2"] .dsr2-table tbody td:first-child{text-align:center;font-weight:600;}
 [data-slide="doca-sr-2"] .dsr2-table tbody td:last-child{border-right:none;font-weight:700;}
 [data-slide="doca-sr-2"] .dsr2-table tbody tr:nth-child(even) td{background:rgba(45,79,158,0.03);}
 [data-slide="doca-sr-2"] .dsr2-table tbody td.dsr2-num{color:#7A8299;}
@@ -6280,7 +6292,7 @@
 [data-slide="doca-sr-2"] .dsr2-table tbody td.dsr2-neg{color:#C0392B;}
 [data-slide="doca-sr-2"] .dsr2-table tbody tr.dsr2-total td{
   background:rgba(45,79,158,0.10);font-weight:800;color:#1A3470;
-  border-top:1.5px solid #1A3470;font-size:11px;
+  border-top:1.5px solid #1A3470;font-size:14.5px;
 }
 [data-slide="doca-sr-2"] .dsr2-foot{
   flex:0 0 auto;font-size:9.5px;color:#7A8299;margin:8px 0 0 0;line-height:1.45;
@@ -6323,9 +6335,10 @@
   </div>
 
   <div class="dsr2-tablewrap cascade-item">
-    <div class="dsr2-table-title">CAPEX POR ETAPA — VALORES EM R$ MILHÕES</div>
+    <div class="dsr2-table-title">CAPEX POR ETAPA — VALORES EM R$ (REAIS)</div>
     <div class="dsr2-tablescroll">
       <table class="dsr2-table">
+        <colgroup><col class="dsr2-col-etapa"><col class="dsr2-col-val"><col class="dsr2-col-val"><col class="dsr2-col-val"></colgroup>
         <thead>
           <tr>
             <th>Etapa</th>
@@ -6335,28 +6348,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>01 · Serviços Preliminares</td><td class="dsr2-num">2,22</td><td>1,72</td><td class="dsr2-neg">−0,08</td></tr>
-          <tr><td>02 · Terraplenagem</td><td class="dsr2-num">3,32</td><td>3,88</td><td class="dsr2-neg">−0,62</td></tr>
-          <tr><td>03 · Fundação</td><td class="dsr2-num">2,06</td><td>1,29</td><td class="dsr2-pos">+0,73</td></tr>
-          <tr><td>04 · Bloco ADM + Áreas Técnicas</td><td class="dsr2-num">3,36</td><td>1,75</td><td class="dsr2-pos">+0,11</td></tr>
-          <tr><td>05 · Estrutura de Concreto</td><td class="dsr2-num">2,58</td><td>3,59</td><td class="dsr2-neg">−1,83</td></tr>
-          <tr><td>06 · Cobertura</td><td class="dsr2-num">13,45</td><td>12,27</td><td class="dsr2-pos">+0,39</td></tr>
-          <tr><td>07 · Alvenarias e Fechamentos</td><td class="dsr2-num">6,47</td><td>1,91</td><td class="dsr2-pos">+2,52</td></tr>
-          <tr><td>08 · Piso Polido</td><td class="dsr2-num">8,06</td><td>2,69</td><td class="dsr2-pos">+0,95</td></tr>
-          <tr><td>09 · Drenagem</td><td class="dsr2-num">4,38</td><td>5,46</td><td class="dsr2-neg">−1,93</td></tr>
-          <tr><td>10 · Combate a Incêndio</td><td class="dsr2-num">5,82</td><td>5,00</td><td class="dsr2-neg">−0,24</td></tr>
-          <tr><td>11 · Elétrica, Dados, CFTV e SPDA</td><td class="dsr2-num">4,39</td><td>1,71</td><td class="dsr2-pos">+0,07</td></tr>
-          <tr><td>12 · Inst. Hidrossanitárias e Pluviais</td><td class="dsr2-num">1,51</td><td>0,70</td><td class="dsr2-neg">−0,58</td></tr>
-          <tr><td>13 · Pavimentação</td><td class="dsr2-num">5,21</td><td>1,87</td><td class="dsr2-pos">+0,71</td></tr>
-          <tr><td>14 · Acabamentos e Elem. Decorativos</td><td class="dsr2-num">1,83</td><td>0,24</td><td class="dsr2-neg">−0,01</td></tr>
-          <tr><td>15 · Pintura</td><td class="dsr2-num">0,58</td><td>0,13</td><td class="dsr2-pos">+0,03</td></tr>
-          <tr><td>16 · Esquadrias</td><td class="dsr2-num">0,72</td><td>0,32</td><td class="dsr2-pos">+0,04</td></tr>
-          <tr><td>17 · Equipamentos</td><td class="dsr2-num">2,00</td><td>1,35</td><td class="dsr2-pos">+0,01</td></tr>
-          <tr><td>18 · Limpeza Final</td><td class="dsr2-num">0,23</td><td>0,02</td><td class="dsr2-pos">+0,02</td></tr>
-          <tr><td>19 · Incorporação</td><td class="dsr2-num">0,10</td><td>0,87</td><td class="dsr2-neg">−0,79</td></tr>
-          <tr><td>20 · Outros Serviços</td><td class="dsr2-num">0,50</td><td>0,23</td><td class="dsr2-pos">+0,12</td></tr>
-          <tr><td>21 · Administração de Obra</td><td class="dsr2-num">1,46</td><td>0,95</td><td class="dsr2-pos">+0,01</td></tr>
-          <tr class="dsr2-total"><td>TOTAL GERAL</td><td>70,22</td><td>53,26</td><td>−0,36</td></tr>
+          <tr><td>01 · Serviços Preliminares</td><td class="dsr2-num">2.216.911,14</td><td>1.722.329,70</td><td class="dsr2-neg">−76.281,79</td></tr>
+          <tr><td>02 · Terraplenagem</td><td class="dsr2-num">3.323.001,41</td><td>3.880.546,94</td><td class="dsr2-neg">−617.606,41</td></tr>
+          <tr><td>03 · Fundação</td><td class="dsr2-num">2.055.219,08</td><td>1.293.147,38</td><td class="dsr2-pos">+732.071,70</td></tr>
+          <tr><td>04 · Bloco ADM + Áreas Técnicas</td><td class="dsr2-num">3.359.460,68</td><td>1.745.375,54</td><td class="dsr2-pos">+111.963,74</td></tr>
+          <tr><td>05 · Estrutura de Concreto</td><td class="dsr2-num">2.575.884,71</td><td>3.586.023,46</td><td class="dsr2-neg">−1.833.276,82</td></tr>
+          <tr><td>06 · Cobertura</td><td class="dsr2-num">13.445.097,06</td><td>12.273.589,81</td><td class="dsr2-pos">+385.709,06</td></tr>
+          <tr><td>07 · Alvenarias e Fechamentos</td><td class="dsr2-num">6.469.365,80</td><td>1.914.981,71</td><td class="dsr2-pos">+2.518.648,50</td></tr>
+          <tr><td>08 · Piso Polido</td><td class="dsr2-num">8.063.275,79</td><td>2.690.909,59</td><td class="dsr2-pos">+951.863,95</td></tr>
+          <tr><td>09 · Drenagem</td><td class="dsr2-num">4.375.111,58</td><td>5.461.512,52</td><td class="dsr2-neg">−1.931.851,93</td></tr>
+          <tr><td>10 · Combate a Incêndio</td><td class="dsr2-num">5.818.673,49</td><td>5.004.705,71</td><td class="dsr2-neg">−235.267,22</td></tr>
+          <tr><td>11 · Elétrica, Dados, CFTV e SPDA</td><td class="dsr2-num">4.392.288,26</td><td>1.707.185,61</td><td class="dsr2-pos">+72.585,96</td></tr>
+          <tr><td>12 · Inst. Hidrossanitárias e Pluviais</td><td class="dsr2-num">1.511.410,42</td><td>702.260,00</td><td class="dsr2-neg">−579.481,80</td></tr>
+          <tr><td>13 · Pavimentação</td><td class="dsr2-num">5.208.466,17</td><td>1.872.712,61</td><td class="dsr2-pos">+706.523,56</td></tr>
+          <tr><td>14 · Acabamentos e Elem. Decorativos</td><td class="dsr2-num">1.826.179,66</td><td>242.102,72</td><td class="dsr2-neg">−9.657,98</td></tr>
+          <tr><td>15 · Pintura</td><td class="dsr2-num">578.044,50</td><td>128.420,68</td><td class="dsr2-pos">+29.952,14</td></tr>
+          <tr><td>16 · Esquadrias</td><td class="dsr2-num">717.991,45</td><td>320.975,40</td><td class="dsr2-pos">+39.991,05</td></tr>
+          <tr><td>17 · Equipamentos</td><td class="dsr2-num">2.000.000,00</td><td>1.346.877,43</td><td class="dsr2-pos">+9.035,57</td></tr>
+          <tr><td>18 · Limpeza Final</td><td class="dsr2-num">230.221,29</td><td>15.193,18</td><td class="dsr2-pos">+15.667,50</td></tr>
+          <tr><td>19 · Incorporação</td><td class="dsr2-num">100.000,00</td><td>865.396,95</td><td class="dsr2-neg">−789.997,00</td></tr>
+          <tr><td>20 · Outros Serviços</td><td class="dsr2-num">500.012,75</td><td>228.643,85</td><td class="dsr2-pos">+121.368,90</td></tr>
+          <tr><td>21 · Administração de Obra</td><td class="dsr2-num">1.458.370,53</td><td>948.223,66</td><td class="dsr2-pos">+14.407,03</td></tr>
+          <tr class="dsr2-total"><td>TOTAL GERAL</td><td>70.224.985,77</td><td>53.255.662,11</td><td>−363.632,25</td></tr>
         </tbody>
       </table>
     </div>
@@ -6375,6 +6388,10 @@
 <style>
 [data-slide="doca-sr-2b"]{
   background:#FFFFFF;
+  width:100%;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:0;
   padding:32px 56px 22px;
   height:100vh;
   box-sizing:border-box;
@@ -6474,7 +6491,7 @@
 
   chart.setOption({
     animationDuration: 900,
-    grid:{left:150,right:70,top:10,bottom:26},
+    grid:{left:210,right:110,top:12,bottom:30,containLabel:false},
     tooltip:{
       trigger:'item',
       formatter:function(p){
@@ -6485,7 +6502,7 @@
     },
     xAxis:{
       type:'value', min:-2.4, max:2.9,
-      axisLabel:{color:'#7A8299',fontSize:10.5,formatter:'{value}',fontFamily:'Calibri, Segoe UI, sans-serif'},
+      axisLabel:{color:'#7A8299',fontSize:12,formatter:'{value}',fontFamily:'Calibri, Segoe UI, sans-serif'},
       splitLine:{lineStyle:{color:'rgba(45,79,158,0.10)'}},
       axisLine:{show:false}
     },
@@ -6494,11 +6511,11 @@
       data: rows.map(function(r){return r[0];}),
       axisLine:{lineStyle:{color:'rgba(45,79,158,0.30)'}},
       axisTick:{show:false},
-      axisLabel:{color:'#3A3A3A',fontSize:11,fontFamily:'Calibri, Segoe UI, sans-serif'}
+      axisLabel:{color:'#3A3A3A',fontSize:13,fontFamily:'Calibri, Segoe UI, sans-serif',margin:14}
     },
     series:[{
       type:'bar',
-      barWidth:'62%',
+      barWidth:'58%',
       data: rows.map(function(r){
         return {
           value: r[1],
@@ -6511,7 +6528,8 @@
       label:{
         show:true,
         position:'outside',
-        fontSize:10.5,
+        distance:8,
+        fontSize:13,
         fontWeight:700,
         fontFamily:'Calibri, Segoe UI, sans-serif',
         color:'#3A3A3A',
@@ -6544,6 +6562,10 @@
 <style>
 [data-slide="doca-sr-3"]{
   background:#FFFFFF;
+  width:100%;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:0;
   padding:30px 52px 20px;
   height:100vh;
   box-sizing:border-box;
