@@ -6405,6 +6405,15 @@
 
       <!-- ═══ slide 24 (V11) · DOCA · Execução em Campo ═══ -->
       <section class="slide-section s-doca-montagem" data-slide="24v11">
+        <style>
+          /* imagem da direita removida (pedido Alvaro) -> coluna unica centralizada */
+          [data-slide="24v11"] .s-doca-montagem__grid {
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+        </style>
         <div class="s-doca-montagem__head cascade-item">
           <p class="s-doca-montagem__eyebrow">DOCA · MONTAGEM</p>
           <h2 class="s-doca-montagem__title">Execução em Campo</h2>
@@ -6413,11 +6422,6 @@
           <figure class="s-doca-montagem__card cascade-item">
             <div class="s-doca-montagem__img-wrap">
               <img src="assets/parte1/doca-slide22-1.jpg" alt="Montagem de pré-moldado em campo">
-            </div>
-          </figure>
-          <figure class="s-doca-montagem__card cascade-item">
-            <div class="s-doca-montagem__img-wrap">
-              <img src="assets/parte1/doca-slide22-2.jpg" alt="Continuação da execução em campo">
             </div>
           </figure>
         </div>
@@ -6771,23 +6775,37 @@
     [data-slide="inov-ind-1"] .slide-inner {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+    /* cabeça COMPRIMIDA: o espaço vertical ganho vai todo para os mockups */
+    [data-slide="inov-ind-1"] .v5-headline {
+      flex: 0 0 auto;
+      margin-bottom: 0;
+    }
+    [data-slide="inov-ind-1"] .v5-headline .inov-badge {
+      margin-bottom: 4px;
     }
     [data-slide="inov-ind-1"] .v5-headline h1 {
-      font-size: clamp(20px, 2.05vw, 28px);
-      margin: 0 0 6px 0;
+      font-size: clamp(16px, 1.52vw, 21px);
+      line-height: 1.22;
+      margin: 0 0 3px 0;
+      max-width: 1500px;
     }
     [data-slide="inov-ind-1"] .v5-headline .v5-sub {
-      font-size: clamp(12.5px, 1.02vw, 15px);
+      font-size: clamp(10.5px, .8vw, 12.5px);
+      line-height: 1.38;
       margin: 0;
-      max-width: 1080px;
+      max-width: 1500px;
     }
 
-    /* ══════════ 1 · o par de mockups (split 50/50) ══════════ */
+    /* ══════════ 1 · o par de mockups (split — painel com mais largura) ══════════ */
     [data-slide="inov-ind-1"] .ind1-pair {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 18px;
+      flex: 1 1 auto;
+      min-height: 0;
       width: 100%;
       align-items: stretch;
       position: relative;
@@ -6807,7 +6825,8 @@
 
     [data-slide="inov-ind-1"] .ind1-stage {
       position: relative;
-      height: clamp(300px, 40vh, 400px);
+      /* ~2× a altura original — limitada para nunca estourar os 100vh */
+      height: clamp(340px, 62vh, 640px);
       border-radius: 16px;
       overflow: hidden;
       box-sizing: border-box;
@@ -6909,33 +6928,44 @@
        5 · MOCKUP ESQUERDA — Telegram (tópico do INCO)
        ══════════════════════════════════════════════════════════════ */
     [data-slide="inov-ind-1"] .ind1-tg { background: #0E1621; }
+    /* CONTRASTE — trava geral: NADA dentro do mockup do Telegram pode herdar
+       cor escura do tema. Regras específicas abaixo (mesma especificidade,
+       vindo depois na cascata) reafinam os tons secundários.               */
+    [data-slide="inov-ind-1"] .ind1-tg,
+    [data-slide="inov-ind-1"] .ind1-tg * {
+      color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+    }
     [data-slide="inov-ind-1"] .ind1-tg__bar {
       flex: 0 0 auto;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
+      gap: 12px;
+      padding: 13px 16px;
       background: #17212B;
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      box-shadow: 0 2px 10px rgba(0,0,0,.35);
     }
     [data-slide="inov-ind-1"] .ind1-tg__ava {
-      width: 28px; height: 28px;
-      flex: 0 0 28px;
+      width: 38px; height: 38px;
+      flex: 0 0 38px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, #FF7A2E, #E87B1E);
-      color: #fff;
-      font: 800 11px/1 'Inter', sans-serif;
+      color: #FFFFFF;
+      font: 800 13px/1 'Inter', sans-serif;
       letter-spacing: .04em;
+      box-shadow: 0 3px 10px rgba(255,122,46,.35);
     }
     [data-slide="inov-ind-1"] .ind1-tg__who { min-width: 0; }
     [data-slide="inov-ind-1"] .ind1-tg__name {
-      font: 700 12px/1.2 'Inter', sans-serif;
+      font: 700 14.5px/1.25 'Inter', sans-serif;
       color: #FFFFFF;
+      letter-spacing: .01em;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     [data-slide="inov-ind-1"] .ind1-tg__sub {
-      font: 500 10px/1.3 'Inter', sans-serif;
+      font: 500 11.5px/1.35 'Inter', sans-serif;
       color: #5BE584;
       display: flex; align-items: center; gap: 5px;
     }
@@ -6953,11 +6983,11 @@
 
     [data-slide="inov-ind-1"] .ind1-tg__body {
       flex: 1 1 auto;
-      padding: 10px 12px 26px;
+      padding: 14px 16px 30px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      gap: 5px;
+      gap: 9px;
       overflow: hidden;
       background:
         radial-gradient(50% 40% at 20% 0%, rgba(255,122,46,.05), transparent 70%),
@@ -6965,25 +6995,25 @@
     }
 
     [data-slide="inov-ind-1"] .ind1-msg {
-      max-width: 84%;
-      padding: 6px 9px;
-      border-radius: 10px;
-      font: 400 11px/1.42 'Inter', sans-serif;
-      color: #E8EDF4;
+      max-width: 86%;
+      padding: 10px 13px 8px;
+      border-radius: 14px;
+      font: 400 clamp(11px, .76vw, 13px)/1.5 'Inter', sans-serif;
+      color: #FFFFFF;
       position: relative;
       opacity: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,.28);
+      box-shadow: 0 4px 16px rgba(0,0,0,.38);
     }
     [data-slide="inov-ind-1"] .ind1-msg--out {
       align-self: flex-end;
-      background: #2B5278;
-      border-bottom-right-radius: 3px;
+      background: linear-gradient(180deg, #33608B, #2B5278);
+      border-bottom-right-radius: 4px;
     }
     [data-slide="inov-ind-1"] .ind1-msg--in {
       align-self: flex-start;
-      background: #182533;
+      background: linear-gradient(180deg, #1D2C3D, #182533);
       border-left: 3px solid #FF7A2E;
-      border-bottom-left-radius: 3px;
+      border-bottom-left-radius: 4px;
     }
     [data-slide="inov-ind-1"] .ind1-msg strong { color: #FFFFFF; font-weight: 700; }
     [data-slide="inov-ind-1"] .ind1-msg em {
@@ -6993,40 +7023,109 @@
     }
     [data-slide="inov-ind-1"] .ind1-msg__t {
       display: block;
-      margin-top: 3px;
-      font: 600 8.5px/1 'Inter', sans-serif;
+      margin-top: 5px;
+      font: 600 9.5px/1 'Inter', sans-serif;
       letter-spacing: .04em;
-      color: rgba(255,255,255,.42);
+      color: rgba(255,255,255,.62);
       text-align: right;
+    }
+
+    /* ── a ANÁLISE do agente: a mensagem-herói do mockup ────────────────
+       É o payload de valor — a recomendação técnica sobre o quadro de
+       áreas, derivada da comparação contra a carteira da DOIS A.        */
+    [data-slide="inov-ind-1"] .ind1-msg--hero {
+      max-width: 97%;
+      padding: 12px 15px 9px;
+      border-left-width: 4px;
+      border-radius: 15px;
+      border-bottom-left-radius: 5px;
+      background:
+        linear-gradient(135deg, rgba(255,122,46,.20) 0%, rgba(29,44,61,.98) 52%),
+        #1D2C3D;
+      box-shadow: 0 14px 38px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+      font-size: clamp(11px, .765vw, 13px);
+      line-height: 1.55;
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__lbl {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+      font: 800 clamp(9.5px, .64vw, 11px)/1.2 'Inter', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #FFB47A;
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__lbl::before {
+      content: "";
+      width: 7px; height: 7px;
+      flex: 0 0 7px;
+      border-radius: 2px;
+      background: #FF7A2E;
+      box-shadow: 0 0 10px rgba(255,122,46,.9);
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__p {
+      margin: 0 0 7px 0;
+      color: #FFFFFF;
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__list {
+      margin: 0 0 6px 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__list li {
+      position: relative;
+      padding-left: 15px;
+      color: #FFFFFF;
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__list li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #FF7A2E;
+      font-weight: 800;
+    }
+    [data-slide="inov-ind-1"] .ind1-hero__note {
+      display: block;
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: .93em;
+      color: rgba(255,255,255,.88);
     }
 
     /* cartão de anexo .xlsx */
     [data-slide="inov-ind-1"] .ind1-file {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-      padding: 5px 7px;
-      border-radius: 7px;
-      background: rgba(0,0,0,.22);
+      gap: 10px;
+      margin-bottom: 7px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,.30);
+      border: 1px solid rgba(255,255,255,.08);
     }
     [data-slide="inov-ind-1"] .ind1-file__ico {
-      width: 26px; height: 26px;
-      flex: 0 0 26px;
-      border-radius: 6px;
-      background: #1D7044;
+      width: 34px; height: 34px;
+      flex: 0 0 34px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #238853, #1D7044);
       display: flex; align-items: center; justify-content: center;
-      font: 800 8px/1 'Inter', sans-serif;
+      font: 800 9.5px/1 'Inter', sans-serif;
       color: #FFFFFF;
       letter-spacing: .06em;
+      box-shadow: 0 3px 9px rgba(0,0,0,.4);
     }
     [data-slide="inov-ind-1"] .ind1-file__n {
-      font: 700 10.5px/1.25 'Inter', sans-serif;
+      font: 700 12.5px/1.3 'Inter', sans-serif;
       color: #FFFFFF;
     }
     [data-slide="inov-ind-1"] .ind1-file__s {
-      font: 500 9px/1.2 'Inter', sans-serif;
-      color: rgba(255,255,255,.48);
+      font: 500 10.5px/1.3 'Inter', sans-serif;
+      color: rgba(255,255,255,.68);
     }
 
     /* "digitando" — 3 pontinhos (cf. lumadot42) */
@@ -7035,13 +7134,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 11px;
-      border-radius: 10px;
+      padding: 9px 14px;
+      border-radius: 13px;
       background: #182533;
+      box-shadow: 0 4px 14px rgba(0,0,0,.35);
       opacity: 0;
     }
     [data-slide="inov-ind-1"] .ind1-typing i {
-      width: 6px; height: 6px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: #FF7A2E;
       display: block;
@@ -7050,9 +7150,9 @@
     [data-slide="inov-ind-1"] .ind1-typing i:nth-child(2) { animation-delay: .15s; }
     [data-slide="inov-ind-1"] .ind1-typing i:nth-child(3) { animation-delay: .30s; }
     [data-slide="inov-ind-1"] .ind1-typing span {
-      font: 500 10px/1 'Inter', sans-serif;
-      color: rgba(255,255,255,.55);
-      margin-left: 2px;
+      font: 500 11.5px/1 'Inter', sans-serif;
+      color: rgba(255,255,255,.82);
+      margin-left: 3px;
     }
     @keyframes ind1TypeDot {
       0%, 80%, 100% { opacity: .3; transform: translateY(0); }
@@ -7134,10 +7234,11 @@
 
     [data-slide="inov-ind-1"] .ind1-bi__body {
       flex: 1 1 auto;
-      padding: 11px 13px 32px;
+      /* zero padding: a captura ocupa o palco inteiro (o recorte do
+         palco já é feito pelo overflow:hidden + radius do .ind1-stage) */
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
       min-height: 0;
     }
 
@@ -7154,15 +7255,19 @@
       justify-content: center;
       overflow: hidden;
     }
+    /* A captura é 1280×449 (2,85:1) — encaixada por largura ela ficava
+       minúscula dentro de um palco alto. Com `cover` + ancoragem à
+       esquerda ela preenche TODA a altura do palco: o painel aparece em
+       ~1,6× a escala anterior (sidebar, velocímetros, gráfico e tabela
+       legíveis), cedendo só a borda direita da tabela.                  */
     [data-slide="inov-ind-1"] .ind1-shot img {
       position: absolute;
-      top: 50%;
-      left: 0;
+      inset: 0;
       width: 100%;
-      height: auto;
-      transform: translateY(-50%);
+      height: 100%;
+      object-fit: cover;
+      object-position: left center;
       display: block;
-      border-radius: 4px;
       box-shadow: 0 6px 22px rgba(0,0,0,.45);
     }
     [data-slide="inov-ind-1"] .ind1-shot__a { animation: ind1ShotA 13.5s ease-in-out infinite; }
@@ -7181,9 +7286,10 @@
     /* realce sobre a linha da obra na sidebar do painel (é ali que se clica) */
     [data-slide="inov-ind-1"] .ind1-hl {
       position: absolute;
-      left: 1.5%;
-      width: 3.6%;
-      height: 8px;
+      /* coordenadas re-escaladas para o recorte `cover` (~1,6×) */
+      left: 2.4%;
+      width: 6%;
+      height: 11px;
       z-index: 4;
       border-radius: 3px;
       background: rgba(255,122,46,.30);
@@ -7201,26 +7307,26 @@
     [data-slide="inov-ind-1"] .ind1-cursor {
       position: absolute;
       z-index: 5;
-      width: 13px; height: 13px;
+      width: 17px; height: 17px;
       pointer-events: none;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
       animation: ind1Cursor 13.5s var(--ease-io) infinite;
     }
     @keyframes ind1Cursor {
-      0%   { top: 74%; left: 62%; opacity: 0; }
-      8%   { top: 74%; left: 62%; opacity: 1; }
-      30%  { top: 46%; left: 4.5%; opacity: 1; }
-      36%  { top: 46%; left: 4.5%; opacity: 1; }
-      58%  { top: 40%; left: 26%; opacity: 1; }
-      88%  { top: 40%; left: 26%; opacity: .85; }
-      100% { top: 74%; left: 62%; opacity: 0; }
+      0%   { top: 74%; left: 78%; opacity: 0; }
+      8%   { top: 74%; left: 78%; opacity: 1; }
+      30%  { top: 46%; left: 7%;  opacity: 1; }
+      36%  { top: 46%; left: 7%;  opacity: 1; }
+      58%  { top: 40%; left: 42%; opacity: 1; }
+      88%  { top: 40%; left: 42%; opacity: .85; }
+      100% { top: 74%; left: 78%; opacity: 0; }
     }
     /* anel do "clique" */
     [data-slide="inov-ind-1"] .ind1-clickring {
       position: absolute;
       z-index: 4;
-      top: 46%; left: 4.5%;
-      width: 12px; height: 12px;
+      top: 46%; left: 7%;
+      width: 14px; height: 14px;
       margin: -3px 0 0 -3px;
       border-radius: 50%;
       border: 2px solid rgba(255,122,46,.9);
@@ -7279,7 +7385,8 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 9px 16px;
+      flex: 0 0 auto;
+      padding: 7px 16px;
       box-sizing: border-box;
       border-radius: 10px;
       background: rgba(232,123,30,.07);
@@ -7288,7 +7395,7 @@
     }
     [data-slide="inov-ind-1"] .ind1-foot p {
       margin: 0;
-      font: 600 clamp(12px, 1.02vw, 14.5px)/1.4 'Inter', sans-serif;
+      font: 600 clamp(11px, .88vw, 13.5px)/1.35 'Inter', sans-serif;
       color: #E2E8F0;
     }
     [data-slide="inov-ind-1"] .ind1-foot strong {
@@ -7299,7 +7406,8 @@
     /* ══════════ 8 · responsivo ══════════ */
     @media (max-width: 980px) {
       [data-slide="inov-ind-1"] .ind1-pair { grid-template-columns: 1fr; }
-      [data-slide="inov-ind-1"] .ind1-stage { height: 320px; }
+      [data-slide="inov-ind-1"] .ind1-stage { height: 300px; }
+      [data-slide="inov-ind-1"] .ind1-msg--hero { max-width: 100%; }
       [data-slide="inov-ind-1"] .v5-headline { text-align: center; }
       [data-slide="inov-ind-1"] .ind1-bi__url { margin-right: 0; }
     }
@@ -7369,8 +7477,15 @@
           </div>
 
           <!-- 6 · a leitura do empreendimento contra a carteira -->
-          <div class="ind1-msg ind1-msg--in ind1-m5">
-            <strong>Leitura do empreendimento:</strong> eficiência econômica <strong>65,9%</strong> — na mediana da carteira. Peso da área comum acima da faixa de referência.
+          <div class="ind1-msg ind1-msg--in ind1-msg--hero ind1-m5">
+            <span class="ind1-hero__lbl">Análise · quadro de áreas vs. carteira</span>
+            <p class="ind1-hero__p"><strong>Pipa Lineu R06</strong> fecha com eficiência econômica de <strong>65,9%</strong>, contra <strong>71,4%</strong> na mediana dos 23 empreendimentos da carteira. O gargalo está no quadro de áreas: a área comum responde por <strong>18,7%</strong> da área construída — <strong>4,2 p.p.</strong> acima da faixa dos projetos comparáveis.</p>
+            <ul class="ind1-hero__list">
+              <li><strong>Circulação:</strong> reagrupar o pavimento-tipo de 2 para 4 unidades por núcleo de circulação — libera cerca de 6% da área comum sem alterar o gabarito.</li>
+              <li><strong>Mix de tipologias:</strong> ampliar a participação de 2 dormitórios, hoje em 34% contra 52% na mediana da carteira — é a tipologia com a melhor razão área privativa / área construída.</li>
+              <li><strong>Áreas de apoio:</strong> hall e circulação da garagem estão 11% acima do referencial dos R05/R07.</li>
+            </ul>
+            <em class="ind1-hero__note">Simulação preliminar: <strong>+3,8 p.p.</strong> de eficiência mantendo o índice de aproveitamento e o número de unidades.</em>
             <span class="ind1-msg__t">08:18</span>
           </div>
         </div>
