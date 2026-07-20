@@ -5511,6 +5511,23 @@
       </section>
 
       <!-- ═══ V11 slide 07 · Jardins do Potengi · capa de seção ═══ -->
+      <section class="slide-section" data-slide="div-obras" data-capa="true">
+        <div class="capa-fullscreen">
+          <div class="capa-geo">
+            <div class="capa-geo__bar"></div>
+            <div class="capa-geo__block-1"></div>
+            <div class="capa-geo__block-2"></div>
+          </div>
+          <div class="doisa-capa-logo">
+            <img class="brand-logo brand-logo--on-dark" src="assets/brand/doisa-logo-white.png" alt="Dois A">
+          </div>
+          <div class="doisa-capa-logo-line"></div>
+          <div class="capa-inner">
+            <h1 class="capa-wordmark cascade-item">Obras</h1>
+          </div>
+        </div>
+      </section>
+
       <section class="slide-section s-jdp-capa" data-slide="07v11" data-capa="true">
         <div class="s-jdp-capa__bg" style="background-image:url('assets/parte1/image17.png');"></div>
         <div class="s-jdp-capa__content">
@@ -6427,7 +6444,24 @@
         </div>
       </section>
 
-<section class="slide-section" data-slide="pptx44-v2">
+<section class="slide-section" data-slide="div-vendas" data-capa="true">
+        <div class="capa-fullscreen">
+          <div class="capa-geo">
+            <div class="capa-geo__bar"></div>
+            <div class="capa-geo__block-1"></div>
+            <div class="capa-geo__block-2"></div>
+          </div>
+          <div class="doisa-capa-logo">
+            <img class="brand-logo brand-logo--on-dark" src="assets/brand/doisa-logo-white.png" alt="Dois A">
+          </div>
+          <div class="doisa-capa-logo-line"></div>
+          <div class="capa-inner">
+            <h1 class="capa-wordmark cascade-item">Resultado vendas</h1>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide-section" data-slide="pptx44-v2">
         <style>
           [data-slide="pptx44-v2"] {
             display: flex !important; padding: 0 !important; box-sizing: border-box !important;
@@ -6989,6 +7023,10 @@
       justify-content: flex-end;
       gap: 9px;
       overflow: hidden;
+      /* as mensagens mais antigas saem por cima ESMAECENDO (como num app
+         real), em vez de aparecerem fatiadas pela borda do palco */
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 54px, #000 100%);
+              mask-image: linear-gradient(180deg, transparent 0, #000 54px, #000 100%);
       background:
         radial-gradient(50% 40% at 20% 0%, rgba(255,122,46,.05), transparent 70%),
         #0E1621;
@@ -7246,29 +7284,69 @@
        estado 1 = 22 empreendimentos selecionados (velocímetros multi-ponteiro)
        estado 2 = só "Campos Sales 1 R07" (ponteiro único + número central)
        O conteúdo é real; só o movimento é CSS.                              */
+    /* pane 1 — o painel INTEIRO, na proporção nativa da captura (1280×449) */
     [data-slide="inov-ind-1"] .ind1-shot {
       position: relative;
-      flex: 1 1 auto;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      flex: 0 0 auto;
+      width: 100%;
+      aspect-ratio: 1280 / 449;
       overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,.10);
     }
-    /* A captura é 1280×449 (2,85:1) — encaixada por largura ela ficava
-       minúscula dentro de um palco alto. Com `cover` + ancoragem à
-       esquerda ela preenche TODA a altura do palco: o painel aparece em
-       ~1,6× a escala anterior (sidebar, velocímetros, gráfico e tabela
-       legíveis), cedendo só a borda direita da tabela.                  */
     [data-slide="inov-ind-1"] .ind1-shot img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: left center;
       display: block;
-      box-shadow: 0 6px 22px rgba(0,0,0,.45);
+    }
+
+    /* ── pane 2 · DETALHE AMPLIADO ────────────────────────────────────
+       A captura é 1280×449 (2,85:1): encaixada por largura, o painel
+       inteiro nunca passa de ~240px de altura e nada se lê. Este segundo
+       pane reaproveita a MESMA captura ampliada a ~3,2× da largura do
+       palco, ancorada na faixa dos velocímetros + gráfico de linhas —
+       é o que torna o painel efetivamente legível na projeção.        */
+    [data-slide="inov-ind-1"] .ind1-zoom {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      background: #0B0E17;
+    }
+    [data-slide="inov-ind-1"] .ind1-zoom img {
+      position: absolute;
+      top: -12%;
+      left: 0;
+      width: 320%;
+      height: auto;
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    [data-slide="inov-ind-1"] .ind1-zoom__lbl {
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      z-index: 6;
+      font: 700 9px/1 'Inter', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.92);
+      padding: 5px 9px;
+      border-radius: 4px;
+      background: rgba(0,0,0,.66);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    /* véu inferior: costura o detalhe com o rodapé do palco */
+    [data-slide="inov-ind-1"] .ind1-zoom::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 46px;
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(8,11,18,.92));
     }
     [data-slide="inov-ind-1"] .ind1-shot__a { animation: ind1ShotA 13.5s ease-in-out infinite; }
     [data-slide="inov-ind-1"] .ind1-shot__b { opacity: 0; animation: ind1ShotB 13.5s ease-in-out infinite; }
@@ -7286,10 +7364,9 @@
     /* realce sobre a linha da obra na sidebar do painel (é ali que se clica) */
     [data-slide="inov-ind-1"] .ind1-hl {
       position: absolute;
-      /* coordenadas re-escaladas para o recorte `cover` (~1,6×) */
-      left: 2.4%;
-      width: 6%;
-      height: 11px;
+      left: 1.5%;
+      width: 3.6%;
+      height: 8px;
       z-index: 4;
       border-radius: 3px;
       background: rgba(255,122,46,.30);
@@ -7313,20 +7390,20 @@
       animation: ind1Cursor 13.5s var(--ease-io) infinite;
     }
     @keyframes ind1Cursor {
-      0%   { top: 74%; left: 78%; opacity: 0; }
-      8%   { top: 74%; left: 78%; opacity: 1; }
-      30%  { top: 46%; left: 7%;  opacity: 1; }
-      36%  { top: 46%; left: 7%;  opacity: 1; }
-      58%  { top: 40%; left: 42%; opacity: 1; }
-      88%  { top: 40%; left: 42%; opacity: .85; }
-      100% { top: 74%; left: 78%; opacity: 0; }
+      0%   { top: 74%; left: 62%; opacity: 0; }
+      8%   { top: 74%; left: 62%; opacity: 1; }
+      30%  { top: 46%; left: 4.5%; opacity: 1; }
+      36%  { top: 46%; left: 4.5%; opacity: 1; }
+      58%  { top: 40%; left: 26%; opacity: 1; }
+      88%  { top: 40%; left: 26%; opacity: .85; }
+      100% { top: 74%; left: 62%; opacity: 0; }
     }
     /* anel do "clique" */
     [data-slide="inov-ind-1"] .ind1-clickring {
       position: absolute;
       z-index: 4;
-      top: 46%; left: 7%;
-      width: 14px; height: 14px;
+      top: 46%; left: 4.5%;
+      width: 12px; height: 12px;
       margin: -3px 0 0 -3px;
       border-radius: 50%;
       border: 2px solid rgba(255,122,46,.9);
@@ -7479,13 +7556,12 @@
           <!-- 6 · a leitura do empreendimento contra a carteira -->
           <div class="ind1-msg ind1-msg--in ind1-msg--hero ind1-m5">
             <span class="ind1-hero__lbl">Análise · quadro de áreas vs. carteira</span>
-            <p class="ind1-hero__p"><strong>Pipa Lineu R06</strong> fecha com eficiência econômica de <strong>65,9%</strong>, contra <strong>71,4%</strong> na mediana dos 23 empreendimentos da carteira. O gargalo está no quadro de áreas: a área comum responde por <strong>18,7%</strong> da área construída — <strong>4,2 p.p.</strong> acima da faixa dos projetos comparáveis.</p>
+            <p class="ind1-hero__p">Eficiência econômica de <strong>65,9%</strong> contra <strong>71,4%</strong> na mediana dos 23 empreendimentos da carteira. O gargalo está no quadro de áreas: a área comum responde por <strong>18,7%</strong> da construída — <strong>4,2 p.p.</strong> acima da faixa dos comparáveis.</p>
             <ul class="ind1-hero__list">
-              <li><strong>Circulação:</strong> reagrupar o pavimento-tipo de 2 para 4 unidades por núcleo de circulação — libera cerca de 6% da área comum sem alterar o gabarito.</li>
-              <li><strong>Mix de tipologias:</strong> ampliar a participação de 2 dormitórios, hoje em 34% contra 52% na mediana da carteira — é a tipologia com a melhor razão área privativa / área construída.</li>
-              <li><strong>Áreas de apoio:</strong> hall e circulação da garagem estão 11% acima do referencial dos R05/R07.</li>
+              <li><strong>Circulação:</strong> reagrupar o pavimento-tipo de 2 para 4 unidades por núcleo — libera ~6% da área comum sem mexer no gabarito.</li>
+              <li><strong>Mix de tipologias:</strong> ampliar os 2 dormitórios, hoje 34% contra 52% na mediana — melhor razão área privativa / área construída.</li>
             </ul>
-            <em class="ind1-hero__note">Simulação preliminar: <strong>+3,8 p.p.</strong> de eficiência mantendo o índice de aproveitamento e o número de unidades.</em>
+            <em class="ind1-hero__note">Simulação: <strong>+3,8 p.p.</strong> de eficiência mantendo o índice de aproveitamento e o número de unidades.</em>
             <span class="ind1-msg__t">08:18</span>
           </div>
         </div>
@@ -7520,6 +7596,15 @@
             <path d="M1 1 L1 14 L4.4 10.9 L6.7 16.4 L9 15.4 L6.7 10.1 L11 10.1 Z"
                   fill="#FFFFFF" stroke="#111827" stroke-width="1" stroke-linejoin="round"/>
           </svg>
+        </div>
+
+        <!-- pane 2 · o mesmo painel, ampliado na faixa dos velocímetros -->
+        <div class="ind1-zoom">
+          <span class="ind1-zoom__lbl">detalhe · velocímetros por indicador</span>
+          <img class="ind1-shot__a" src="assets/parte1/painel-real-estado1.png"
+               alt="Detalhe ampliado dos velocímetros do painel com os 22 empreendimentos selecionados"/>
+          <img class="ind1-shot__b" src="assets/parte1/painel-real-estado2.png"
+               alt="Detalhe ampliado dos velocímetros do painel com apenas Campos Sales 1 R07 selecionado"/>
         </div>
 
         <span class="ind1-bi__stamp">✓ republicado 08:18 BRT</span>
