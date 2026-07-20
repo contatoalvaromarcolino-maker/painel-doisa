@@ -6012,40 +6012,6 @@
       <!-- ═══ NEW slide · DESEMPENHO DE VENDAS · Jardins do Potengi (PPTX 1) ═══ -->
       <!-- ═══ slide 17a (V11) · DESTAQUE POSITIVO · Ciclo da Laje · Topec — 13,7% ═══ -->
       <!-- ═══ NEW slide · DESEMPENHO DE VENDAS · Jardins do Potengi (PPTX 1) ═══ -->
-      <section class="slide-section" data-slide="16a-v11">
-        <style>
-          [data-slide="16a-v11"] {
-            display: flex !important; padding: 0 !important; box-sizing: border-box !important;
-            background: #FFFFFF !important; overflow: hidden !important;
-          }
-          [data-slide="16a-v11"] .vendas-img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFFFFF; }
-        </style>
-        <img class="vendas-img" src="assets/parte1/vendas-jdp-2ts.png" alt="Desempenho de vendas — Jardins do Potengi" />
-      </section>
-
-<section class="slide-section" data-slide="pptx23-v2">
-        <style>
-          [data-slide="pptx23-v2"] {
-            display: flex !important; padding: 0 !important; box-sizing: border-box !important;
-            background: #FFFFFF !important; overflow: hidden !important;
-          }
-          [data-slide="pptx23-v2"] .pptx-img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFFFFF; }
-        </style>
-        <img class="pptx-img" src="assets/parte1/pptx23.png" alt="Desempenho de vendas — Dois A | Reserva Pipa: realizado acumulado 2026 de R$ 7.542.516,53 contra meta acumulada 2026 de R$ 17.020.000,00" />
-      </section>
-
-<section class="slide-section" data-slide="pptx24-v2">
-        <style>
-          [data-slide="pptx24-v2"] {
-            display: flex !important; padding: 0 !important; box-sizing: border-box !important;
-            background: #FFFFFF !important; overflow: hidden !important;
-          }
-          [data-slide="pptx24-v2"] .pptx-img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFFFFF; }
-        </style>
-        <img class="pptx-img" src="assets/parte1/pptx24.png" alt="Desempenho de vendas — Dois A Incorporações: realizado acumulado 2026 de R$ 22.229.516,53 contra meta acumulada 2026 de R$ 39.720.000,00" />
-      </section>
-
-
       <!-- ═══ NEW slide · DESEMPENHO DE VENDAS · Reserva Pipa (PPTX 2) ═══ -->
       <!-- ═══ NEW slide · DESEMPENHO DE VENDAS · Dois A Incorporações (PPTX 3) ═══ -->
       <!-- ═══ V11 slide 13 · Reserva Pipa capa de seção ═══ -->
@@ -6460,6 +6426,40 @@
           </div>
         </div>
       </section>
+
+      <section class="slide-section" data-slide="16a-v11">
+        <style>
+          [data-slide="16a-v11"] {
+            display: flex !important; padding: 0 !important; box-sizing: border-box !important;
+            background: #FFFFFF !important; overflow: hidden !important;
+          }
+          [data-slide="16a-v11"] .vendas-img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFFFFF; }
+        </style>
+        <img class="vendas-img" src="assets/parte1/vendas-jdp-2ts.png" alt="Desempenho de vendas — Jardins do Potengi" />
+      </section>
+
+      <section class="slide-section" data-slide="pptx23-v2">
+        <style>
+          [data-slide="pptx23-v2"] {
+            display: flex !important; padding: 0 !important; box-sizing: border-box !important;
+            background: #FFFFFF !important; overflow: hidden !important;
+          }
+          [data-slide="pptx23-v2"] .pptx-img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFFFFF; }
+        </style>
+        <img class="pptx-img" src="assets/parte1/pptx23.png" alt="Desempenho de vendas — Dois A | Reserva Pipa: realizado acumulado 2026 de R$ 7.542.516,53 contra meta acumulada 2026 de R$ 17.020.000,00" />
+      </section>
+
+      <section class="slide-section" data-slide="pptx24-v2">
+        <style>
+          [data-slide="pptx24-v2"] {
+            display: flex !important; padding: 0 !important; box-sizing: border-box !important;
+            background: #FFFFFF !important; overflow: hidden !important;
+          }
+          [data-slide="pptx24-v2"] .pptx-img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFFFFF; }
+        </style>
+        <img class="pptx-img" src="assets/parte1/pptx24.png" alt="Desempenho de vendas — Dois A Incorporações: realizado acumulado 2026 de R$ 22.229.516,53 contra meta acumulada 2026 de R$ 39.720.000,00" />
+      </section>
+
 
       <section class="slide-section" data-slide="pptx44-v2">
         <style>
@@ -6962,11 +6962,18 @@
        5 · MOCKUP ESQUERDA — Telegram (tópico do INCO)
        ══════════════════════════════════════════════════════════════ */
     [data-slide="inov-ind-1"] .ind1-tg { background: #0E1621; }
-    /* CONTRASTE — trava geral: NADA dentro do mockup do Telegram pode herdar
-       cor escura do tema. Regras específicas abaixo (mesma especificidade,
-       vindo depois na cascata) reafinam os tons secundários.               */
-    [data-slide="inov-ind-1"] .ind1-tg,
-    [data-slide="inov-ind-1"] .ind1-tg * {
+    /* CONTRASTE — trava geral dos dois mockups.
+       O tema global tem `.slide-section:not([data-capa]) div { color: inherit }`,
+       cuja especificidade (0,2,1) DERRUBA qualquer regra escopada (0,2,0):
+       era por isso que os textos do Telegram saíam quase pretos sobre fundo
+       escuro. A âncora dupla de classe (.ind1-stage.ind1-tg → 0,3,0) vence
+       essa regra e pinta a raiz de branco; os `div` filhos, forçados a
+       `inherit`, herdam branco em cascata. Os tons secundários abaixo também
+       sobem para (0,3,0) para não serem zerados pelo mesmo efeito.          */
+    [data-slide="inov-ind-1"] .ind1-stage.ind1-tg,
+    [data-slide="inov-ind-1"] .ind1-stage.ind1-bi,
+    [data-slide="inov-ind-1"] .ind1-tg *,
+    [data-slide="inov-ind-1"] .ind1-bi * {
       color: #FFFFFF;
       -webkit-font-smoothing: antialiased;
     }
@@ -6998,7 +7005,7 @@
       letter-spacing: .01em;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    [data-slide="inov-ind-1"] .ind1-tg__sub {
+    [data-slide="inov-ind-1"] .ind1-tg .ind1-tg__bar .ind1-tg__sub {
       font: 500 11.5px/1.35 'Inter', sans-serif;
       color: #5BE584;
       display: flex; align-items: center; gap: 5px;
@@ -7059,7 +7066,7 @@
       color: #5BE584;
       font-weight: 700;
     }
-    [data-slide="inov-ind-1"] .ind1-msg__t {
+    [data-slide="inov-ind-1"] .ind1-tg__body .ind1-msg .ind1-msg__t {
       display: block;
       margin-top: 5px;
       font: 600 9.5px/1 'Inter', sans-serif;
@@ -7126,13 +7133,25 @@
       color: #FF7A2E;
       font-weight: 800;
     }
-    [data-slide="inov-ind-1"] .ind1-hero__note {
+    /* fecho da análise: o delta simulado — verde por ser ganho, com
+       especificidade acima de `.ind1-msg em` (0,2,1) para não oscilar */
+    [data-slide="inov-ind-1"] .ind1-msg em.ind1-hero__note,
+    [data-slide="inov-ind-1"] .ind1-msg em.ind1-hero__note strong {
       display: block;
       margin-top: 8px;
       padding-top: 7px;
-      border-top: 1px solid rgba(255,255,255,.12);
-      font-size: .93em;
-      color: rgba(255,255,255,.88);
+      border-top: 1px solid rgba(255,255,255,.14);
+      font-size: .95em;
+      font-weight: 600;
+      color: #5BE584;
+    }
+    [data-slide="inov-ind-1"] .ind1-msg em.ind1-hero__note strong {
+      display: inline;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 1em;
+      font-weight: 800;
     }
 
     /* cartão de anexo .xlsx */
@@ -7161,9 +7180,9 @@
       font: 700 12.5px/1.3 'Inter', sans-serif;
       color: #FFFFFF;
     }
-    [data-slide="inov-ind-1"] .ind1-file__s {
+    [data-slide="inov-ind-1"] .ind1-tg .ind1-file__s {
       font: 500 10.5px/1.3 'Inter', sans-serif;
-      color: rgba(255,255,255,.68);
+      color: rgba(255,255,255,.72);
     }
 
     /* "digitando" — 3 pontinhos (cf. lumadot42) */
@@ -7258,7 +7277,7 @@
       background: rgba(255,255,255,.18);
       display: block;
     }
-    [data-slide="inov-ind-1"] .ind1-bi__url {
+    [data-slide="inov-ind-1"] .ind1-bi .ind1-bi__url {
       flex: 1 1 auto;
       margin-right: 78px;
       padding: 3px 9px;
@@ -7266,7 +7285,7 @@
       background: rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.06);
       font: 500 9.5px/1.5 'Inter', sans-serif;
-      color: rgba(255,255,255,.5);
+      color: rgba(255,255,255,.72);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
