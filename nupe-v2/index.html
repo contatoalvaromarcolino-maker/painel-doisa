@@ -7385,7 +7385,9 @@
        interpolação, zero `image-rendering` hack.                          */
     [data-slide="inov-ind-1"] .ind1-zoom img {
       position: absolute;
-      inset: 0;
+      /* faixa de 22px reservada no topo para a legenda: assim ela nunca
+         cobre o título de um card nem colide com o relógio do rodapé */
+      inset: 22px 0 0 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -7394,17 +7396,19 @@
     }
     [data-slide="inov-ind-1"] .ind1-zoom__lbl {
       position: absolute;
-      left: 10px;
-      bottom: 10px;
+      left: 0; right: 0; top: 0;
+      height: 22px;
+      display: flex;
+      align-items: center;
       z-index: 6;
+      box-sizing: border-box;
       font: 700 9px/1 'Inter', sans-serif;
       letter-spacing: .1em;
       text-transform: uppercase;
       color: rgba(255,255,255,.92);
-      padding: 5px 9px;
-      border-radius: 4px;
-      background: rgba(0,0,0,.66);
-      border: 1px solid rgba(255,255,255,.10);
+      padding: 0 10px;
+      background: #0B0E17;
+      border-bottom: 1px solid rgba(255,255,255,.10);
     }
     /* véu inferior: costura o detalhe com o rodapé do palco */
     [data-slide="inov-ind-1"] .ind1-zoom::after {
