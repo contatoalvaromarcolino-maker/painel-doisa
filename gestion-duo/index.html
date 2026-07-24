@@ -1164,7 +1164,7 @@ const state = {
 // da ata e ainda NAO foi triada. Sair da coluna-data = entrar em acompanhamento.
 const RE_STATUS_DATA = /^\s*\d{2}\/\d{2}\/\d{4}\s*$/;
 function isPendenteTriagem(t) { return RE_STATUS_DATA.test(t.status?.status || ''); }
-function dataDaAta(t) { return (t.status?.status || '').trim(); }
+function dataDaAta(t) { return String(t.status?.status || '').trim(); }
 
 function prazoBucket(due) {
   if (!due) return 'sem-prazo';
