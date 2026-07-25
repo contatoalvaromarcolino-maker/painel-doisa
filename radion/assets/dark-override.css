@@ -1,0 +1,611 @@
+/* ═══════════════════════════════════════════════════════════════════
+   dark-override.css — Inversão DARK da apresentação NUPE
+   Carregado APÓS doisa-theme.css. Usa !important para vencer o tema.
+   Paleta alinhada ao padrão Dark Dois A (HTML/Word/PDF/Excel — 19/05/2026).
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── 1. Token overrides ──────────────────────────────────────────── */
+:root {
+  /* Canvas escuro */
+  --bg-0: #0E1B33;            /* canvas / body */
+  --bg-1: #16284A;            /* superfície card */
+  --bg-2: #1F3258;            /* zebra / elevado */
+
+  /* Laranja — mantém */
+  --primary:        #E97132;
+  --primary-soft:   rgba(233,113,50,0.14);
+  --primary-glow:   rgba(233,113,50,0.22);
+  --primary-bar:    #DB812E;
+  --primary-extra:  #F6821F;
+
+  /* Azul de marca — elevado para legibilidade sobre dark */
+  --brand-blue:        #5C7DD0;
+  --brand-blue-deep:   #2D4F9E;
+  --brand-blue-mid:    #4A6BB8;
+  --brand-blue-soft:   rgba(92,125,208,0.10);
+  --brand-blue-ghost:  rgba(92,125,208,0.28);
+
+  /* Texto sobre escuro */
+  --ink:   #E8ECF5;
+  --ink-2: #B8C4D8;
+  --ink-3: #8A9BC4;
+
+  /* Status — recalibrados pra escuro */
+  --ok:     #5BD18A;
+  --warn:   #F3C052;
+  --target: #7FB8FF;
+
+  /* Glass / sombras */
+  --glass-bg:          rgba(232,113,50,0.05);
+  --glass-border:      rgba(232,113,50,0.22);
+  --glass-border-soft: rgba(184,196,219,0.14);
+
+  --shadow-glass: 0 4px 14px rgba(0,0,0,0.35),
+                  inset 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-hover: 0 14px 32px rgba(0,0,0,0.55),
+                  0 0 32px rgba(233,113,50,0.10),
+                  inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* ── 2. Canvas global ────────────────────────────────────────────── */
+html, body {
+  background: var(--bg-0) !important;
+  color: var(--ink) !important;
+}
+body {
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(233,113,50,0.06), transparent 60%),
+    radial-gradient(900px 700px at 85% 110%, rgba(92,125,208,0.06), transparent 60%),
+    var(--bg-0) !important;
+  background-attachment: fixed !important;
+}
+
+.slide-section {
+  background: var(--bg-0) !important;
+  color: var(--ink) !important;
+}
+
+/* ── 3. Texto base — clarear tudo que era #1A1A1A ────────────────── */
+.slide-section, .slide-section *,
+p, li, td, th, span, div, h1, h2, h3, h4, h5, h6 {
+  color: var(--ink);
+}
+/* Específicos do tema light que travavam preto */
+.xls, .xls * {
+  /* Excel mockup: mantemos look "Excel" mas em tom escuro */
+  color: var(--ink) !important;
+}
+.xls {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* ── 4. Cards / containers que eram brancos → superfície escura ───── */
+.s02-icon__circle, .s03-tile,
+[class*="__card"]:not([class*="--dark"]):not([class*="recstudio"]),
+[class*="-tile"]:not([class*="--dark"]),
+[class*="__panel"]:not([class*="recstudio"]),
+[class*="-panel"]:not([class*="recstudio"]),
+[class*="__box"]:not([class*="recstudio"]),
+[class*="-box"]:not([class*="recstudio"]) {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+  box-shadow: var(--shadow-glass) !important;
+}
+
+/* Mockups que JÁ eram escuros (#0A1A35) — mantém, só ajusta borda */
+[class*="recstudio"], [class*="mockup-cams"], [class*="mockup-stream"],
+[class*="s04-mockup"], [class*="s05-mockup"], [class*="s07-mockup"],
+[class*="s08v7"] {
+  background-color: #0A1428 !important;
+  border: 1px solid rgba(232,113,50,0.18) !important;
+}
+
+/* Ícones SVG: navy → laranja para destacar sobre dark */
+.s02-icon__svg, .s03-tile__icon,
+[class*="__svg"]:not([class*="recstudio"]):not([class*="luma"]),
+[class*="-icon__icon"], [class*="-tile__icon"] {
+  color: var(--primary) !important;
+}
+
+/* ── 5. Sidebar / progresso ──────────────────────────────────────── */
+.sidebar {
+  background: #0A1428 !important;
+  color: var(--ink) !important;
+  border-right: 1px solid var(--glass-border) !important;
+}
+.sidebar *,
+.sidebar__item-num { color: var(--ink-2) !important; }
+.sidebar__item.active,
+.sidebar__item.is-active,
+.sidebar__item[data-active="true"] {
+  background: var(--brand-blue-deep) !important;
+  color: #FFFFFF !important;
+}
+.sidebar__item.active *,
+.sidebar__item.is-active *,
+.sidebar__item[data-active="true"] * { color: #FFFFFF !important; }
+
+.progress-bar { background: rgba(232,113,50,0.10) !important; }
+
+/* ── 6. ch-divider (slide 02): fundo escuro, número outline laranja ─ */
+.ch-divider-section { background: var(--bg-0) !important; }
+.ch-divider {
+  background: var(--bg-0) !important;
+}
+
+/* ── 7. Capas — fundo dark, mantém wordmark laranja ──────────────── */
+.slide-section[data-capa="true"] {
+  background:
+    radial-gradient(800px 600px at 30% 30%, rgba(233,113,50,0.12), transparent 60%),
+    var(--bg-0) !important;
+}
+.capa-info-card,
+.capa-credit-text,
+.capa-geo {
+  background: rgba(22,40,71,0.65) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--ink) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+/* ── 8. Tabelas RGI ──────────────────────────────────────────────── */
+.rgi-table-wrap {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+.rgi-table-title {
+  background: var(--brand-blue-deep) !important;
+  color: #FFFFFF !important;
+}
+.rgi-table {
+  background: var(--bg-1) !important;
+  color: var(--ink) !important;
+}
+.rgi-table thead th {
+  background: var(--brand-blue-deep) !important;
+  color: #FFFFFF !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+.rgi-table tbody tr:nth-child(even) td {
+  background: var(--bg-2) !important;
+}
+.rgi-table tbody tr:nth-child(odd) td {
+  background: var(--bg-1) !important;
+}
+.rgi-table tbody td {
+  color: var(--ink) !important;
+  border-bottom: 1px solid rgba(184,196,219,0.08) !important;
+}
+.rgi-row-current td,
+tr.rgi-row-current td {
+  background: rgba(233,113,50,0.18) !important;
+  color: #FFE56B !important;
+  font-weight: 700 !important;
+}
+
+/* ── 9. Estilos inline frequentes (background: #FFFFFF dentro do HTML) ─ */
+[style*="background: #FFFFFF"],
+[style*="background:#FFFFFF"],
+[style*="background-color: #FFFFFF"],
+[style*="background-color:#FFFFFF"],
+[style*="background: #fff"],
+[style*="background:#fff"],
+[style*="background: white"],
+[style*="background:white"] {
+  background: var(--bg-1) !important;
+  background-color: var(--bg-1) !important;
+}
+[style*="color: #1A1A1A"],
+[style*="color:#1A1A1A"],
+[style*="color: #1a1a1a"],
+[style*="color:#1a1a1a"] {
+  color: var(--ink) !important;
+}
+[style*="color: #2D4F9E"],
+[style*="color:#2D4F9E"],
+[style*="color: #1A3470"],
+[style*="color:#1A3470"] {
+  color: #FFFFFF !important;
+}
+
+/* ── 10. doisa-frame (logo, número de seção, footer) ──────────────── */
+.doisa-frame { color: var(--ink) !important; }
+.doisa-frame__section-num {
+  color: rgba(233,113,50,0.16) !important;
+  -webkit-text-stroke: 1px rgba(233,113,50,0.30) !important;
+}
+.doisa-frame__title,
+.doisa-frame__title-h1 { color: #FFFFFF !important; }
+.doisa-frame__kicker { color: var(--primary) !important; }
+.doisa-frame__footer-text { color: var(--ink-3) !important; }
+
+/* ── 11. Capa: wordmark e info ──────────────────────────────────── */
+.capa-wordmark,
+.capa-brand,
+.slide-h1,
+.slide-section h1,
+.slide-section h2 {
+  color: #FFFFFF !important;
+}
+.slide-eyebrow { color: var(--primary) !important; }
+.slide-sub { color: var(--ink-2) !important; }
+
+/* ── 12. Labels / sub / desc / caption ───────────────────────────── */
+[class*="__label"], [class*="-label"],
+[class*="__sub"]:not(.slide-sub), [class*="-sub"]:not(.slide-sub),
+[class*="__desc"], [class*="-desc"],
+[class*="__caption"], [class*="-caption"] {
+  color: var(--ink-2) !important;
+}
+
+/* ── 13. Títulos de slides comuns (h1/h2 e __title) ──────────────── */
+[class*="__title"]:not(.rgi-table-title):not(.doisa-frame__title),
+[class*="-title"]:not(.rgi-table-title):not(.doisa-frame__title),
+[class*="-headline"] {
+  color: #FFFFFF !important;
+}
+
+/* ── 14. Underline laranja de ch-divider — manter ─────────────────── */
+/* (já é var(--primary), nada a fazer) */
+
+/* ── 15. s-jdp-capa (capas de seção navy) — mantém estética, ajusta nível navy */
+.s-jdp-capa,
+.slide-section[data-slide="07v11"],
+.slide-section[data-slide="13v11"] {
+  background:
+    radial-gradient(1000px 700px at 50% 50%, rgba(45,79,158,0.30), transparent 70%),
+    var(--bg-0) !important;
+}
+.s-jdp-capa__title { color: #FFFFFF !important; }
+.s-jdp-capa__eyebrow { color: var(--primary) !important; }
+
+/* ── 16. s-obrigado (slide 50) ────────────────────────────────────── */
+.s-obrigado-final, .slide-section[data-slide="50v11"] {
+  background:
+    radial-gradient(1200px 800px at 50% 40%, rgba(233,113,50,0.16), transparent 60%),
+    var(--bg-0) !important;
+}
+.s-obrigado__title { color: #FFFFFF !important; }
+.s-obrigado__sub { color: var(--ink-2) !important; }
+
+/* ── 17. Panorâmicas — mantém imagens edge-to-edge; só ajusta moldura */
+.s-pano { background: var(--bg-0) !important; }
+
+/* ── 18. Eyebrow-strips horizontais (navy → laranja sobre dark) ────── */
+[class*="eyebrow-strip"],
+[class*="-strip"] {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(233,113,50,0.45) 50%,
+    transparent 100%) !important;
+}
+
+/* ── 19. Indicadores e chips ─────────────────────────────────────── */
+.chip, .serra-chip,
+[class*="__chip"], [class*="-chip"] {
+  background: var(--primary-soft) !important;
+  border: 1px solid rgba(233,113,50,0.30) !important;
+  color: var(--primary) !important;
+}
+
+/* Indicator-card (slide 11v11) */
+.indicator-card, [class*="indicator-card"] {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+  color: var(--ink) !important;
+}
+
+/* ── 20. SVG strokes navy → laranja onde for decorativo ──────────── */
+svg [stroke="#1A3470"], svg [stroke="#2D4F9E"] { stroke: var(--primary) !important; }
+svg [fill="#1A3470"]:not([fill-rule]), svg [fill="#2D4F9E"]:not([fill-rule]) { fill: var(--primary) !important; }
+
+/* ── 21. Fundos hardcoded fora dos tokens (do tema light) ─────────── */
+/* #15306B (slide 50 obrigado), #2A4595 (bloco decorativo) — manter (já navy) */
+
+/* ── 22. Print: força fundo escuro também ─────────────────────────── */
+@media print {
+  html, body { background: var(--bg-0) !important; }
+  .slide-section { background: var(--bg-0) !important; }
+}
+
+/* ── 23. Fix específicos: cor da linha decorativa na capa principal ── */
+.doisa-capa-logo-text { color: var(--primary) !important; }
+.doisa-capa-logo-a {
+  background: var(--primary-bar) !important;
+  color: #FFFFFF !important;
+}
+
+/* ── 24. Garantia anti-vazamento branco em qualquer card residual ── */
+.slide-section [style*="rgb(255, 255, 255)"],
+.slide-section [style*="rgb(255,255,255)"] {
+  background-color: var(--bg-1) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   25. OVERRIDES ESPECÍFICOS — classes de slide que hardcodam #FFFFFF
+   (gerados a partir do mapeamento direto do doisa-theme.css)
+   ─────────────────────────────────────────────────────────────────── */
+
+/* Canvas dark em todas as section-wrappers conhecidos */
+.s-fase,
+.s-serra-ft,
+.s-serra-massa,
+.s-senior,
+.s-curva,
+.s-curva-extra,
+.rgi-slide,
+.slide-section.rgi-slide,
+.slide-section.s03,
+.slide-section[data-slide="03"],
+.slide-section.s-doca-fogo,
+.slide-section.s-doca-fogo-det,
+.slide-section.s-jornada-capa,
+.slide-section.s-jornada-mapa,
+.slide-section.s-jornada-avanco,
+.ch-divider-section,
+.ch-divider,
+.s06v7-stage,
+.s06v7-stage--featured {
+  background: var(--bg-0) !important;
+}
+
+/* Colunas internas do slide 03 — superfícies elevadas */
+.slide-section.s03 .s03__col,
+.slide-section.s03 .s03__col--left,
+.slide-section.s03 .s03__col--right,
+.s06v7-panel {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* Hub central + labels do slide 3 (Estratégia por segmento) */
+.s-fase__hub {
+  background: var(--brand-blue-deep) !important;
+  color: #FFFFFF !important;
+}
+.s-fase__eyebrow { color: var(--primary) !important; }
+.s-fase__title  { color: #FFFFFF !important; }
+.s-fase__sub    { color: var(--ink-3) !important; }
+.s-fase__hub-line { background: var(--primary) !important; }
+.s-fase__legend { color: var(--ink-2) !important; }
+.s-fase__legend-dot--navy { background: var(--brand-blue) !important; }
+.s-fase__legend-dot--blue { background: #5C9DDE !important; }
+.s-fase__legend-dot--gray { background: var(--ink-3) !important; }
+
+/* Colunas (5 fase-col) — cards dark com headers preservando cores */
+.fase-col {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+.fase-col__body { color: var(--ink) !important; }
+.fase-col__body p,
+.fase-col__body li { color: var(--ink-2) !important; }
+
+/* Tiles do slide 3 (legacy s03-tile) */
+.s03-tile {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+.s03__title { color: #FFFFFF !important; }
+.s03__label { color: var(--primary) !important; }
+.s03-tile__label { color: var(--primary) !important; }
+.s03-tile__desc { color: var(--ink-2) !important; }
+
+/* Slide 4/5 - Serra Ficha Técnica */
+.s-serra-ft__title,
+.s-serra-massa__title,
+.s-senior__title { color: #FFFFFF !important; }
+.s-serra-ft__eyebrow,
+.s-serra-massa__eyebrow,
+.s-senior__eyebrow { color: var(--primary) !important; }
+
+/* s-senior cell-logo (era #F5F7FB) */
+.s-senior__cell--logo {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* RGI tables / current row */
+.rgi-slide__title { color: #FFFFFF !important; }
+.rgi-slide__eyebrow { color: var(--primary) !important; }
+
+/* Curva de obra (slide 10/11) */
+.s-curva__title,
+.s-curva-extra__title { color: #FFFFFF !important; }
+.s-curva__eyebrow,
+.s-curva-extra__eyebrow { color: var(--primary) !important; }
+
+/* Doca-fogo (slide 27/28) */
+.s-doca-fogo__title,
+.s-doca-fogo-det__title { color: #FFFFFF !important; }
+
+/* Jornada (slides 39+ inovação) */
+.s-jornada-capa__title,
+.s-jornada-mapa__title,
+.s-jornada-avanco__title { color: #FFFFFF !important; }
+
+/* ch-divider: número outline laranja + título branco + underline laranja */
+.ch-divider .ch-divider__big-num,
+.ch-divider [class*="big-num"] {
+  color: transparent !important;
+  -webkit-text-stroke: 2px var(--primary) !important;
+}
+.ch-divider .ch-divider__title { color: #FFFFFF !important; }
+.ch-divider .ch-divider__eyebrow { color: var(--primary) !important; }
+
+/* Anti-residual: qualquer brand-blue/brand-blue-deep que esteja sendo usado
+   como cor de TEXTO em superfícies dark vira branco */
+.s-fase *[style*="color: var(--brand-blue-deep)"],
+.s-fase *[style*="color:var(--brand-blue-deep)"],
+.s-serra-ft *[style*="color: var(--brand-blue-deep)"],
+.s-senior *[style*="color: var(--brand-blue-deep)"],
+.s-curva *[style*="color: var(--brand-blue-deep)"] {
+  color: #FFFFFF !important;
+}
+
+/* Confidential strip footer */
+.doisa-frame__footer-text,
+.doisa-frame__confidential { color: var(--ink-3) !important; }
+
+/* Logo wordmark "DOISa" deve usar branco em vez de navy */
+.doisa-frame__logo,
+.doisa-frame [class*="logo"] svg,
+.doisa-frame [class*="logo"] path { fill: #FFFFFF !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   26. WAVE 2 — slides remanescentes com bg branco descobertos por audit JS
+   ─────────────────────────────────────────────────────────────────── */
+
+/* Slides 17a, 16a/b/c, 23, 24, 25, 25a, 26 — canvas dark */
+.s-topec-destaque,
+.slide-section[data-slide="17a-v11"],
+.slide-section[data-slide="16a-v11"],
+.slide-section[data-slide="16b-v11"],
+.slide-section[data-slide="16c-v11"],
+.s-doca-portas,
+.s-doca-montagem,
+.s-doca-storm,
+.s-storm-destaque,
+.s-doca-storm-vid,
+.slide-section[data-slide="23v11"],
+.slide-section[data-slide="24v11"],
+.slide-section[data-slide="25v11"],
+.slide-section[data-slide="25a-v11"],
+.slide-section[data-slide="26v11"],
+.s-cremalheira-fila,
+.s-cremalheira-vid,
+.s-cremalheira-baixa,
+.s-cremalheira-baixa-tablet,
+.slide-section[data-slide="32v11"],
+.slide-section[data-slide="33v11"],
+.slide-section[data-slide="34v11"],
+.slide-section[data-slide="34a-v11"],
+.s-doca-aerial,
+.s-doca-piso,
+.s-doca-exec,
+.slide-section[data-slide="20a-v11"],
+.slide-section[data-slide="21v11"],
+.slide-section[data-slide="22v11"],
+.slide-section[data-slide="40v11"],
+.slide-section[data-slide="41v11"],
+.slide-section[data-slide="42v11"],
+.slide-section[data-slide="43v11"],
+.slide-section[data-slide="44v11"],
+.slide-section[data-slide="45v11"] {
+  background: var(--bg-0) !important;
+}
+
+/* Img-wraps (caixinhas que envolvem imagens) — superfície card */
+.s-curva__img-wrap,
+.s-curva-extra__cell,
+.s-doca-portas__img-wrap,
+.s-doca-montagem__img-wrap,
+.s-doca-storm__img-wrap,
+.s-cremalheira-fila__img-wrap,
+[class*="__img-wrap"],
+[class*="-img-wrap"] {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* Video cards (slide 33 cremalheira antes/depois) */
+.video-card,
+.s-cremalheira-vid__video-card,
+[class*="__video-card"] {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* Slide 34 — pares de imagem/texto baixa automática */
+.s-cremalheira-baixa__pair,
+.s-cremalheira-baixa__pair--text {
+  background: var(--bg-1) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* Slide 40 — Operação manual vs automatizada (s03__wrap) */
+.s03__wrap {
+  background: var(--bg-0) !important;
+}
+
+/* Slide 42 — Luma chat mockup */
+.lumachat,
+.lumachat--seq {
+  background: var(--bg-1) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+.lumachat__body {
+  background: var(--bg-2) !important;
+}
+
+/* Slide 43 — Reunião → Gestão (transcript + ata + sync) */
+.ia-transcript,
+.ata-doc,
+.sync-card,
+[class*="transcript"],
+[class*="ata-doc"],
+[class*="sync-card"] {
+  background: var(--bg-1) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+/* Imagens IMG.vendas-img que vinham com bg branco (anti-flicker do loader) */
+.vendas-img,
+img.vendas-img {
+  background: transparent !important;
+}
+
+/* Títulos dos slides remanescentes */
+.s-topec-destaque__title,
+.s-doca-portas__title,
+.s-doca-montagem__title,
+.s-doca-storm__title,
+.s-storm-destaque__title,
+.s-doca-storm-vid__title,
+.s-cremalheira-fila__title,
+.s-cremalheira-vid__title,
+.s-cremalheira-baixa__title,
+.s-doca-aerial__title,
+.s-doca-piso__title,
+.s-doca-exec__title {
+  color: #FFFFFF !important;
+}
+.s-topec-destaque__eyebrow,
+.s-doca-portas__eyebrow,
+.s-doca-montagem__eyebrow,
+.s-doca-storm__eyebrow,
+.s-storm-destaque__eyebrow,
+.s-doca-storm-vid__eyebrow,
+.s-cremalheira-fila__eyebrow,
+.s-cremalheira-vid__eyebrow,
+.s-cremalheira-baixa__eyebrow,
+.s-doca-aerial__eyebrow,
+.s-doca-piso__eyebrow,
+.s-doca-exec__eyebrow {
+  color: var(--primary) !important;
+}
+
+/* Mockups com bg muito claro (#FAFBFC, #F4F6FA, #F4F5F7) → vira card dark */
+[style*="background: #FAFBFC"],
+[style*="background:#FAFBFC"],
+[style*="background: #F4F6FA"],
+[style*="background:#F4F6FA"],
+[style*="background: #F4F5F7"],
+[style*="background:#F4F5F7"],
+[style*="background: #F5F7FB"],
+[style*="background:#F5F7FB"] {
+  background-color: var(--bg-1) !important;
+}
+
+/* Heurística final: qualquer DIV/SECTION/ARTICLE direto-filho de .slide-section
+   com bg branco computado → forçar transparente (vai herdar dark do pai) */
+.slide-section > div[class*="__wrap"],
+.slide-section > div[class*="-wrap"]:not([class*="img-wrap"]):not([class*="card-wrap"]),
+.slide-section > section,
+.slide-section > article {
+  background-color: transparent !important;
+}
