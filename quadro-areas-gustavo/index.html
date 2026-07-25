@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Como o quadro de áreas e os indicadores funcionam — DOIS A</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',-apple-system,Arial,sans-serif;background:#EEF1F6;color:#22303F;line-height:1.65}
+  .wrap{max-width:900px;margin:0 auto;background:#fff;box-shadow:0 2px 18px rgba(27,52,100,.10)}
+  .cover{background:#12203B;color:#fff;padding:46px 48px 40px}
+  .cover .brand{font-size:26pt;font-weight:800;letter-spacing:.02em}
+  .cover .brand span{color:#E87B1E}
+  .cover .sub{font-size:8.5pt;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.16em;text-transform:uppercase;margin-top:6px}
+  .cover h1{font-size:21pt;font-weight:700;margin:24px 0 10px;line-height:1.2}
+  .cover .lead{font-size:12pt;color:rgba(255,255,255,.82);max-width:64ch}
+  .cover .para-quem{margin-top:22px;font-size:9.5pt;color:#E87B1E;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .body{padding:38px 48px 46px}
+  h2{font-size:15.5pt;color:#12203B;font-weight:800;margin:34px 0 6px;padding-top:20px;border-top:2px solid #EEF1F6}
+  h2:first-child{border-top:0;padding-top:0;margin-top:0}
+  h2 .n{color:#E87B1E;font-weight:800;margin-right:8px}
+  p{margin:10px 0;font-size:11.5pt}
+  .destaque{font-weight:700;color:#12203B}
+  .callout{background:#F4F7FB;border-left:4px solid #1B3464;padding:14px 18px;margin:16px 0;border-radius:0 6px 6px 0;font-size:11pt}
+  .antes-depois{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .card{border:1px solid #DFE6EF;border-radius:8px;padding:18px 20px}
+  .card.antes{background:#FBF4F2;border-color:#E9CFC8}
+  .card.depois{background:#F0F8F3;border-color:#CBE7D6}
+  .card .tit{font-size:9.5pt;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+  .card.antes .tit{color:#B0492F}
+  .card.depois .tit{color:#1F8A54}
+  .card ul{margin:0;padding-left:18px}
+  .card li{font-size:10.5pt;margin:6px 0}
+  .passos{counter-reset:p;margin:18px 0}
+  .passo{display:flex;gap:16px;align-items:flex-start;margin:14px 0}
+  .passo .num{flex:0 0 34px;height:34px;border-radius:50%;background:#12203B;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13pt}
+  .passo .txt{flex:1}
+  .passo .txt b{color:#12203B}
+  .selos{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+  .selo{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;font-size:10.5pt;font-weight:700;border:1px solid}
+  .selo.ok{background:#EAF6EF;border-color:#1F9D57;color:#177A43}
+  .selo.dentro{background:#EAF1FA;border-color:#3F8AD9;color:#2E6DB0}
+  .selo.aten{background:#FBF1DE;border-color:#D98A1F;color:#A96712}
+  .selo.fora{background:#FBEAE7;border-color:#C0392B;color:#98291D}
+  .selo.semdado{background:#F0F2F5;border-color:#8A93A6;color:#67707F}
+  .fecho{background:#12203B;color:#fff;padding:26px 32px;border-radius:10px;margin-top:30px}
+  .fecho h3{font-size:13pt;margin-bottom:8px}
+  .fecho p{color:rgba(255,255,255,.85);font-size:11pt}
+  .foot{margin-top:26px;font-size:9pt;color:#7a8296;border-top:1px solid #EEF1F6;padding-top:14px}
+  @media(max-width:640px){.antes-depois{grid-template-columns:1fr}.cover,.body{padding-left:26px;padding-right:26px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="cover">
+    <div class="brand">DOIS<span>A</span></div>
+    <div class="sub">Incorporações · Estudo de Viabilidade</div>
+    <h1>Como o quadro de áreas e os indicadores do projeto funcionam — hoje, sem depender de ninguém digitar à mão</h1>
+    <div class="lead">Este documento conta, em linguagem simples, como a gente monta o quadro de áreas de um
+    empreendimento e como cada indicador do projeto passou a ser analisado sozinho, com nota e sinal de
+    "está bom ou não". Sem termos técnicos — só o passo a passo do que acontece.</div>
+    <div class="para-quem">Preparado para o Gustavo</div>
+  </div>
+  <div class="body">
+
+    <h2><span class="n">1.</span>O que é o quadro de áreas — e por que ele é o coração do estudo</h2>
+    <p>Todo empreendimento é, no fundo, um bolo de metros quadrados. Tem a área que a gente <b>vende</b>
+    (os apartamentos, as salas — a área privativa), a área <b>comum</b> (corredores, hall, escadas, elevadores,
+    lazer coberto) e a <b>garagem</b>. Somando tudo, dá a área total construída.</p>
+    <p>O <span class="destaque">quadro de áreas</span> é simplesmente essa conta organizada, torre por torre:
+    quanto é de cada coisa. Ele é a base de tudo — é a partir dele que se sabe se o projeto aproveita bem o
+    terreno, se não está "gordo" de área comum, se cabe no que a lei permite. Se o quadro de áreas está certo,
+    o estudo inteiro fica em pé. Se está errado, todo o resto desanda.</p>
+
+    <h2><span class="n">2.</span>Os indicadores: as "notas" de saúde do projeto</h2>
+    <p>Ter os metros quadrados não basta. O que importa é saber se esses números são <b>bons</b>. Para isso
+    existe uma régua de indicadores — pense neles como os exames de sangue do projeto. Cada um olha para um
+    aspecto: o quanto do prédio é área vendável, o peso da área comum, o quanto o terreno está sendo aproveitado
+    em relação ao que a prefeitura autoriza, e assim por diante.</p>
+    <p>Cada indicador tem uma <span class="destaque">faixa de referência</span> — um intervalo do que é
+    considerado ótimo, aceitável ou fraco, baseado na nossa experiência e nas normas. A pergunta que todo
+    indicador responde é uma só: <i>"o projeto, neste ponto, está dentro do que se espera de um bom
+    empreendimento — ou está fora?"</i></p>
+
+    <h2><span class="n">3.</span>Como era antes — e onde a gente tropeçava</h2>
+    <div class="antes-depois">
+      <div class="card antes">
+        <div class="tit">▲ Como era antes</div>
+        <ul>
+          <li>O quadro de áreas era montado <b>na mão</b>, junto com a apresentação. Cada estudo, do zero.</li>
+          <li>Os indicadores eram olhados <b>à parte</b>, quando eram olhados — sem estar do lado do quadro.</li>
+          <li>Não havia uma <b>nota automática</b>: alguém precisava lembrar qual era a faixa boa de cada um e
+          comparar de cabeça.</li>
+          <li>Quando faltava um dado, era comum <b>"chutar"</b> um número para não deixar em branco.</li>
+          <li>A conta da área comum às vezes dava <b>número negativo</b> por engano de digitação — e passava batido.</li>
+        </ul>
+      </div>
+      <div class="card depois">
+        <div class="tit">✓ Como é agora</div>
+        <ul>
+          <li>O quadro de áreas nasce <b>sozinho</b>, a partir da geometria real do projeto.</li>
+          <li>Os indicadores vêm <b>colados</b> ao quadro, na mesma folha.</li>
+          <li>Cada indicador já vem com <b>gráfico, faixa de referência e veredito</b> — bateu o olho, entendeu.</li>
+          <li>O que não dá para medir aparece como <b>"sem dado", com o motivo</b> — nunca um número inventado.</li>
+          <li>A conta da área comum é <b>blindada</b>: nunca sai negativa, e avisa se algo não fecha.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>A lição que ficou:</b> um estudo que "inventa" um número bonito para preencher lacuna
+    é pior do que um estudo que admite "aqui eu não tenho esse dado". Confiança se constrói com honestidade,
+    não com quadro cheio. Hoje o sistema prefere dizer "sem dado" a chutar.</div>
+
+    <h2><span class="n">4.</span>O que acontece hoje, passo a passo</h2>
+    <div class="passos">
+      <div class="passo"><div class="num">1</div><div class="txt"><b>Entra o projeto.</b> A partir das áreas
+      reais de cada torre (o que é privativa, comum e garagem) e dos limites do terreno, o quadro de áreas é
+      montado automaticamente — torre por torre, e o total do empreendimento.</div></div>
+      <div class="passo"><div class="num">2</div><div class="txt"><b>Os indicadores são calculados.</b> Na mesma
+      hora, cada indicador de viabilidade é calculado a partir desse quadro — sem ninguém digitar fórmula.</div></div>
+      <div class="passo"><div class="num">3</div><div class="txt"><b>Cada indicador é confrontado com a sua
+      faixa.</b> Um gráfico mostra exatamente onde o projeto caiu dentro das margens — perto do ótimo, no meio,
+      ou fora.</div></div>
+      <div class="passo"><div class="num">4</div><div class="txt"><b>Sai o veredito.</b> Cada indicador ganha um
+      selo colorido, para qualquer pessoa entender em um segundo:</div></div>
+    </div>
+    <div class="selos">
+      <span class="selo ok">✓ Otimizado</span>
+      <span class="selo dentro">• Dentro da faixa</span>
+      <span class="selo aten">! Atenção</span>
+      <span class="selo fora">▲ Fora da faixa</span>
+      <span class="selo semdado">— Sem dado</span>
+    </div>
+    <p>No fim, aparece um resumo do tipo <i>"5 indicadores avaliados · 1 dentro da faixa · 2 fora · 1 em
+    atenção"</i>. Assim, quem abre o estudo sabe na hora se o projeto já está redondo ou se ainda tem ponto
+    para ajustar — <b>sem precisar ser engenheiro para ler</b>.</p>
+
+    <h2><span class="n">5.</span>Por que isso é honesto (e não um carimbo de "está tudo ótimo")</h2>
+    <p>Um detalhe importante: o sistema <b>não</b> foi feito para dizer que está tudo bem. Se um indicador está
+    fora da faixa, ele vai aparecer <b>vermelho</b>, com o número real — mesmo que seja um projeto nosso. Isso é
+    proposital. Um relatório que só dá verde não convence ninguém; um relatório que aponta os pontos fortes
+    <i>e</i> os que merecem atenção é o que dá segurança para quem vai investir. A ferramenta mostra a verdade
+    do projeto, não uma versão maquiada dele.</p>
+
+    <h2><span class="n">6.</span>Como vai ser daqui para frente, para cada terreno novo</h2>
+    <p>A grande mudança é essa: <span class="destaque">isso deixou de ser um trabalho artesanal e virou um
+    processo</span>. Para um terreno novo, o caminho é sempre o mesmo e não depende de ninguém lembrar de fazer
+    cada etapa:</p>
+    <div class="callout">Chega o projeto do novo terreno → o quadro de áreas é montado sozinho → os indicadores
+    são calculados e recebem nota → sai o estudo com os gráficos e os vereditos prontos. <b>Mesma qualidade,
+    mesmo rigor, toda vez</b> — sem risco de esquecer um passo ou de errar uma conta na digitação.</div>
+    <p>Ou seja: o que antes levava tempo e dependia de atenção manual, hoje é um botão. E cada novo terreno já
+    entra recebendo o mesmo tratamento cuidadoso que os melhores estudos receberam até aqui.</p>
+
+    <div class="fecho">
+      <h3>Em uma frase</h3>
+      <p>O quadro de áreas e os indicadores do projeto agora se montam e se avaliam sozinhos, com nota e sinal
+      claro de "está bom ou não" — de um jeito honesto, que aponta o que está ótimo e o que precisa de atenção,
+      e que funciona igual para todo terreno novo que vier.</p>
+    </div>
+
+    <div class="foot">DOIS A Incorporações · Sistema de Estudo de Viabilidade · Documento explicativo (uso interno).
+    As áreas seguem as normas técnicas de medição (NBR 12721 e 14653) e os limites do Plano Diretor do lote.</div>
+  </div>
+</div>
+</body>
+</html>
