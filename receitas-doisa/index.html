@@ -2000,6 +2000,26 @@ python _ferramentas/test_quadro_areas.py</pre>
       <div class=&quot;footer-right&quot;>Gerado por Horus · REV. 2026-07-25 · uso interno</div>
     </div>
   </div>
+
+<div class=&quot;section&quot;>
+  <h2>Extensão 25/07 — a régua A01–A11 acoplada ao quadro (goal dos 11 indicadores)</h2>
+  <p>O extrator <code>gera_quadro_areas_json.py</code> ganhou <code>analise_regua()</code>: quando o quadro
+  de áreas é gerado, os <b>11 indicadores canônicos de viabilidade</b> (faixas de
+  <code>alvos_indicadores.json</code>, leitura melhor→pior, gap classifica na banda pior) são confrontados
+  com o quadro do empreendimento <b>consolidado</b> (H1/H2/H3 são blocos do mesmo projeto — soma correta).
+  O gerador <code>gera_secao_quadro_areas.py</code> emite, por indicador disponível, uma <b>band-bar SVG
+  inline</b> (faixas coloridas + marcador no valor + rótulos das margens) e um <b>selo de veredito</b>
+  (Otimizado ✓ / Dentro da faixa • / Atenção ! / Fora da faixa ▲ / Sem dado —), mais o resumo agregado.</p>
+  <p><b>Honestidade por desenho:</b> computados de verdade só A03, A05, A06, A11 (+A10 comparativo);
+  A01/A04/A04B/A07/A08 saem como “Sem dado” com o motivo explícito; A02/A09 são slots vazios da régua.
+  No Ancar R09: A03 58,5% FORA · A05 41,5% ATENÇÃO · A06 70,9% FORA · A11 70,4% DENTRO — vermelho real,
+  não carimbo. Prova: <code>test_quadro_areas.py</code> subiu de 41 → <b>77 checagens</b> (teste F: 12
+  slots, vereditos reais, gap→pior, 4 SVGs, firewall na régua) + R13 no fragmento canônico. Fluxo em
+  linguagem simples para o Gustavo:
+  <code>github.io/painel-doisa/quadro-areas-gustavo/</code>. Wiki: <code>receita-quadro-areas.md</code>
+  (seção “A régua A01–A11”).</p>
+</div>
+
 </body>
 </html>"></iframe>
 <iframe class="rec-frame" id="rec7" title="Receita no 7 — O projeto (renders)" scrolling="no" onload="szf(this)" srcdoc="<!DOCTYPE html>
