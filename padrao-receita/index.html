@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>O Padrão RECEITA — INCO A4 · e o mapa de todos os fluxos DOIS A</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter','Segoe UI',Arial,sans-serif; color:#1B3464; background:#EEF1F6; line-height:1.46; -webkit-font-smoothing:antialiased; }
+  .page { width:210mm; height:297mm; overflow:hidden; margin:0 auto 8mm; background:#fff; padding:15mm 16mm; box-shadow:0 2px 12px rgba(27,52,100,.12); position:relative; }
+  .kick { font-size:8pt; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#E87B1E; }
+  h1 { font-size:20pt; font-weight:800; line-height:1.1; margin:5px 0 3px; }
+  h1 span { color:#E87B1E; }
+  h2 { font-size:12pt; font-weight:800; color:#12203B; margin:15px 0 6px; padding-bottom:4px; border-bottom:2px solid #E87B1E; }
+  h3 { font-size:10pt; font-weight:700; color:#1B3464; margin:10px 0 2px; }
+  p, li { font-size:9.2pt; color:#2A3B57; }
+  ul, ol { margin:5px 0 5px 17px; } li { margin:2px 0; }
+  .lead { font-size:10.4pt; color:#3A4A66; margin-top:6px; }
+  .meta { font-size:7.8pt; color:#8494AE; margin-top:12px; letter-spacing:.04em; }
+  strong { color:#12203B; }
+  code { font-family:'SF Mono',Consolas,monospace; font-size:8.5pt; background:#EEF1F6; padding:1px 5px; border-radius:4px; color:#12203B; }
+  table { width:100%; border-collapse:collapse; margin:8px 0; }
+  th, td { text-align:left; font-size:8.1pt; padding:3.5px 7px; border-bottom:1px solid #E3E8F0; vertical-align:top; line-height:1.34; }
+  th { background:#12203B; color:#fff; font-weight:700; letter-spacing:.02em; }
+  tr:nth-child(even) td { background:#F6F8FB; }
+  td.id { font-weight:800; color:#12203B; white-space:nowrap; width:38px; }
+  td.st { white-space:nowrap; text-align:center; width:52px; font-size:10.5pt; }
+  .box { background:#F6F8FB; border-left:3px solid #E87B1E; padding:9px 14px; margin:9px 0; border-radius:0 6px 6px 0; }
+  .crit { border-left-color:#C0392B; background:#FCF3F2; }
+  .ok { border-left-color:#1E8449; background:#F1F9F4; }
+  .chip { display:inline-block; font-size:7.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:2px 8px; border-radius:99px; background:#E87B1E; color:#fff; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0; }
+  .grid3 { grid-template-columns:repeat(3,1fr); }
+  .card { background:#F6F8FB; border:1px solid #E3E8F0; border-radius:8px; padding:9px 12px; }
+  .card h4 { font-size:8.8pt; font-weight:800; color:#12203B; margin-bottom:2px; }
+  .card p { font-size:8.3pt; }
+  .num { display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; border-radius:50%; background:#1B3464; color:#fff; font-size:7.6pt; font-weight:800; margin-right:5px; }
+  .placar { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:11px 0; }
+  .kpi { background:#12203B; color:#fff; border-radius:8px; padding:10px 8px; text-align:center; }
+  .kpi .v { font-size:19pt; font-weight:800; line-height:1; color:#E87B1E; }
+  .kpi .l { font-size:7.2pt; text-transform:uppercase; letter-spacing:.08em; margin-top:4px; color:#B9C6DC; }
+  .sw { display:flex; gap:7px; margin:7px 0; flex-wrap:wrap; }
+  .sw div { flex:1; min-width:76px; border-radius:6px; padding:7px 7px; font-size:7.4pt; font-weight:700; text-align:center; border:1px solid #E3E8F0; }
+  .foot { position:absolute; bottom:8mm; left:16mm; right:16mm; font-size:7.2pt; color:#A6B3C9; border-top:1px solid #E9EDF4; padding-top:4px; display:flex; justify-content:space-between; }
+  @page { size:A4; margin:0; }
+  @media print { body{background:#fff;} .page{box-shadow:none; margin:0; page-break-after:always;} .page:last-child{page-break-after:auto;} }
+</style>
+</head>
+<body>
+
+<!-- ============ FOLHA 1 — CAPA ============ -->
+<div class="page" id="f1">
+  <div class="kick">DOIS A · Horus · Documento-padrão</div>
+  <h1>O Padrão <span>RECEITA</span><br>e o mapa de todos os nossos fluxos</h1>
+  <p class="lead">Este documento faz duas coisas. Primeiro, <strong>fixa o padrão</strong> que já usamos
+  sem nome — o mesmo formato do relatório que analisa as planilhas da <strong>Micaeli</strong> e das
+  receitas que explicam como nasce a <strong>apresentação estilo Ancar</strong>. Segundo, <strong>lista
+  todos os fluxos que a operação tem hoje</strong>, com o estado real de cada um, para você marcar
+  quais viram receita.</p>
+
+  <div class="box"><strong>Por que isto existe.</strong> Hoje o conhecimento de "como se faz" está em
+  três lugares que não conversam: a cabeça do Álvaro, o código na VPS e conversas antigas. Quando uma
+  pessoa nova entra — ou quando o próprio sistema precisa repetir um trabalho seis meses depois — não há
+  onde olhar. A receita resolve isso: é o documento que uma pessoa <strong>que não estava lá</strong>
+  consegue ler e entender o que foi feito, por que, e o que trava quando alguém tenta pular etapa.</p>
+  </div>
+
+  <h2>O placar de hoje</h2>
+  <div class="placar">
+    <div class="kpi"><div class="v">83</div><div class="l">fluxos mapeados</div></div>
+    <div class="kpi"><div class="v">8</div><div class="l">com receita fechada</div></div>
+    <div class="kpi"><div class="v">31</div><div class="l">parciais</div></div>
+    <div class="kpi"><div class="v">44</div><div class="l">sem receita</div></div>
+  </div>
+  <p>Os <strong>8 fechados</strong> são todos do mesmo domínio (o deck de investidor). Fora dele, a
+  operação inteira — atas, indicadores, RGI, secretária, CDG — roda sem receita escrita. É esse
+  desequilíbrio que a lista das folhas 4 a 9 mostra fluxo por fluxo.</p>
+
+  <h2>O que eu preciso de você</h2>
+  <ol>
+    <li><strong>Validar a lista.</strong> Faltou algum fluxo? Algum aí não existe mais?</li>
+    <li><strong>Marcar quais viram receita</strong> e em que ordem. Cada receita custa entre meia
+    sessão (fluxo já documentado) e duas sessões (fluxo que só existe na prática).</li>
+    <li><strong>Confirmar o padrão</strong> das folhas 2 e 3 — é ele que vale para todas.</li>
+  </ol>
+
+  <div class="meta">Uso interno · REV. 2026-07-28 · gerado por Horus · fontes: <code>estudo-viabilidade/receitas/HUB-RECEITAS.md</code>,
+  <code>.claude/commands/*.md</code>, <code>.claude/planejar-sistema/system-inventory.md</code>, <code>wiki/padroes/receita-*.md</code></div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 1 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 2 — A ANATOMIA ============ -->
+<div class="page" id="f2">
+  <div class="kick">Parte I · O padrão</div>
+  <h1>A anatomia de uma <span>receita</span></h1>
+  <p class="lead">Toda receita tem as mesmas <strong>oito seções, sempre na mesma ordem</strong>. A ordem
+  não é estética: ela força a escrever o <em>defeito</em> antes da <em>solução</em>, que foi o que fez as
+  receitas antigas envelhecerem mal — descreviam o passo a passo e esqueciam <strong>por que</strong>
+  cada trava existe. Seis meses depois alguém remove a trava por achá-la burocracia.</p>
+
+  <h2>As oito seções obrigatórias</h2>
+
+  <h3><span class="num">1</span>O defeito que a receita cura</h3>
+  <p>Abre com o <strong>problema real</strong>, com nome e data. Não "melhorar o processo" — mas
+  "publicamos quase o deck errado porque dois projetos irmãos tinham nomes parecidos". Sem esta seção
+  a receita vira manual genérico e ninguém a respeita.</p>
+
+  <h3><span class="num">2</span>A história — o que você decidiu, em ordem</h3>
+  <p>Todos os comentários do Álvaro em ordem cronológica, com o que ficou decidido em cada um. É a
+  seção que evita rediscutir a mesma coisa três vezes.</p>
+
+  <h3><span class="num">3</span>As dependências</h3>
+  <p>O que precisa existir <strong>antes</strong>. Na receita da massa: quadro de áreas + terreno. Quem
+  pula essa lista descobre o que falta no meio do caminho, com o trabalho já pela metade.</p>
+
+  <h3><span class="num">4</span>O fluxo passo a passo — com os gates que recusam</h3>
+  <p>Cada passo diz <strong>o que trava</strong> se a condição não for atendida, e <strong>onde a
+  aprovação humana é obrigatória</strong>. Um passo sem gate é um passo que vai falhar em silêncio.</p>
+
+  <h3><span class="num">5</span>A ferramenta oficial</h3>
+  <p>O arquivo que executa. Sempre aditivo (nunca reescreve o que já funciona), com contrato de erro
+  explícito — falhou, <strong>para e diz como corrigir</strong>, em vez de gerar meio resultado.</p>
+
+  <h3><span class="num">6</span>As armadilhas</h3>
+  <p>A memória durável: cada erro que já custou tempo vira uma linha aqui. É a seção que mais cresce e
+  a que mais paga.</p>
+
+  <h3><span class="num">7</span>A prova</h3>
+  <p>Como sabemos que funciona: comparação contra um resultado já aprovado, bateria de casos reais,
+  conferência visual na tela. <strong>Receita sem prova não é receita, é intenção.</strong></p>
+
+  <h3><span class="num">8</span>A ressalva honesta</h3>
+  <p>O que a receita <strong>não</strong> resolve. Escrito de propósito, para ninguém confiar demais.</p>
+
+  <div class="box crit"><span class="chip" style="background:#C0392B">Regra que sustenta tudo</span>
+  <strong>O código extrai os fatos, a análise escreve por cima.</strong> Nenhum número do documento pode
+  nascer fora do arquivo de fatos gerado pela máquina. É isso que garante o "zero invenção" — e é por
+  isso que o relatório da Micaeli é produzido em <strong>duas etapas separadas</strong>: primeiro os
+  fatos (rápido, determinístico, sem uma linha de prosa), depois a leitura por cima deles.</div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 2 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 3 — TRÍADE + KIT ============ -->
+<div class="page" id="f3">
+  <div class="kick">Parte I · O padrão</div>
+  <h1>A tríade, os critérios e o <span>kit visual</span></h1>
+
+  <h2>A tríade — toda receita são três arquivos, não um</h2>
+  <p>Um único documento nunca serve aos três públicos. Por isso cada receita nasce em três peças que
+  contam a mesma verdade em três níveis:</p>
+  <table>
+    <tr><th>Peça</th><th>Para quem</th><th>O que carrega</th><th>Onde vive</th></tr>
+    <tr><td><strong>1. O <code>.md</code> da wiki</strong></td><td>o agente (a IA que vai executar)</td><td>as regras, os gates, as decisões travadas</td><td><code>wiki/padroes/receita-&lt;nome&gt;.md</code></td></tr>
+    <tr><td><strong>2. A ferramenta <code>.py</code></strong></td><td>a máquina</td><td>o cálculo auditável + a bateria de testes</td><td>a pasta do sistema que a executa</td></tr>
+    <tr><td><strong>3. O relatório HTML</strong></td><td><strong>pessoas</strong> — sócios, equipe, quem chegou agora</td><td>a mesma coisa em linguagem simples, sem jargão</td><td>ao lado do sistema, publicável</td></tr>
+  </table>
+  <div class="box"><strong>A peça 3 é a que quase sempre é esquecida</strong> — e é a única que sobrevive
+  à saída de quem construiu. Ela é este formato aqui: folha A4, navy e laranja, sem uma linha de código
+  visível para o leitor.</div>
+
+  <h2>Os seis critérios para uma receita virar ✅</h2>
+  <ol>
+    <li><strong>História</strong> — os comentários do Álvaro em ordem, com o que ficou decidido.</li>
+    <li><strong>Dependências</strong> — o que precisa existir antes.</li>
+    <li><strong>Fluxo passo a passo</strong> com as travas de qualidade e os pontos de aprovação humana.</li>
+    <li><strong>Ferramenta oficial</strong> — aditiva, com contrato de erro e backup antes de qualquer escrita.</li>
+    <li><strong>Prova</strong> — comparação contra o aprovado + bateria de casos reais + conferência visual.</li>
+    <li><strong>Tríade completa</strong> — as três peças acima existem de fato.</li>
+  </ol>
+  <p style="font-size:8.6pt;color:#5A6B85;">Critério fixado na receita da massa em 24/07/2026 e aplicado sem exceção às oito receitas fechadas desde então.</p>
+
+  <h2>O kit visual — INCO A4</h2>
+  <p>É o mesmo já usado no relatório da Micaeli e nas receitas do deck. <strong>Não inventar variação.</strong></p>
+  <div class="sw">
+    <div style="background:#1B3464;color:#fff;">NAVY<br>#1B3464</div>
+    <div style="background:#12203B;color:#fff;">TINTA<br>#12203B</div>
+    <div style="background:#E87B1E;color:#fff;">LARANJA<br>#E87B1E</div>
+    <div style="background:#EEF1F6;color:#12203B;">FUNDO<br>#EEF1F6</div>
+    <div style="background:#F6F8FB;color:#12203B;">CAIXA<br>#F6F8FB</div>
+  </div>
+  <div class="grid grid3">
+    <div class="card"><h4>Formato</h4><p>Folhas A4 de <strong>210 × 297 mm</strong>. Abre no navegador e imprime igual, sem ajuste.</p></div>
+    <div class="card"><h4>Tipografia</h4><p><strong>Inter</strong> (ou Segoe UI / Arial). Títulos 800. Nada de fonte externa.</p></div>
+    <div class="card"><h4>Hierarquia</h4><p>Chapéu laranja → título → linha-guia. Todo <code>h2</code> leva a régua laranja.</p></div>
+    <div class="card"><h4>Caixas</h4><p>Laranja = regra · <strong>vermelha</strong> = gate crítico · <strong>verde</strong> = prova.</p></div>
+    <div class="card"><h4>Autossuficiência</h4><p>Zero arquivo externo. O arquivo viaja sozinho por e-mail.</p></div>
+    <div class="card"><h4>Linguagem</h4><p>Frase curta, sem sigla não explicada. Se precisa de glossário, está errado.</p></div>
+  </div>
+
+  <div class="box ok"><span class="chip" style="background:#1E8449">Referências vivas</span>
+  O relatório de mudanças da <strong>Micaeli</strong> (gerado a cada rodada mensal, arquivo por arquivo,
+  comparando com o mês anterior) e as <strong>oito receitas do deck de investidor</strong>
+  (<code>RELATORIO-receita-*.html</code>) são os exemplares canônicos. Qualquer receita nova se compara
+  a eles.</div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 3 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 4 — MAPA A ============ -->
+<div class="page" id="f4">
+  <div class="kick">Parte II · O mapa dos fluxos</div>
+  <h1>A. Estudo de viabilidade e <span>deck de investidor</span></h1>
+  <p class="lead">O domínio mais maduro — e o único com receitas fechadas. As oito ✅ nasceram do deck
+  <strong>Ancar GSC</strong>, aprovado em 24/07/2026: cada parte que tinha sido feita à mão foi
+  destilada numa receita. O que a tabela mostra é que <strong>o pipeline vertical (Natal) virou
+  receita e o horizontal não</strong>.</p>
+  <p style="font-size:8.4pt;color:#5A6B85;">Legenda: ✅ receita fechada (tríade completa) · 🟡 parcial
+  (existe skill ou ferramenta, falta a tríade) · ⬜ sem receita (feito à mão, caso a caso).</p>
+
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">A1</td><td><strong>Capa e fechamento do deck</strong></td><td>decisões existem na receita-mãe, sem receita própria</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A2</td><td><strong>O slide do bairro</strong> (a estrela azul)</td><td>aprovada 24/07. Consulta por coordenada caiu de 191 ms para 1 ms</td><td class="st">✅</td></tr>
+    <tr><td class="id">A3</td><td><strong>O terreno</strong> (mapa grande interativo)</td><td>ferramenta existe e roda sozinha; receita nunca escrita</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A4</td><td><strong>Estudo de massa</strong> (volumetria)</td><td>aprovada 24/07 — é a receita-referência de como fechar as outras</td><td class="st">✅</td></tr>
+    <tr><td class="id">A5</td><td><strong>Plantas baixas</strong> dirigidas pelos indicadores</td><td>aprovada 25/07. Curou o defeito de "plantas sempre iguais"</td><td class="st">✅</td></tr>
+    <tr><td class="id">A6</td><td><strong>Quadro de áreas + indicadores</strong></td><td>aprovada 25/07. Ainda exige digitar o quadro do arquiteto à mão</td><td class="st">✅</td></tr>
+    <tr><td class="id">A7</td><td><strong>Renders e galeria</strong> (imagens do projeto)</td><td>aprovada 25/07 — mas só as <em>pré-condições</em>; a operação em si é manual</td><td class="st">✅</td></tr>
+    <tr><td class="id">A8</td><td><strong>Mercado</strong> (as leituras de preço)</td><td>aprovada 25/07. Preço medido no círculo do terreno, não pelo bairro</td><td class="st">✅</td></tr>
+    <tr><td class="id">A9</td><td><strong>Proposta</strong> (permuta física)</td><td>aprovada 25/07. Era HTML colado à mão; virou cálculo auditável</td><td class="st">✅</td></tr>
+    <tr><td class="id">A10</td><td><strong>Publicação + blindagem</strong></td><td>aprovada 25/07. Link permanente + proteção antes de sair da casa</td><td class="st">✅</td></tr>
+    <tr><td class="id">A11</td><td><strong>O sistema unificado</strong> — um comando faz o estudo inteiro</td><td>entregue 25/07, provado ponta a ponta <strong>em um só terreno</strong> (vertical, Natal)</td><td class="st">🟡</td></tr>
+    <tr><td class="id">A12</td><td><strong>Pipeline horizontal</strong> (condomínio de casas)</td><td>ferramentas nasceram improvisadas no BS Fortim; fora do índice de receitas</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A13</td><td><strong>O loop de renderização</strong> pelo agente de imagens</td><td>a maior fonte de trabalho humano. Só existe em anotações de sessão</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A14</td><td><strong>Curadoria editorial do deck</strong> (o que mostrar/esconder)</td><td>decisões registradas por estudo; não há modelo reaproveitável</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A15</td><td><strong>Envelope legal fora de Natal</strong></td><td>Natal é 100% automático; qualquer outra cidade é lido à mão na lei</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A16</td><td><strong>Implantação</strong> (o desenho do conjunto no terreno)</td><td>no horizontal é o produto central e vive só no arquivo do arquiteto</td><td class="st">⬜</td></tr>
+    <tr><td class="id">A17</td><td><strong>Estudo sem projeto</strong> — 4 hipóteses ranqueadas pelo mercado</td><td>skill existe e roda; sem receita escrita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">A18</td><td><strong>Validação final do deck</strong> (o que impede erro sair)</td><td>validador existe; as duas travas mais importantes nunca foram construídas</td><td class="st">🟡</td></tr>
+  </table>
+
+  <div class="box crit"><strong>O achado desta folha.</strong> Oito receitas fechadas dão a sensação de
+  domínio resolvido. Não é. <strong>A11 só foi provado em um terreno</strong>, e todo o caminho
+  horizontal — massa, plantas, implantação — está fora do padrão. Um estudo horizontal novo hoje é
+  feito quase do zero.</div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 4 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 5 — B + C ============ -->
+<div class="page" id="f5">
+  <div class="kick">Parte II · O mapa dos fluxos</div>
+  <h1>B. RGI &nbsp;·&nbsp; C. <span>Painéis e indicadores</span></h1>
+
+  <h2>B. RGI — a rotina mensal da incorporação</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">B1</td><td><strong>Planilhas da Micaeli</strong> — consolida Pipa + Potengi, preenche o fluxo de caixa e entrega o <strong>relatório de mudanças</strong></td><td>pronto e auditado ponta a ponta. Um comando faz tudo. É o <strong>exemplar do padrão</strong> — mas a receita explicada nunca foi escrita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">B2</td><td><strong>Painel de desempenho (IDC)</strong> — planilha mensal das analistas</td><td>funciona; ressalva aberta de refazer o visual no padrão real</td><td class="st">🟡</td></tr>
+    <tr><td class="id">B3</td><td><strong>Planilhas do Judson</strong> — VGV e fluxo de caixa</td><td><strong>mapeado, automação não construída.</strong> Ainda 100% à mão todo mês</td><td class="st">⬜</td></tr>
+    <tr><td class="id">B4</td><td><strong>Apresentação mensal</strong> — do PowerPoint ao HTML no padrão DOIS A</td><td>skill existe e roda; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">B5</td><td><strong>O método de criar um fluxo novo da RGI</strong></td><td>já é quase uma receita — ensina o método em 7 etapas. Falta a tríade</td><td class="st">🟡</td></tr>
+    <tr><td class="id">B6</td><td><strong>Os decks mensais</strong> (EGPAR e DOIS A) publicados</td><td>rodam; conhecimento espalhado por sessões</td><td class="st">🟡</td></tr>
+  </table>
+  <div class="box"><strong>B1 é o caso mais importante da lista inteira.</strong> Ele já produz um
+  documento no padrão INCO todo mês, com a regra "código extrai os fatos, análise escreve por cima"
+  aplicada. Falta só escrever a receita <em>dele</em> — o documento que explica a quem não estava lá
+  como o robô decide o que é uma mudança de verdade e o que é ruído da planilha.</div>
+
+  <h2>C. Painéis e indicadores</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">C1</td><td><strong>Painel de indicadores de viabilidade</strong> — a base histórica que compara empreendimentos entre si</td><td>no ar, com ingestão em duas etapas (conferir → gravar). Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">C2</td><td><strong>Painel comparativo de viabilidade</strong> — o mesmo terreno atravessado por Modo × Preço × Régua</td><td>funciona; provado num só empreendimento (Tibau). Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">C3</td><td><strong>Relatório de viabilidade</strong> por empreendimento (até 5 cenários)</td><td>roda direto na VPS; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">C4</td><td><strong>Auditoria do relatório</strong> antes de entregar ao cliente</td><td>skill existe; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">C5</td><td><strong>Banco de rubricas de viabilidade</strong></td><td>desenho pronto, <strong>aguardando seu aval</strong> para construir</td><td class="st">⬜</td></tr>
+    <tr><td class="id">C6</td><td><strong>Painel-mestre de saúde</strong> — a tela que acende quando um fluxo cai</td><td>desenhado e discutido; <strong>não construído</strong></td><td class="st">⬜</td></tr>
+    <tr><td class="id">C7</td><td><strong>Painéis de gestão</strong> (visão do gestor e visão da DUO)</td><td>no ar, embutidos no ClickUp. Uma exposição conhecida em aberto</td><td class="st">🟡</td></tr>
+  </table>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 5 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 6 — D + E ============ -->
+<div class="page" id="f6">
+  <div class="kick">Parte II · O mapa dos fluxos</div>
+  <h1>D. Atas &nbsp;·&nbsp; E. <span>Secretária do Gustavo</span></h1>
+
+  <h2>D. Atas — do e-mail à ação cobrada</h2>
+  <p>O fluxo mais longo da casa: alguém manda a gravação por e-mail, o sistema transcreve, redige a ata,
+  gera os documentos, pede aprovação no Telegram e abre as ações no ClickUp. <strong>Nenhuma parte tem
+  receita escrita</strong> — e ele já quebrou de formas que ninguém percebeu por meses.</p>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">D1</td><td><strong>O pipeline inteiro</strong> — e-mail → ata → ClickUp</td><td>em produção, com monitoramento e alertas. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">D2</td><td><strong>Os documentos da ata</strong> (PDF, Word e HTML)</td><td>hoje há uma camada única que normaliza a entrada dos três. Antes, corrigir só onde o erro aparecia custou meses de Word saindo vazio</td><td class="st">🟡</td></tr>
+    <tr><td class="id">D3</td><td><strong>A aprovação por Telegram</strong> (aprovar / rejeitar)</td><td>funciona, com dono único do clique para não perder aprovação</td><td class="st">🟡</td></tr>
+    <tr><td class="id">D4</td><td><strong>Os dois destinos de ação</strong> — backlog público e confidencial</td><td>em produção desde 24/07. Regra de sigilo decidida e testada nos dois caminhos</td><td class="st">🟡</td></tr>
+    <tr><td class="id">D5</td><td><strong>O tutorial de como mandar uma ata</strong></td><td>e-mail pronto, no padrão visual do INCO — <strong>já é meia receita</strong></td><td class="st">🟡</td></tr>
+    <tr><td class="id">D6</td><td><strong>O relatório diário de pendências</strong> (7h da manhã)</td><td>roda; não enxerga o backlog confidencial de propósito</td><td class="st">🟡</td></tr>
+    <tr><td class="id">D7</td><td><strong>O checkpoint de memória</strong> do sistema de atas</td><td>existe como atalho de contexto; não é receita</td><td class="st">🟡</td></tr>
+  </table>
+
+  <h2>E. A secretária do Gustavo e o HORMIGON</h2>
+  <p>O sistema pessoal: lê o WhatsApp do Gustavo, organiza tudo num grupo de Telegram por assunto, e um
+  agente executa ações por conversa natural. <strong>Nada é enviado sem aprovação dele.</strong></p>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">E1</td><td><strong>Leitura do WhatsApp pessoal</strong> → cartões organizados por assunto</td><td>em produção. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">E2</td><td><strong>Leitura do WhatsApp comercial</strong> (Beatriz)</td><td>em produção, respondendo em linguagem natural</td><td class="st">🟡</td></tr>
+    <tr><td class="id">E3</td><td><strong>HORMIGON</strong> — o agente que executa (e-mail com a assinatura dele, WhatsApp, agenda, arquivos, lembretes)</td><td>provado ao vivo em 28/07: assinatura institucional no e-mail e mensagem para conversa nova, sem duplicar. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">E4</td><td><strong>A agenda do WhatsApp que se constrói sozinha</strong> — achar contato por nome</td><td>construída em 28/07. <strong>Ressalva viva:</strong> nasce vazia e só aprende de quem escreve; não há como recuperar o histórico</td><td class="st">🟡</td></tr>
+    <tr><td class="id">E5</td><td><strong>O índice dos arquivos pessoais</strong> (mais de 100 mil itens)</td><td>indexado e consultável. Sem receita</td><td class="st">🟡</td></tr>
+  </table>
+
+  <div class="box crit"><strong>Decisão sua, parada.</strong> Conectar a agenda inteira do WhatsApp do
+  Gustavo exige <strong>parar e subir de novo a sessão viva dele</strong>. O provável é reconectar sem
+  QR code, mas não é garantia — se pedir, o WhatsApp dele fica fora do ar até escanear. Não foi feito;
+  espera o seu OK explícito.</div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 6 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 7 — F + G + H ============ -->
+<div class="page" id="f7">
+  <div class="kick">Parte II · O mapa dos fluxos</div>
+  <h1>F. CDG &nbsp;·&nbsp; G. EconoMapas &nbsp;·&nbsp; H. <span>Entregáveis</span></h1>
+
+  <h2>F. CDG — o radar de licitações (cliente externo)</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">F1</td><td><strong>O radar</strong> — captura editais e dá nota a cada oportunidade</td><td>em produção. A explicação de <em>como a nota é calculada</em> já existe em HTML — <strong>é meia receita pronta</strong></td><td class="st">🟡</td></tr>
+    <tr><td class="id">F2</td><td><strong>Onboarding de um cliente novo</strong> no radar (qualquer ramo)</td><td>esteira de pesquisa em 6 blocos; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">F3</td><td><strong>O painel do CDG</strong></td><td>no ar. É o <strong>único painel que ainda depende do túnel</strong> — os outros já são estáticos</td><td class="st">🟡</td></tr>
+    <tr><td class="id">F4</td><td><strong>"Pergunte à IA"</strong></td><td>desativada em 21/07, código preservado. Pendências antes de reativar</td><td class="st">⬜</td></tr>
+    <tr><td class="id">F5</td><td><strong>Abertura e fechamento de sessão CDG</strong></td><td>protocolos existem; sem receita</td><td class="st">🟡</td></tr>
+  </table>
+
+  <h2>G. EconoMapas — a base de dados do entorno</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">G1</td><td><strong>Extração de dados</strong> (piloto RN), com trava de custo</td><td>roda com guarda de créditos. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">G2</td><td><strong>A base espacial do entorno</strong> — uma única porta de consulta</td><td>arquitetura auditada e aprovada, 190× mais rápida. Alimenta o slide do bairro</td><td class="st">🟡</td></tr>
+    <tr><td class="id">G3</td><td><strong>O guia completo não-técnico</strong></td><td>existe em HTML — <strong>já é uma receita em formato antigo</strong>, falta migrar ao padrão</td><td class="st">🟡</td></tr>
+  </table>
+
+  <h2>H. Entregáveis — apresentar, publicar e proteger</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">H1</td><td><strong>Deck institucional</strong> (padrão 1 — RGI, reunião)</td><td>padrão escrito e em uso. Falta a peça para humanos</td><td class="st">🟡</td></tr>
+    <tr><td class="id">H2</td><td><strong>Painel / deck de investidor</strong> (padrão 2 — fundo escuro)</td><td>padrão escrito e em uso</td><td class="st">🟡</td></tr>
+    <tr><td class="id">H3</td><td><strong>Deck de estudo de viabilidade</strong> (padrão 3)</td><td>coberto pelas receitas do domínio A</td><td class="st">✅</td></tr>
+    <tr><td class="id">H4</td><td><strong>Blindagem</strong> — marca d'água, criptografia e ofuscação antes de sair</td><td>em produção, testado ponta a ponta. Coberto em parte pela receita A10</td><td class="st">🟡</td></tr>
+    <tr><td class="id">H5</td><td><strong>Publicação</strong> — link permanente + cartão no ClickUp num comando</td><td>coberto pela receita A10 ✅</td><td class="st">✅</td></tr>
+    <tr><td class="id">H6</td><td><strong>Conteúdo para o LinkedIn</strong> a partir do trabalho da sessão</td><td>skill existe; sem receita</td><td class="st">🟡</td></tr>
+  </table>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 7 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 8 — I + J ============ -->
+<div class="page" id="f8">
+  <div class="kick">Parte II · O mapa dos fluxos</div>
+  <h1>I. Os agentes &nbsp;·&nbsp; J. <span>Governança e operação</span></h1>
+
+  <h2>I. Os agentes do Telegram</h2>
+  <p>Cinco agentes na VPS principal e um no laboratório. Cada um atende um assunto e um grupo de
+  pessoas. <strong>Nenhum tem receita</strong> — o que cada um faz, e o que acontece quando um cai,
+  está só no inventário técnico.</p>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">I1</td><td><strong>INCO</strong> — o orquestrador central (Gustavo, Dois A)</td><td>em produção</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I2</td><td><strong>LEAN</strong> — segurança do trabalho e normas</td><td>em produção</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I3</td><td><strong>LUMA</strong> — marketing</td><td>em produção</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I4</td><td><strong>GESTION</strong> — gestão e planejamento (dono dos cliques de aprovação)</td><td>em produção, crítico</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I5</td><td><strong>AURIS</strong> — atas</td><td>em produção, crítico</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I6</td><td><strong>TRENA</strong> — o agente do laboratório (VPS Arvo)</td><td>em produção</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I7</td><td><strong>Criar um agente novo</strong></td><td>skill e modelo existem; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">I8</td><td><strong>Auditar os agentes</strong> (comportamento, Telegram, sistema)</td><td>três skills de auditoria; sem receita</td><td class="st">🟡</td></tr>
+  </table>
+
+  <h2>J. Governança e operação</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">J1</td><td><strong>O governador arquitetural</strong> — roda antes de mexer em qualquer sistema</td><td>em uso, com catálogo de erros e histórico. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J2</td><td><strong>Início e fim de sessão</strong> — o protocolo que evita perder o fio</td><td>em uso todo dia. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J3</td><td><strong>O guardião do vault</strong> — checa e corrige a saúde da base sozinho</td><td>roda no início e no fim de toda sessão</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J4</td><td><strong>O guardião das skills</strong></td><td><strong>defeito conhecido em aberto:</strong> valida 18 de 74 entradas e passa verde. Fix precisa de preparo próprio</td><td class="st">⬜</td></tr>
+    <tr><td class="id">J5</td><td><strong>Criar uma skill nova</strong> por conversa guiada</td><td>skill existe; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J6</td><td><strong>Auditoria de segurança</strong> do sistema inteiro</td><td>skill existe, dois modos. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J7</td><td><strong>Relatórios periódicos</strong> — standup, paridade semanal, uso</td><td>skills existem; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J8</td><td><strong>Backup e recuperação de desastre</strong></td><td>executado ponta a ponta em 17/07. Sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">J9</td><td><strong>O documento-fundação da operação</strong> (o MANTRA)</td><td>existe: mapa do sistema + 15 classes de erro + lições. <strong>É a matéria-prima de várias receitas</strong></td><td class="st">🟡</td></tr>
+  </table>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 8 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 9 — K + L ============ -->
+<div class="page" id="f9">
+  <div class="kick">Parte II · O mapa dos fluxos</div>
+  <h1>K. Planilhas &nbsp;·&nbsp; L. <span>Projetos e clientes</span></h1>
+
+  <h2>K. Planilhas</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">K1</td><td><strong>Otimizar uma planilha do zero</strong> — assiste ao vídeo de quem usa, diagnostica, reconstrói e entrega o antes/depois</td><td>fluxo completo já executado (doca/terraplenagem). <strong>Forte candidato a receita</strong> — é repetível em qualquer planilha</td><td class="st">🟡</td></tr>
+    <tr><td class="id">K2</td><td><strong>Acompanhamento de custo de obra</strong> (doca e terraplenagem)</td><td>entregue com relatório para sócios; conhecimento na pasta do projeto</td><td class="st">🟡</td></tr>
+  </table>
+
+  <h2>L. Projetos e clientes</h2>
+  <table>
+    <tr><th></th><th>Fluxo</th><th>Estado real hoje</th><th class="st">R</th></tr>
+    <tr><td class="id">L1</td><td><strong>BRISA</strong> — plano de estruturação</td><td>entregue com rodadas de correção; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">L2</td><td><strong>DUO Incorporações</strong> — apresentação estratégica e fluxo de processos</td><td>publicado. O fluxo de processos <strong>já está em HTML</strong></td><td class="st">🟡</td></tr>
+    <tr><td class="id">L3</td><td><strong>Aurora / Viabilidade</strong> — automação da esteira</td><td>em produção, com protocolos de início e fim</td><td class="st">🟡</td></tr>
+    <tr><td class="id">L4</td><td><strong>NuPE</strong> — apresentações trimestrais</td><td>última publicada em 20/07; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">L5</td><td><strong>Onboarding de colaborador</strong> DOIS A</td><td>skill existe; sem receita</td><td class="st">🟡</td></tr>
+    <tr><td class="id">L6</td><td><strong>INCO na mesa do Gustavo</strong> (instalação no Mac dele)</td><td>concluído ao vivo em 28/07, com instalador de um clique</td><td class="st">🟡</td></tr>
+    <tr><td class="id">L7</td><td><strong>Arvo</strong> — o cliente externo e o laboratório</td><td>em produção; sem receita</td><td class="st">🟡</td></tr>
+  </table>
+
+  <h2>A leitura honesta desta lista</h2>
+  <div class="box">
+  <p><strong>Três coisas saltam:</strong></p>
+  <ol>
+    <li><strong>Já existem seis "meias-receitas" prontas</strong> que só precisam ser migradas para o
+    padrão: como o radar calcula a nota (F1), o guia do EconoMapas (G3), o tutorial de ata (D5), o método
+    de criar fluxo da RGI (B5), o fluxo de processos da DUO (L2) e o documento-fundação (J9). São as mais
+    baratas de fechar.</li>
+    <li><strong>Os fluxos que mais rodam são os que menos têm receita.</strong> Atas e RGI acontecem todo
+    mês, envolvem outras pessoas, e não têm nenhuma linha escrita para quem chega.</li>
+    <li><strong>Um fluxo inteiro nunca foi automatizado</strong> — as planilhas do Judson (B3) —
+    e a receita da Micaeli (B1) é o modelo pronto de como fazer.</li>
+  </ol>
+  </div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 9 de 10</span></div>
+</div>
+
+<!-- ============ FOLHA 10 — DECISÃO ============ -->
+<div class="page" id="f10">
+  <div class="kick">Parte III · A decisão</div>
+  <h1>O que eu preciso que <span>você marque</span></h1>
+  <p class="lead">A lista das folhas 4 a 9 tem <strong>83 fluxos</strong>. Escrever receita para todos
+  não faz sentido — muitos são variações de um mesmo método. O que proponho é você marcar em três
+  baldes, e eu executo na ordem.</p>
+
+  <h2>Balde 1 — as baratas: material já escrito, só falta padronizar <span style="font-weight:600;color:#E87B1E">· meia sessão cada</span></h2>
+  <table>
+    <tr><th>Fluxo</th><th>O que já existe</th></tr>
+    <tr><td><strong>F1</strong> · Como o radar calcula a nota</td><td>HTML explicativo pronto</td></tr>
+    <tr><td><strong>G3</strong> · Guia do EconoMapas</td><td>guia não-técnico completo em HTML</td></tr>
+    <tr><td><strong>D5</strong> · Como mandar uma ata</td><td>e-mail-tutorial no padrão do INCO</td></tr>
+    <tr><td><strong>B5</strong> · Como criar um fluxo novo da RGI</td><td>método em 7 etapas escrito</td></tr>
+    <tr><td><strong>L2</strong> · Fluxo de processos da DUO</td><td>HTML publicado</td></tr>
+    <tr><td><strong>J9</strong> · O documento-fundação da operação</td><td>mapa + 15 classes de erro + lições</td></tr>
+  </table>
+
+  <h2>Balde 2 — as que mais pagam: rodam todo mês, nada escrito <span style="font-weight:600;color:#E87B1E">· uma a duas sessões cada</span></h2>
+  <table>
+    <tr><th>Fluxo</th><th>Por que paga</th></tr>
+    <tr><td><strong>B1</strong> · As planilhas da Micaeli</td><td>o exemplar do padrão já produz o relatório; falta explicar o método</td></tr>
+    <tr><td><strong>D1–D4</strong> · O pipeline de atas inteiro</td><td>o fluxo mais longo e o que mais quebrou em silêncio</td></tr>
+    <tr><td><strong>C1</strong> · O painel de indicadores</td><td>a equipe já ingere sozinha; não há onde ler como se faz</td></tr>
+    <tr><td><strong>E3 + E4</strong> · HORMIGON e a agenda do WhatsApp</td><td>age em nome do Gustavo; as travas precisam estar escritas</td></tr>
+    <tr><td><strong>K1</strong> · Otimizar uma planilha</td><td>método repetível em qualquer planilha da casa</td></tr>
+  </table>
+
+  <h2>Balde 3 — exigem construir antes: o fluxo ainda não existe direito <span style="font-weight:600;color:#E87B1E">· decisão sua</span></h2>
+  <table>
+    <tr><th>Fluxo</th><th>O que falta</th></tr>
+    <tr><td><strong>B3</strong> · Planilhas do Judson</td><td>a automação inteira — mapeada, nunca construída</td></tr>
+    <tr><td><strong>A12–A16</strong> · O caminho horizontal do estudo</td><td>massa, plantas e implantação fora do padrão</td></tr>
+    <tr><td><strong>C5</strong> · Banco de rubricas</td><td>desenho pronto, aguarda seu aval</td></tr>
+    <tr><td><strong>C6</strong> · Painel-mestre de saúde</td><td>desenhado, não construído</td></tr>
+    <tr><td><strong>J4</strong> · Guardião das skills</td><td>defeito conhecido: valida 18 de 74 e passa verde</td></tr>
+  </table>
+
+  <div class="box ok"><span class="chip" style="background:#1E8449">Como me responder</span>
+  <p>Basta dizer os códigos. <em>"Balde 1 inteiro, mais B1 e D1 do balde 2"</em> já é instrução
+  suficiente — eu abro cada receita na tríade completa e volto com o HTML de cada uma no formato desta
+  folha aqui.</p></div>
+
+  <div class="box crit"><strong>Uma ressalva honesta.</strong> A lista foi montada lendo o índice de
+  receitas, as skills, o inventário técnico e o histórico de sessões — não por memória. Ainda assim,
+  fluxo que nunca deixou rastro escrito <strong>não apareceria aqui</strong>. Se você sentir falta de
+  algo, é provavelmente desse tipo — e é justamente o que mais precisa virar receita.</div>
+
+  <div class="meta">Uso interno · REV. 2026-07-28 · gerado por Horus · padrão INCO A4 (navy #1B3464 + laranja #E87B1E, Inter, folhas 210×297 mm)</div>
+
+  <div class="foot"><span>DOIS A · Padrão RECEITA — INCO A4</span><span>Folha 10 de 10</span></div>
+</div>
+
+</body>
+</html>
