@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melhoria dos Agentes — Auditoria Completa e Plano · 29/07/2026</title>
+<style>
+:root{
+  --bg:#080B12;
+  --surface:rgba(255,255,255,0.04);
+  --surface-hover:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.08);
+  --primary:#1B3464;
+  --accent:#E87B1E;
+  --accent-rgb:232,123,30;
+  --border-accent:rgba(var(--accent-rgb),0.35);
+  --text:#F0F4FF;
+  --text-muted:rgba(240,244,255,0.55);
+  --text-dim:rgba(240,244,255,0.3);
+  --ok:#22c55e; --ok-bg:rgba(34,197,94,0.12);
+  --warn:#f59e0b; --warn-bg:rgba(245,158,11,0.12);
+  --crit:#ef4444; --crit-bg:rgba(239,68,68,0.12);
+  --info:#3b82f6; --info-bg:rgba(59,130,246,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:Inter,'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}
+.orb-1{width:600px;height:600px;top:-200px;left:-100px;background:radial-gradient(circle,rgba(27,52,100,0.45) 0%,transparent 70%);animation:breathe 16s ease-in-out infinite}
+.orb-2{width:400px;height:400px;bottom:-100px;right:-100px;background:radial-gradient(circle,rgba(var(--accent-rgb),0.15) 0%,transparent 70%);animation:breathe 11s ease-in-out 3s infinite}
+@keyframes breathe{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:48px 24px 80px}
+header{margin-bottom:36px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-size:clamp(28px,4.5vw,44px);font-weight:300;letter-spacing:-1px;line-height:1.15}
+h1 b{font-weight:800}
+.sub{color:var(--text-muted);font-size:15px;margin-top:12px;max-width:820px}
+.pillrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:100px;border:1px solid var(--border)}
+.pill.ok{color:var(--ok);background:var(--ok-bg);border-color:rgba(34,197,94,.3)}
+.pill.warn{color:var(--warn);background:var(--warn-bg);border-color:rgba(245,158,11,.3)}
+.pill.crit{color:var(--crit);background:var(--crit-bg);border-color:rgba(239,68,68,.3)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:34px 0 8px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 18px;backdrop-filter:blur(20px)}
+.kpi .n{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1;font-feature-settings:'cv02','cv03','cv04','cv11'}
+.kpi .l{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:8px;line-height:1.4}
+.kpi.good .n{color:var(--ok)} .kpi.bad .n{color:var(--crit)} .kpi.mid .n{color:var(--warn)} .kpi.acc .n{color:var(--accent)}
+section{margin-top:56px}
+h2{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+h2 .num{font-size:13px;font-weight:800;color:var(--accent);background:rgba(var(--accent-rgb),.12);border:1px solid var(--border-accent);border-radius:8px;padding:4px 10px;letter-spacing:1px}
+.lead{color:var(--text-muted);font-size:15px;max-width:860px;margin-bottom:22px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;backdrop-filter:blur(20px);margin-bottom:16px}
+.card h3{font-size:17px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card p{font-size:14px;color:var(--text-muted);margin-bottom:10px;max-width:900px}
+.card p b, .card li b{color:var(--text);font-weight:600}
+.card ul{margin:8px 0 10px 20px}
+.card li{font-size:14px;color:var(--text-muted);margin-bottom:8px;max-width:880px}
+.tag{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.tag.crit{color:var(--crit);background:var(--crit-bg)} .tag.warn{color:var(--warn);background:var(--warn-bg)}
+.tag.ok{color:var(--ok);background:var(--ok-bg)} .tag.info{color:var(--info);background:var(--info-bg)}
+.tag.acc{color:var(--accent);background:rgba(var(--accent-rgb),.12)}
+.fix{border-left:3px solid var(--ok);background:var(--ok-bg);border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:var(--text-muted);margin-top:10px}
+.fix b{color:var(--ok)}
+.todo{border-left:3px solid var(--accent);background:rgba(var(--accent-rgb),.08);border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:var(--text-muted);margin-top:10px}
+.todo b{color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.quote{border-left:3px solid var(--accent);padding:14px 20px;margin:18px 0;font-size:16px;font-weight:300;font-style:italic;color:var(--text);background:var(--surface);border-radius:0 12px 12px 0;max-width:860px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+th{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top}
+td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+.phase{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start}
+.phase .ball{flex:0 0 auto;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;background:rgba(var(--accent-rgb),.12);border:1px solid var(--border-accent);color:var(--accent)}
+.phase .body{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+.phase .body h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.phase .body h4 small{font-weight:500;color:var(--text-dim);font-size:12px;margin-left:8px}
+.phase .body p, .phase .body li{font-size:13.5px;color:var(--text-muted)}
+.phase .body ul{margin:6px 0 4px 18px}
+.phase .body li{margin-bottom:5px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--border);font-size:14px;color:var(--text-muted)}
+.check:last-child{border-bottom:none}
+.check .box{flex:0 0 auto;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border-accent);margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.check.done .box{background:var(--ok-bg);border-color:rgba(34,197,94,.5);color:var(--ok)}
+.check.done{color:var(--text)}
+footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-dim);line-height:1.8}
+.featured{border:1px solid var(--border-accent);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),0)}50%{box-shadow:0 0 24px 0 rgba(var(--accent-rgb),.12)}}
+</style>
+</head>
+<body>
+<div class="orb orb-1" aria-hidden="true"></div>
+<div class="orb orb-2" aria-hidden="true"></div>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Dois A · Sistema OpenClaw · Relatório interno · 29 de julho de 2026</div>
+  <h1>Melhoria dos Agentes —<br><b>auditoria completa, verdades e plano</b></h1>
+  <p class="sub">Este relatório responde, em linguagem simples e com total franqueza, às suas perguntas: <b>o que construímos, fizemos do jeito certo, o que faltou, o que precisamos corrigir, e o que falta para ficarmos tranquilos?</b> Tudo aqui foi verificado hoje, ao vivo, nos servidores e no seu computador — nada é de memória.</p>
+  <div class="pillrow">
+    <span class="pill ok">Máquina: funcionando há 9 dias sem falha</span>
+    <span class="pill crit">Produto: zero lições aprendidas até hoje</span>
+    <span class="pill warn">8 descobertas sérias nesta auditoria</span>
+    <span class="pill ok">3 consertos já feitos hoje</span>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi good"><div class="n">9</div><div class="l">dias seguidos com a rotina noturna rodando perfeita</div></div>
+  <div class="kpi bad"><div class="n">0</div><div class="l">lições efetivamente aprendidas e compartilhadas</div></div>
+  <div class="kpi mid"><div class="n">411</div><div class="l">lições candidatas retidas na "alfândega" por excesso de rigor</div></div>
+  <div class="kpi bad"><div class="n">23</div><div class="l">dias que o sistema antigo de aprendizado está parado sem ninguém notar</div></div>
+  <div class="kpi acc"><div class="n">8</div><div class="l">descobertas graves desta auditoria (2 já corrigidas hoje)</div></div>
+</div>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">01</span>O que é esse projeto, em uma imagem</h2>
+  <p class="lead">Pense numa <b>escola noturna para os seus agentes de IA</b>. Todos os dias de madrugada, enquanto ninguém usa o sistema, uma rotina automática acontece em cinco atos:</p>
+  <div class="card">
+    <ul>
+      <li><b>02h — O vigia:</b> confere se a "biblioteca" da escola ainda responde certo às perguntas de teste (para pegar degradação silenciosa).</li>
+      <li><b>03h — O bibliotecário:</b> lê tudo o que os agentes (INCO, TRENA, LUMA...) fizeram no dia e separa o que parece ser uma lição que valeria a pena guardar — um jeito melhor de fazer planilha, um erro que não pode se repetir, um método que funcionou.</li>
+      <li><b>04h — O historiador:</b> faz o mesmo com o passado — vasculha meses de histórico antigo em ondas.</li>
+      <li><b>05h — O cofre:</b> faz as cópias de segurança de tudo (backup), em vários lugares, e avisa se algo der errado.</li>
+      <li><b>05h20 e 07h — A alfândega e o carteiro:</b> cada lição candidata passa por um filtro rigorosíssimo que <b>remove qualquer segredo de cliente</b> (nomes, valores, obras — nada da Dois A pode vazar para a Arvo, e vice-versa), depois um "juiz" de IA confere de novo, e o que sobrevive vira uma mensagem no seu Telegram: você aprova ou reprova cada lição <b>respondendo com uma única palavra</b>. Às 7h chega o relatório do dia, contando o que o sistema aprendeu.</li>
+    </ul>
+    <p>O objetivo final: <b>todos os agentes chegarem ao nível do INCO</b>, aprendendo uns com os outros automaticamente, sem você precisar fazer nada além de ler um relatório e responder "sim" ou "não" de vez em quando. E qualquer agente novo que você criar já nasce herdando tudo isso.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">02</span>O que está de pé e provado (a parte boa é real)</h2>
+  <p class="lead">Antes das críticas, o que é sólido — e foi <b>verificado hoje ao vivo</b>, não em relatório antigo:</p>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="tag ok">Provado hoje</span> A rotina noturna roda sozinha há 9 dias</h3>
+      <p>Desde 21/07, todas as etapas da madrugada rodaram <b>todos os dias, sem uma única falha</b> — inclusive era exigência formal do projeto rodar 7 dias seguidos antes de ser considerado pronto. Esse teste do relógio <b>foi cumprido e superado</b>, e ninguém tinha conferido até hoje.</p>
+    </div>
+    <div class="card">
+      <h3><span class="tag ok">Provado hoje</span> O backup diário funciona, e o alarme também</h3>
+      <p>Todas as manhãs o servidor principal é copiado para um cofre local <b>e para a nuvem (OneDrive de 1 TB)</b>. Hoje às 8h06 rodou de novo, com sucesso. E existe um "vigia de silêncio": se um dia o backup não rodar, você recebe alerta por e-mail — isso foi testado de verdade em julho e o alerta chegou no seu celular.</p>
+    </div>
+    <div class="card">
+      <h3><span class="tag ok">Qualidade rara</span> O filtro anti-vazamento é levado a sério</h3>
+      <p>O filtro que impede segredo de cliente de cruzar a fronteira foi construído com disciplina incomum: centenas de testes, ataques simulados (textos disfarçados, letras trocadas, espaçamentos maliciosos — 84 técnicas de burla, todas bloqueadas), e a regra de ouro "na dúvida, reprova". Os dois revisores independentes desta auditoria elogiaram a qualidade da construção.</p>
+    </div>
+    <div class="card">
+      <h3><span class="tag ok">Provado em julho</span> Cópia completa dos dois servidores existe</h3>
+      <p>Em 21/07 foi feita uma cópia <b>do disco inteiro</b> dos dois servidores (Dois A e Arvo) para a nuvem, e a restauração foi testada lendo direto do OneDrive. (Sobre o que aconteceu com uma dessas cópias depois — veja a descoberta nº 5. Já foi resolvido.)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">03</span>As 8 descobertas desta auditoria</h2>
+  <p class="lead">Aqui está o que a investigação profunda encontrou — em ordem do que mais importa. Duas já foram <b>corrigidas hoje mesmo</b>, durante a auditoria. Nenhuma delas apareceu antes porque todas têm a mesma característica: <b>falham em silêncio, com aparência de sucesso</b>. É exatamente a classe de problema mais perigosa que existe.</p>
+
+  <div class="card featured">
+    <h3><span class="tag crit">A descoberta central</span> 1 · A fábrica funciona perfeitamente — e não produz nada</h3>
+    <p>Em 9 dias de rotina impecável, o sistema aprendeu <b>zero lições</b>. Nenhuma. A fila de aprovação no seu Telegram nunca recebeu uma mensagem sequer. 411 lições candidatas estão retidas na "alfândega", e a biblioteca central está vazia.</p>
+    <p>Isso não é um defeito só — é a <b>soma de quatro problemas</b> que se escondem um atrás do outro (descobertas 2, 3, 4 e 8 abaixo). Cada um sozinho já seria suficiente para travar a produção; juntos, eles garantiram que os nove painéis verdes de "tudo funcionou" não significassem nada. A frase que resume esta auditoria veio de um dos revisores: <b>"é um alicerce muito bem-feito segurando um andar que ninguém habita"</b>.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag crit">Grave</span> 2 · O bibliotecário está lendo a gaveta errada</h3>
+    <p>O leitor noturno busca o trabalho do dia dos agentes numa pasta específica do servidor. Descobrimos hoje que <b>as conversas reais de produção pararam de cair nessa pasta no dia 22/07</b> — o sistema que atende o Telegram grava em outro lugar. Ou seja: há uma semana o bibliotecário abre uma gaveta vazia todas as noites, anota "não havia nada para ler hoje" e vai embora satisfeito.</p>
+    <p><b>Por que ninguém percebeu:</b> "não houve material novo" e "estou olhando no lugar errado" produzem exatamente o mesmo relatório verde.</p>
+    <div class="todo"><b>Correção definida:</b> apontar o leitor também para a pasta onde as conversas reais vivem hoje (e criar um alarme: "se três noites seguidas não houver nada para ler, me avise" — silêncio prolongado nunca mais deve parecer normal).</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag crit">Grave</span> 3 · A alfândega barra por engano — inclusive a palavra "árvore"</h3>
+    <p>O filtro anti-vazamento procura nomes proibidos (clientes, obras, marcas) dentro dos textos. Só que ele procura <b>pedaços de palavras dentro de outras palavras</b>. Exemplo real encontrado pelo revisor: como "Arvo" é nome de cliente, qualquer texto com a palavra <b>"árvore"</b> é reprovado — porque "arvo" está escondido dentro de "árvore". Um texto inocente como "a árvore de decisão ajuda a organizar o método" é confiscado na hora.</p>
+    <p>Essa é a explicação mais provável para boa parte das 411 lições retidas. O rigor está certo como filosofia ("na dúvida, reprova" é a escolha correta quando o risco é vazar dado de cliente) — mas rigor <b>com defeito de fabricação</b> não é rigor, é cegueira: confisca o inocente sem proteger melhor contra o culpado.</p>
+    <div class="todo"><b>Correção definida (em 3 passos seguros):</b> primeiro <b>medir</b> — passar as 411 retidas por um raio-X e ver exatamente por qual motivo cada uma foi barrada; depois ensinar o filtro a reconhecer palavras inteiras (e não pedaços); por fim, repetir a bateria completa de testes de segurança para garantir que nenhuma proteção real foi afrouxada. Se a segurança piorar um milímetro, volta tudo atrás.</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag crit">Depende de você · 2 minutos</span> 4 · O juiz está sem crachá desde 25 de junho</h3>
+    <p>Depois do filtro automático, cada lição passa por um "juiz" de inteligência artificial que dá o veredito final. Esse juiz precisa de uma credencial de acesso (um "crachá") no servidor — e esse crachá <b>está vencido desde 25/06</b>. Sem ele, o juiz reprova tudo por precaução (o que é o comportamento certo: na dúvida, não deixa passar). Este é o único item de toda a lista que <b>só você pode resolver</b>, porque exige um login manual seu. Leva uns dois minutos.</p>
+    <div class="todo"><b>Ação sua:</b> rodar o login do Claude no servidor da Dois A (te passo o comando exato quando quiser fazer — é abrir um link e confirmar no navegador).</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag ok">JÁ CORRIGIDO HOJE</span> 5 · Um backup estava apagando o outro — em silêncio, há 7 dias</h3>
+    <p>Esta é a descoberta mais desconfortável — e a mais importante de contar com honestidade. A cópia de <b>disco inteiro</b> do servidor Dois A (feita em 21/07, 77 GB) foi guardada numa pasta da nuvem. Só que o backup <b>diário</b> foi configurado para "espelhar" outra cópia <b>na mesma pasta</b> — e espelhar significa "deixe o destino idêntico à origem, <b>apagando o que sobrar</b>". Resultado: no dia seguinte, o espelho diário <b>apagou a cópia de disco inteiro</b>. E todos os dias desde então o sistema registrou "backup na nuvem: OK".</p>
+    <p><b>A ironia que precisa ser dita:</b> o sistema inteiro nasceu para eliminar a classe de erro "parece que funcionou, mas não funcionou" — e a própria camada de proteção cometeu exatamente esse erro. É a prova de que verificação de verdade (abrir o cofre e conferir o que tem dentro, como fizemos hoje) vale mais que qualquer luzinha verde.</p>
+    <div class="fix"><b>Corrigido hoje, durante a auditoria:</b> a cópia de disco inteiro agora vai para um cofre <b>separado e exclusivo</b>, que o espelho diário não toca. Uma cópia nova e completa do servidor já está sendo gravada na nuvem neste momento. A cópia do servidor Arvo não foi afetada (está intacta na nuvem).</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag crit">Grave · conserto simples</span> 6 · A porta de aprovação está destrancada</h3>
+    <p>Quando uma lição chegar à fila do Telegram, a regra do projeto é clara: <b>só você</b> aprova, com uma palavra. Mas o revisor descobriu que o código <b>não confere quem respondeu</b>. Qualquer pessoa no grupo de automações que responder "ok" numa mensagem de pendência faria o sistema publicar a lição como se fosse decisão sua. Hoje isso nunca aconteceu (porque nenhuma lição chegou lá), mas destravar a produção sem trancar essa porta seria trocar um problema por outro pior.</p>
+    <div class="todo"><b>Correção definida:</b> o sistema passa a aceitar aprovação <b>apenas do seu usuário</b> do Telegram (e só dentro do grupo certo). São poucas linhas — entra na primeira leva de consertos, antes de qualquer destravamento.</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag warn">Sério</span> 7 · Duas rotinas antigas morreram em silêncio — e os vigias não gritaram</h3>
+    <p>Duas descobertas irmãs, do mesmo tipo:</p>
+    <ul>
+      <li><b>O aprendizado semanal antigo está parado há 23 dias.</b> Enquanto o sistema novo não assume, o combinado era o método antigo (a "biblioteca de metodologias" semanal) continuar rodando. A última rodada foi em 06/07. Existe até um vigia programado para alertar se passasse de 10 dias — e ele não deu um pio. Resultado: <b>na prática, nenhum agente aprende nada novo desde 6 de julho</b>, nem pelo sistema antigo, nem pelo novo.</li>
+      <li><b>A cópia diária do servidor para o seu computador falha todos os dias desde 18/07.</b> Ela foi consertada no dia 18, funcionou uma vez, e desde então registra "ERRO" toda madrugada às 6h — onze dias seguidos — sem ninguém saber. (O impacto real é amortecido porque o backup principal na nuvem está funcionando; mas uma camada de proteção morta que ninguém percebe é um aviso sobre o método, não um detalhe.)</li>
+    </ul>
+    <div class="todo"><b>Correções definidas:</b> rodar a rodada semanal atrasada do sistema antigo (ele volta a ser o aprendizado vivo enquanto o novo destrava); investigar e consertar — ou aposentar formalmente — a cópia para o PC; e consertar os dois vigias que dormiram no ponto, porque vigia que não grita é pior que não ter vigia: dá falsa tranquilidade.</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag warn">Sério</span> 8 · A biblioteca não tem leitores</h3>
+    <p>Mesmo que amanhã as lições comecem a ser aprovadas, descobrimos que <b>nenhum agente consulta a biblioteca central hoje</b>. O mecanismo de busca que os agentes usariam para achar as lições foi construído e testado (596 linhas de código, 94 testes)… mas <b>nada nem ninguém o chama</b>. É uma biblioteca com acervo, fichário e catálogo — sem porta de entrada para os alunos. Essa conexão final (fazer o INCO, a TRENA e os demais efetivamente lerem e usarem as lições) era a última fase do projeto e nunca foi iniciada.</p>
+    <div class="todo"><b>Correção definida:</b> depois de destravar a produção de lições, ligar o consumo: indexação automática da biblioteca + conectar a consulta nos agentes. Sem isso, todo o resto é preparação sem colheita.</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag info">Brechas técnicas menores (agrupadas)</span> E mais cinco fragilidades que os revisores encontraram</h3>
+    <ul>
+      <li><b>A "memória de vereditos" do juiz tem uma porta lateral:</b> quem conseguir escrever num certo arquivo do servidor poderia forjar aprovações sem o juiz nunca rodar — e essa memória ainda guarda em texto puro trechos da justificativa do juiz (que podem conter dado sensível), contrariando a própria promessa do código.</li>
+      <li><b>Um texto malicioso poderia "hipnotizar" o juiz:</b> como os dois juízes são o mesmo modelo de IA lendo o mesmo formato, um texto especialmente construído poderia enganar os dois de uma vez. Improvável no nosso uso interno, mas a proteção é barata e vale fazer.</li>
+      <li><b>Um dos testes de segurança mais importantes é decorativo:</b> ele "passa" sempre, por construção, sem testar o que promete testar.</li>
+      <li><b>Com o crescimento, um limite escondido apagaria a visão do sistema:</b> quando os agentes acumularem mais de 500 arquivos de histórico, um pequeno erro de lógica faria o leitor noturno enxergar sempre os arquivos <b>antigos</b> (já lidos) e nunca os novos — de novo, em silêncio. Ainda não aconteceu (estamos em 111), mas é uma bomba-relógio com data.</li>
+      <li><b>Cerca de um terço do código construído nunca é usado por nada</b> — foi feito com esmero, testado com centenas de cenários, e está parado. Não é prejuízo direto (pode servir depois), mas é sintoma de um desequilíbrio: capricho de sobra na fundação, e faltou gente morando na casa.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">04</span>Fizemos do jeito certo? — a resposta honesta</h2>
+  <p class="lead">Você pediu sinceridade. Aqui vai, sem maquiagem, dos dois lados.</p>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="tag ok">O que fizemos bem — e é raro</span></h3>
+      <ul>
+        <li><b>Pesquisa antes de construir:</b> ~1.800 fontes estudadas antes de escrever a primeira linha. As decisões de desenho têm justificativa documentada, uma a uma.</li>
+        <li><b>Decisões suas foram respeitadas:</b> 49 decisões travadas com você; quando a pesquisa contrariou 5 escolhas suas, elas foram trazidas de volta com evidência em vez de mudadas por conta própria — e você aprovou todas.</li>
+        <li><b>Disciplina de prova:</b> "nunca declarar pronto sem testar" foi levado a sério — dezenas de defeitos reais foram capturados pelos próprios testes antes de chegarem a produção.</li>
+        <li><b>Segurança na direção certa:</b> tudo foi desenhado para, na dúvida, <b>reprovar</b> — vazar dado de cliente é o único erro sem volta, e o sistema nunca chegou perto de cometê-lo.</li>
+        <li><b>Honestidade nos registros:</b> os diários da obra admitem erros, refutam os próprios diagnósticos e corrigem o rumo por escrito. Esta auditoria só foi possível por causa disso.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="tag crit">Onde erramos — com nome e sobrenome</span></h3>
+      <ul>
+        <li><b>Confundimos "a máquina roda" com "a máquina entrega".</b> Nove dias de painéis verdes mediram apenas que os processos terminavam — não que produziam algo. Faltou UM indicador do que importa: "quantas lições foram aprendidas esta semana?" (resposta: zero, e ninguém viu).</li>
+        <li><b>Perfeição no lugar errado.</b> Construímos ~6.000 cenários de teste — e os quatro defeitos mais graves desta auditoria não seriam pegos por nenhum deles, porque só aparecem no mundo real (a gaveta errada, o espelho que apaga, a porta destrancada, o crachá vencido). Testamos demais o interior e de menos as bordas com a realidade.</li>
+        <li><b>Terminamos a fundação e paramos antes do telhado.</b> A frente entrou em "modo de espera" no dia 21/07 aguardando duas coisas pequenas (seu login e o relógio) — e ficou 8 dias invisível porque a memória de longo prazo que deveria lembrar dela não tinha sido criada de fato.</li>
+        <li><b>Vigias que não vigiam.</b> Três alarmes diferentes (o do aprendizado semanal, o da cópia para o PC, o de "zero material novo") falharam ou nunca existiram. Silêncio virou sinônimo de saúde — e não é.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="quote">O padrão dos nossos erros não foi preguiça nem pressa — foi o oposto: excesso de capricho nos componentes e falta de uma pergunta simples feita todo dia: <b>"e o resultado, apareceu?"</b></div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">05</span>A reflexão de fundo — o que a gente quer, de verdade?</h2>
+  <div class="card">
+    <p><b>O que você pediu, na essência, não foi um software.</b> Foi isto: que a experiência acumulada da operação — cada acerto do INCO, cada tropeço da TRENA, cada método que funcionou — <b>deixe de evaporar</b>. Que o conhecimento se acumule como patrimônio, em vez de se perder a cada conversa encerrada. E que isso aconteça <b>sem te consumir</b>, e sem jamais misturar o que é de um cliente com o que é de outro.</p>
+    <p>Olhando com honestidade, existem três degraus nessa ambição, e é útil separá-los:</p>
+    <ul>
+      <li><b>Degrau 1 — Não perder nada (memória e backup).</b> Está praticamente conquistado: cópias diárias, cofre na nuvem, alarme de silêncio, restauração provada. As falhas achadas hoje eram de vigilância, não de arquitetura — e as duas piores já foram corrigidas.</li>
+      <li><b>Degrau 2 — Aprender com segurança (a escola noturna).</b> A infraestrutura está pronta e é boa. O que falta não é construção: é <b>calibragem e conexão</b> — afinar a alfândega, dar o crachá ao juiz, apontar o leitor para a gaveta certa, trancar a porta da aprovação. Semanas, não meses.</li>
+      <li><b>Degrau 3 — Melhorar de forma comprovada.</b> Este é o degrau que separa "sensação de progresso" de progresso real: repetir a prova cega que fizemos em julho (os agentes acertaram 32 de 40 tarefas) <b>depois</b> que a memória estiver viva, e ver o número subir. Se não subir, a resposta certa é ajustar ou simplificar — nunca fingir.</li>
+    </ul>
+    <p><b>E há uma verdade filosófica que esta auditoria escancarou:</b> um sistema autônomo vale exatamente o que valem os seus alarmes. Autonomia sem vigilância honesta não é tranquilidade — é ansiedade adiada. A regra que fica, para tudo o que operamos: <b>nenhuma rotina automática existe de verdade até existir também o alarme que grita quando ela para de entregar resultado</b> — não quando ela para de rodar, que é fácil, mas quando ela roda e não entrega, que é o que aconteceu conosco nove noites seguidas.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">06</span>Somos capazes? — a resposta sincera</h2>
+  <div class="card featured">
+    <p><b>Sim. Sem hesitação — e digo por quê.</b> O que falta não exige nenhuma invenção nova: são consertos pequenos e conexões finais sobre uma fundação que os dois revisores independentes classificaram como acima da média. O padrão dos problemas achados é o padrão de uma obra <b>parada aos 85%</b>, não de uma obra errada. E temos uma vantagem que pouquíssimas operações têm: registros honestos de tudo — cada decisão, cada erro, cada correção documentada. Auditar isso hoje foi possível em horas justamente por isso.</p>
+    <p><b>Mas a capacidade tem duas condições, e seria desonesto omiti-las:</b></p>
+    <ul>
+      <li><b>Condição 1 — Fechar o ciclo antes de abrir frente nova.</b> O risco número um deste projeto nunca foi técnico: é ele ficar eternamente a "duas semanas de pronto" porque coisas mais urgentes (BS Fortim, RGI, painéis) sempre atropelam. A frente ficou 8 dias invisível por exatamente isso. A defesa é o plano curto abaixo, com fases pequenas que cabem entre as urgências.</li>
+      <li><b>Condição 2 — Medir o resultado, não o esforço.</b> A partir de agora, a pergunta semanal não é "a esteira rodou?" — é <b>"quantas lições foram aprovadas e quantas vezes um agente as usou?"</b>. Se esses dois números não saírem do zero, nada do resto conta.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">07</span>O plano — próximos passos em 5 fases</h2>
+  <p class="lead">Ordenado por dependência e por retorno. As fases 1 e 2 são pequenas; a colheita de verdade começa na fase 3.</p>
+
+  <div class="phase">
+    <div class="ball">0</div>
+    <div class="body">
+      <h4>Sua parte — 10 minutos no total <small>quando você quiser, destrava tudo</small></h4>
+      <ul>
+        <li><b>Renovar o crachá do juiz</b> no servidor Dois A (login do Claude — 2 minutos, te guio na hora).</li>
+        <li><b>Três decisões de uma palavra:</b> a cadência da cópia de disco inteiro (sugestão: semanal, automática); o destino da cópia diária para o PC (consertar ou aposentar — sugestão: aposentar quando a camada substituta estiver provada); e, sem pressa, o batismo do sistema (ÁGORA, DESTILARIA ou CARTÓRIO).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="ball">1</div>
+    <div class="body">
+      <h4>Trancar as portas <small>1 sessão de trabalho · antes de qualquer destravamento</small></h4>
+      <ul>
+        <li>Aprovação no Telegram passa a aceitar <b>só você</b> como aprovador.</li>
+        <li>Desarmar a bomba-relógio dos 500 arquivos (o leitor passa a priorizar os novos).</li>
+        <li>Fechar a porta lateral da memória do juiz (assinar as entradas, parar de guardar justificativas) e blindar o juiz contra textos manipuladores.</li>
+        <li>Criar o alarme que faltou em tudo: <b>"3 noites sem material novo → me avise"</b>, e ressuscitar os vigias mortos (aprendizado semanal e cópia do PC).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="ball">2</div>
+    <div class="body">
+      <h4>Destravar a produção de lições <small>1–2 sessões · o coração do problema</small></h4>
+      <ul>
+        <li>Apontar o bibliotecário para a <b>gaveta certa</b> (onde as conversas reais de produção vivem hoje, nos dois servidores).</li>
+        <li>Fazer o raio-X das 411 lições retidas (por que exatamente cada uma foi barrada) e <b>então</b> ensinar a alfândega a reconhecer palavras inteiras — repetindo a bateria de segurança completa depois, com regra dura: se a proteção real piorar, reverte.</li>
+        <li>Com o crachá do juiz renovado (fase 0), rodar o ciclo completo e ver as <b>primeiras lições chegarem ao seu Telegram</b>. Essa é a linha de chegada desta fase: sua primeira aprovação com uma palavra.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="ball">3</div>
+    <div class="body">
+      <h4>Dar leitores à biblioteca <small>1–2 sessões · onde o valor aparece</small></h4>
+      <ul>
+        <li>Indexação automática das lições aprovadas (hoje não existe).</li>
+        <li>Conectar os agentes à biblioteca: o resumo essencial entra no "manual de bolso" de cada um, e a busca fica disponível para consulta nas tarefas.</li>
+        <li>Enquanto isso não fica pronto, <b>rodar a rodada atrasada do sistema antigo</b> — ele volta a ser o aprendizado vivo da casa, como combinado, até o novo assumir.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="ball">4</div>
+    <div class="body">
+      <h4>Provar que melhorou — e só então cortar o antigo <small>a régua final</small></h4>
+      <ul>
+        <li>Repetir a prova cega de 40 tarefas (a mesma de julho, que deu 32/40) com a memória viva. <b>O número tem que subir.</b></li>
+        <li>Se subir: aposentar o sistema semanal antigo em cerimônia oficial, batizar o novo, e encerrar o projeto com a régua batida.</li>
+        <li>Se não subir: coragem para simplificar — manter só o que comprovadamente ajuda. O objetivo nunca foi ter o sistema mais sofisticado; é ter agentes melhores.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3><span class="tag acc">Em paralelo · trilha do backup</span></h3>
+    <ul>
+      <li><b>Já em andamento (hoje):</b> a cópia de disco inteiro da Dois A está sendo regravada agora num cofre separado que nada apaga.</li>
+      <li>Agendar a cópia de disco inteiro como rotina (decisão sua da fase 0) — e incluir a verificação mensal automática de restauração, sorteando uma cópia antiga e abrindo-a de verdade.</li>
+      <li>Backup do <b>seu computador</b> para a nuvem (o único dos três ambientes ainda sem cofre completo) e marcar as pastas de backup como "somente online" para não encherem seu disco.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">08</span>O que falta para ficarmos tranquilos — a lista definitiva</h2>
+  <p class="lead">Tranquilidade aqui tem definição objetiva. Você está tranquilo no dia em que todas estas frases forem verdadeiras — e cada uma tem um teste que a prova:</p>
+  <div class="card">
+    <div class="check done"><div class="box">✓</div><div><b>"Se um servidor pegar fogo hoje, eu recupero tudo."</b> — Cópias diárias + disco inteiro na nuvem, restauração provada. <i>(Conquistado; a regravação do disco inteiro da Dois A conclui hoje.)</i></div></div>
+    <div class="check done"><div class="box">✓</div><div><b>"Se o backup parar, eu fico sabendo sozinho."</b> — Alarme de silêncio testado no seu e-mail. <i>(Conquistado.)</i></div></div>
+    <div class="check"><div class="box"></div><div><b>"Se qualquer rotina rodar sem entregar resultado, eu fico sabendo em 3 dias."</b> — O alarme de resultado (não de execução). <i>(Fase 1 — a lição número um desta auditoria.)</i></div></div>
+    <div class="check"><div class="box"></div><div><b>"Nenhum dado de um cliente pode aparecer para outro, nem por acidente."</b> — A alfândega já garante isso hoje pelo excesso; falta garantir <b>depois</b> da calibragem, com a bateria de ataques re-executada. <i>(Fase 2.)</i></div></div>
+    <div class="check"><div class="box"></div><div><b>"Só eu aprovo o que entra na memória comum."</b> — <i>(Fase 1, conserto pequeno.)</i></div></div>
+    <div class="check"><div class="box"></div><div><b>"Os agentes aprendem toda semana — e eu vejo o que aprenderam no relatório das 7h."</b> — <i>(Fases 2 e 3.)</i></div></div>
+    <div class="check"><div class="box"></div><div><b>"Está provado com números que eles melhoraram."</b> — A prova cega repetida, acima de 32/40. <i>(Fase 4 — a régua final.)</i></div></div>
+    <div class="check"><div class="box"></div><div><b>"Meu computador também tem cofre."</b> — <i>(Trilha paralela de backup.)</i></div></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2><span class="num">09</span>O que já foi feito hoje, durante a própria auditoria</h2>
+  <div class="card">
+    <ul>
+      <li><b>O backup que apagava o outro foi corrigido</b> (cofres separados) e a cópia de disco inteiro da Dois A está sendo regravada na nuvem neste momento.</li>
+      <li><b>A prova dos 7 dias foi coletada e registrada</b> — 9 dias seguidos de rotina perfeita, requisito formal cumprido.</li>
+      <li><b>A "amnésia" entre sessões foi curada:</b> a memória de longo prazo desta frente foi criada de verdade (era o motivo de o projeto sumir do radar), e todos os registros oficiais foram atualizados com o estado real.</li>
+      <li><b>Dois revisores independentes auditaram todo o código</b> (o núcleo de segurança e a esteira operacional) — os achados deles estão integralmente neste relatório, incluindo os elogios e as críticas duras.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <b>HORUS · Auditoria da frente "Melhoria dos Agentes" (memória central)</b><br>
+  Produzido em 29/07/2026 a pedido de Álvaro Marcolino. Métodos: leitura integral dos registros da obra (diário de 4.300+ linhas, especificações e laudos), verificação ao vivo nos servidores Dois A e Arvo e no PC (rotinas, cofres de backup, filas e credenciais), e revisão de código independente em duas frentes com lentes críticas (/code-review e /ponytail).<br>
+  Registros técnicos completos: vault → inbox/2026-07-29-recall-fluxo-melhoria-agentes.md · inbox/2026-07-18-memoria-central-agentes-STATE.md · retomada: /retomar melhorar-agentes.
+</footer>
+
+</div>
+</body>
+</html>
