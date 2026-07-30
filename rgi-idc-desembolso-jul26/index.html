@@ -62,7 +62,13 @@ code{font-family:Consolas,monospace;font-size:.92em;background:#F1F3F8;padding:1
 .av h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--laranja);margin:0 0 9px}
 .av ul{margin:0 0 20px;padding-left:19px}
 .av li{font-size:13.5px;line-height:1.65;margin-bottom:7px}
-@media(max-width:1340px){.slide-section{width:96vw;padding:30px 4vw 54px}
+/* Fora do slide de 1280x720, a geometria fixa TEM de sair junto com o overflow:hidden.
+   Medido em 390px: o hidden estava comendo 235px de tabela no slide 02 e 177px de
+   altura no 07 -- corte silencioso, o defeito que o padrao chama de "parece completo
+   sem ser". Aqui a altura vira automatica e a tabela larga rola dentro do proprio corpo. */
+@media(max-width:1340px){.slide-section{width:96vw;padding:30px 4vw 54px;
+    height:auto;min-height:auto;overflow:visible}
+  .sl-body{overflow-x:auto}
   .sl-foot{left:4vw;right:4vw}.capa h1{font-size:8vw}.capa-nums{grid-template-columns:1fr;gap:14px}
   .cards,.duo{grid-template-columns:1fr}.rgi-table{font-size:10.5px}}
 @media print{body{background:#fff}.slide-section{margin:0;box-shadow:none;page-break-after:always}}
