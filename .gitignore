@@ -1,0 +1,5 @@
+
+# nunca publicar copias de trabalho (exposicao publica sem senha)
+*.bak
+*.bak-*
+*.bak.*
