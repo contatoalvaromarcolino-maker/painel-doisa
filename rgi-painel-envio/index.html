@@ -18,10 +18,9 @@
   --warn:#8B6800; --warn-bg:rgba(224,160,40,.10);
   --crit:#9B2915; --crit-bg:rgba(192,57,43,.10);
   --saida:cubic-bezier(.16,1,.3,1);   /* ease-out-expo: sai rápido, chega sem quicar */
-  /* Cor das SUPERFÍCIES (header, KPI, card). Cada iluminação redefine estas três — é o que
-     faz a variação valer para a tela inteira, e não só para as sobras de fundo entre os
-     cards. Ficam altas de propósito: o efeito vem do contraste com o fundo colorido, não
-     de deixar o texto boiando num vidro. */
+  /* Cor das SUPERFÍCIES (header, KPI, card) — os três valores casados com o fundo Pulso.
+     Ficam altas de propósito: o efeito vem do contraste com o fundo colorido, não de deixar
+     o texto boiando num vidro. */
   --hdr-bg:rgba(255,255,255,.55);
   --kpi-bg:rgba(255,255,255,.92);
   --card-bg:rgba(255,255,255,.93);
@@ -34,73 +33,31 @@ body{background:var(--bg);color:var(--txt);
   background:linear-gradient(90deg,var(--brand) 0%,var(--primary) 100%)}
 .layout{display:flex;min-height:calc(100vh - 4px);position:relative;z-index:1}
 
-/* ══ ILUMINAÇÃO DE FUNDO ═══════════════════════════════════════════════════
-   Camada única, fixa, atrás de tudo. Trocar de variação troca só o que está pintado nela
-   e a cor das superfícies — nada de layout muda, então a escolha é reversível.
+/* ══ ILUMINAÇÃO DE FUNDO — PULSO ═══════════════════════════════════════════
+   Camada única, fixa, atrás de tudo (`z-index:0`), com o conteúdo por cima (`z-index:1`):
+   não toca layout, não pesa no scroll, não intercepta clique.
 
-   Por que a cor precisa ser FORTE aqui: a tela é ~95% coberta por header, KPIs e 15 cards,
-   todos claros. Uma luz discreta some atrás deles e as cinco variações ficam iguais. Então
-   o desenho é o inverso do reflexo: o fundo carrega cor de verdade e os cards ficam claros
-   POR CIMA — o efeito nasce do contraste entre os dois, e o texto nunca fica sobre cor. */
-.luz{position:fixed;inset:0;z-index:0;pointer-events:none}
+   Por que a cor é FORTE aqui: a tela é ~95% coberta por header, KPIs e 15 cards, todos
+   claros. Luz discreta some atrás deles. O desenho é o inverso do reflexo — o fundo carrega
+   cor de verdade e os cards ficam claros POR CIMA; o efeito nasce do contraste entre os
+   dois, e o texto nunca fica sobre cor.
 
-/* 1 AURORA — luz entrando por duas janelas opostas: azul em cima à esquerda, laranja à direita.
-   O foco azul começa em 22% e não em 0%: a barra lateral navy ocupa os primeiros 220px e
-   engolia justamente o miolo dele, deixando a variação mais fraca do que as outras quatro. */
-body[data-luz="1"] .luz{background:
-  radial-gradient(70vw 64vh at 22% -16%, rgba(45,79,158,.56), transparent 68%),
-  radial-gradient(64vw 58vh at 104% -6%, rgba(233,113,50,.52), transparent 68%),
-  radial-gradient(88vw 68vh at 92% 114%, rgba(45,79,158,.44), transparent 72%),
-  radial-gradient(58vw 48vh at -8% 102%, rgba(233,113,50,.34), transparent 70%),
-  linear-gradient(118deg, rgba(45,79,158,.12) 0%, rgba(255,255,255,0) 40%,
-    rgba(255,255,255,0) 60%, rgba(233,113,50,.14) 100%),
-  #FFFFFF}
-
-/* 2 PLANTA — folha de projeto: malha azul cobrindo a tela, papel levemente azulado. */
-body[data-luz="2"] .luz{background:
-  radial-gradient(58vw 48vh at 46% 30%, rgba(255,255,255,.50), rgba(255,255,255,0) 76%),
-  repeating-linear-gradient(0deg, rgba(45,79,158,.20) 0 1px, transparent 1px 28px),
-  repeating-linear-gradient(90deg, rgba(45,79,158,.20) 0 1px, transparent 1px 28px),
-  radial-gradient(100vw 46vh at 50% 110%, rgba(233,113,50,.30), transparent 70%),
-  linear-gradient(180deg,#EBF1FB 0%,#E2EAF7 100%)}
-body[data-luz="2"]{--card-bg:rgba(255,255,255,.96); --kpi-bg:rgba(255,255,255,.94);
-  --hdr-bg:rgba(255,255,255,.62)}
-
-/* 3 BANCADA — luminária de prancheta: quente descendo do topo, frio fechando as bordas. */
-body[data-luz="3"] .luz{background:
-  radial-gradient(54vw 82vh at 50% -18%, rgba(255,203,152,.95), rgba(255,226,201,.55) 38%,
-    rgba(255,241,228,.16) 64%, transparent 82%),
-  linear-gradient(90deg, rgba(26,52,112,.42) 0%, rgba(26,52,112,.08) 20%, transparent 38%,
-    transparent 62%, rgba(26,52,112,.08) 80%, rgba(26,52,112,.42) 100%),
-  linear-gradient(180deg, transparent 32%, rgba(26,52,112,.36) 100%),
-  #F4F6FB}
-body[data-luz="3"]{--card-bg:rgba(255,252,247,.94); --kpi-bg:rgba(255,252,247,.93);
-  --hdr-bg:rgba(255,250,243,.60)}
-
-/* 4 HORIZONTE — céu azul em cima, terra laranja embaixo, o branco no meio. */
-body[data-luz="4"] .luz{background:
-  linear-gradient(180deg, rgba(45,79,158,.62) 0%, rgba(45,79,158,.30) 16%,
-    rgba(45,79,158,.06) 36%, rgba(255,255,255,0) 50%),
-  radial-gradient(140vw 42vh at 50% 104%, rgba(233,113,50,.60), transparent 74%),
-  linear-gradient(180deg, transparent 54%, rgba(233,113,50,.20) 100%),
-  #FFFFFF}
-body[data-luz="4"]{--hdr-bg:rgba(255,255,255,.42)}
-
-/* 5 PULSO — a única com movimento. Um brilho cônico girando devagar atrás de tudo. */
-body[data-luz="5"] .luz{background:linear-gradient(180deg,#FDFEFF,#F3F6FD)}
-body[data-luz="5"] .luz::before{content:'';position:absolute;
+   PULSO: um brilho cônico girando devagar atrás de tudo. */
+.luz{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,#FDFEFF,#F3F6FD)}
+.luz::before{content:'';position:absolute;
   top:-40vh;left:-22vw;width:145vw;height:145vw;border-radius:50%;
   background:conic-gradient(from 0deg, rgba(45,79,158,.60), rgba(233,113,50,.54),
     rgba(45,79,158,.14), rgba(233,113,50,.56), rgba(45,79,158,.60));
   filter:blur(110px);animation:gira 44s linear infinite}
-body[data-luz="5"] .luz::after{content:'';position:absolute;inset:0;
+.luz::after{content:'';position:absolute;inset:0;
   background:radial-gradient(52vw 48vh at 46% 42%, rgba(255,255,255,.42), transparent 72%)}
 @keyframes gira{to{transform:rotate(360deg)}}
 /* Movimento que ninguém pediu, ninguém pode desligar e volta a cada carregamento é o tipo
    de coisa que cansa numa tela de trabalho. Quem marcou "reduzir movimento" no sistema fica
    com o mesmo desenho, parado. */
 @media(prefers-reduced-motion:reduce){
-  body[data-luz="5"] .luz::before{animation:none}
+  .luz::before{animation:none}
 }
 
 /* ══ SIDEBAR ═══════════════════════════════════════════════════════════════ */
@@ -117,18 +74,6 @@ body[data-luz="5"] .luz::after{content:'';position:absolute;inset:0;
   letter-spacing:.04em;cursor:pointer;text-align:center;transition:background .15s,color .15s}
 .sb-view:hover{background:rgba(255,255,255,.08);color:#FFFFFF}
 .sb-view.is-active{background:var(--primary);border-color:var(--primary);color:#FFFFFF}
-.sb-luz{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:none;
-  border-radius:8px;background:none;color:var(--sb-text);font-family:inherit;font-size:12.5px;
-  font-weight:500;cursor:pointer;text-align:left;transition:background .15s}
-.sb-luz:hover{background:rgba(255,255,255,.08)}
-.sb-luz.is-active{background:var(--sb-active);color:#FFFFFF;font-weight:700}
-.sb-luz i{width:15px;height:15px;border-radius:50%;flex-shrink:0;
-  border:1px solid rgba(255,255,255,.30)}
-.sb-luz[data-luz="1"] i{background:radial-gradient(circle at 26% 22%,#2D4F9E,#E97132)}
-.sb-luz[data-luz="2"] i{background:repeating-linear-gradient(45deg,#2D4F9E 0 2px,#FFF 2px 4px)}
-.sb-luz[data-luz="3"] i{background:linear-gradient(180deg,#FFF3E8,#2D4F9E)}
-.sb-luz[data-luz="4"] i{background:linear-gradient(180deg,#2D4F9E 0 50%,#E97132 50% 100%)}
-.sb-luz[data-luz="5"] i{background:conic-gradient(#2D4F9E,#E97132,#2D4F9E)}
 .sb-divider{height:1px;background:rgba(255,255,255,.10);margin:14px 12px 0}
 .sb-hint{padding:12px 16px;font-size:10.5px;color:rgba(255,255,255,.30);line-height:1.5}
 
@@ -314,7 +259,7 @@ body[data-lente="gestor"] .bt-wrap .pop{display:none}
   h1{white-space:normal;line-height:1.2}
 }
 </style></head>
-<body data-lente="gestor" data-luz="5">
+<body data-lente="gestor">
 <div class="luz"></div>
 <div class="brand-bar"></div>
 <div class="layout">
@@ -331,13 +276,6 @@ body[data-lente="gestor"] .bt-wrap .pop{display:none}
     </div>
 
     <div class="sb-divider"></div>
-
-    <div class="sb-section">
-      <span class="sb-section-label">Iluminação</span>
-      <button type="button" class="sb-luz" data-luz="1" title="dois banhos radiais nos cantos, azul e laranja"><i></i>Aurora</button><button type="button" class="sb-luz" data-luz="2" title="malha de projeto com clareira no centro"><i></i>Planta</button><button type="button" class="sb-luz" data-luz="3" title="cone de luz do topo, como luminária de prancheta"><i></i>Bancada</button><button type="button" class="sb-luz" data-luz="4" title="céu azul em cima, faixa laranja difusa embaixo"><i></i>Horizonte</button><button type="button" class="sb-luz is-active" data-luz="5" title="brilho cônico girando devagar (o único com movimento)"><i></i>Pulso</button>
-    </div>
-
-    <div class="sb-divider"></div>
     <div class="sb-hint">Conferência de envio da rodada 38. Julho 26.
       Diz o que chegou, de que competência e onde está — não abre planilha nem confere número.</div>
   </nav>
@@ -351,7 +289,7 @@ body[data-lente="gestor"] .bt-wrap .pop{display:none}
       </div>
       <div class="sub">rodada 38. Julho 26 · competência
         junho de 2026 · rodada anterior:
-        37. Junho 26 · gerado em 03/08/2026 09:01</div>
+        37. Junho 26 · gerado em 03/08/2026 09:18</div>
       <div class="veredicto warn">dá para rodar — 1 ponto nos arquivos e 7 avisos do motor para conferir antes de publicar</div>
     </header>
 
@@ -648,17 +586,6 @@ document.querySelectorAll('.sb-view').forEach(function (b) {
       o.classList.toggle('is-active', o === b);
     });
     document.body.dataset.lente = b.dataset.l;
-  });
-});
-
-// Troca de iluminação. Só reescreve `data-luz` no body — o CSS faz o resto, e nenhum card
-// é redesenhado, então dá para comparar as cinco sem perder o scroll.
-document.querySelectorAll('.sb-luz').forEach(function (b) {
-  b.addEventListener('click', function () {
-    document.querySelectorAll('.sb-luz').forEach(function (o) {
-      o.classList.toggle('is-active', o === b);
-    });
-    document.body.dataset.luz = b.dataset.luz;
   });
 });
 
