@@ -1448,9 +1448,12 @@ function donutOptions(opts = {}) {
     plugins: {
       centerTotal: { rotulo: opts.rotuloCentro },
       legend: {
-        // <=768px: legenda a direita nao cabe e o Chart.js corta o nome
-        // no meio ('Alvar - 8'). Embaixo ela tem a largura do card.
-        position: (window.innerWidth <= 768 ? 'bottom' : 'right'), align: 'center',
+        // Caixa estreita: a legenda a direita quebra em 2 colunas e o
+        // Chart.js corta o nome no meio ('Alvar - 8'). Embaixo ela usa a
+        // largura inteira do card. 420 px e o ponto onde 'Micaele - 5'
+        // ainda cabe ao lado da rosca; abaixo disso, nao cabe.
+        position: ((opts.larguraCaixa || 9999) < 420 ? 'bottom' : 'right'),
+        align: 'center',
         labels: {
           color: PALETTE.text,
           font: { family: 'Inter', size: 11, weight: '500' },
@@ -1563,6 +1566,7 @@ function renderResponsavelDonut(canvas, backlog) {
       // Soma das fatias, nao numero de acoes: quem divide uma acao aparece
       // na fatia dos dois. Chamar de TOTAL contradizia o cabecalho da tabela.
       rotuloCentro: 'ATRIBUIÇÕES',
+      larguraCaixa: canvas.parentElement.clientWidth,
       onSliceClick: (label) => {
         const key = labelKeys[label];
         if (key) setFilter('pend', state.filterPend === key ? null : key);
