@@ -390,6 +390,11 @@
   .task-code:hover { background: rgba(var(--col-tint-rgb), 0.15); border-color: rgba(var(--col-tint-rgb), 0.45); color: var(--col-tint); }
   .task-code a { color: inherit; text-decoration: none; }
 
+  /* S19: sugestao de destino da acao (roteador deterministico) */
+  .sug-lista { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.72); }
+  .sug-lista.forte { color: var(--col-tint); }
+  .sug-lista.nenhuma { color: rgba(255,255,255,0.34); font-weight: 500; }
+
   /* Botão Triagem manual (substitui badge italic) */
   .btn-triagem {
     font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
@@ -1083,7 +1088,10 @@ const ROUTER_EMPREENDIMENTO = [
   ['serra de são bento',   '901712739277', 'Emp. Serra de São Bento'],
   ['ecobonfim',            '901712739955', 'Emp. Ecobonfim'],
   ['comercial potengi',    '901712739727', 'Emp. Comercial Potengi'],
-  ['modelo',               '901712739562', 'Emp. Modelo'],
+  // 'modelo' sozinho sequestrava 96 acoes que falam de modelo de
+  // contrato/orcamento para uma lista vazia -- e vencia a camada de area,
+  // porque empreendimento roda primeiro.
+  ['empreendimento modelo', '901712739562', 'Emp. Modelo'],
   ['caraúbas',             '901712739452', 'Caraúbas'],
   ['caraubas',             '901712739452', 'Caraúbas'],
   ['maracajaú',            '901712739425', 'Maracajaú'],
@@ -1663,6 +1671,7 @@ function renderBacklogTable(tasks) {
       <td>${taskCell}</td>
       <td class="cell-clickable" onclick="openDueDateModal('${t.id}')" title="Clique para alterar"><span class="due-date ${dueClass(t.due_date)}">${dueText(t.due_date)}</span></td>
       <td><span class="${ageClass(t.date_created)}">${ageText(t.date_created)}</span></td>
+      <td><span class="sug-lista ${sug.list_id ? (sug.confidence >= 0.9 ? 'forte' : '') : 'nenhuma'}" title="${sug.list_id ? `sugerido pelo roteador (confiança ${sug.confidence.toFixed(1)}) — a decisão continua sua` : 'nenhuma palavra-chave reconhecida no texto da ação'}">${escHTML(sug.list_name)}</span></td>
       <td><div class="row-actions">
         <select class="btn-approve-select" onchange="doApproveInline(this, '${t.id}')" title="Aprovar: muda status para Em Acompanhamento (continua na mesma lista)">
           <option value="">✅</option>
@@ -1705,6 +1714,7 @@ function renderBacklogTable(tasks) {
         <th>Task</th>
         <th>${colSelectHTML('Prazo','pend','prazo',prazoOpts,cf.prazo)}</th>
         <th>${colSelectHTML('No backlog','pend','idade',idadeOpts,cf.idade)}</th>
+        <th>Sugestão</th>
         <th>Ações</th>
       </tr></thead>
       <tbody>${rows}</tbody>
