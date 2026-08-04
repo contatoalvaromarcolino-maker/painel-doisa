@@ -1043,12 +1043,20 @@ td.gspanning div {
      DOCUMENTO para a base da JANELA — antes era preciso descer as 304 linhas
      inteiras para alcancar ela. Desconta o topo fixo (~114px entre controles,
      faixa e cabecalho) e o rodape de diagnostico (~136px). */
-  /* altura da faixa de cards CURTO/MEDIO/LONGO, que nasceu acima da legenda e
+  /* altura da faixa de cards CURTO/MEDIO/LONGO/TUDO, que nasceu acima da legenda e
      empurra todo o resto para baixo. Sem descontar aqui, a barra de rolagem
      horizontal do grafico volta a sair da janela — foi ela que o --h-painel
      trouxe para dentro. Medido em 1440x900. */
   --h-prazos:84px;
-  --h-painel:calc(100vh - 250px - var(--h-prazos));
+  /* altura da faixa-titulo do quadro, pelo mesmo motivo: ela passou de 17px para
+     28px de fonte e ganhou ~13px de altura, que descem direto sobre a barra de
+     rolagem do grafico. Fica em token proprio para que a proxima mexida no
+     tamanho do titulo apareca nesta conta em vez de empurrar a barra em silencio.
+     MEDIDO no navegador em 1440x900, nao estimado: 40px de caixa de linha
+     (Arial Black 28px) + 28px de padding + 1px de borda = 69px. A conta a olho
+     dava 62px e deixava a barra de rolagem 2px mais baixa que antes da mudanca. */
+  --h-faixa:69px;
+  --h-painel:calc(100vh - 199px - var(--h-prazos) - var(--h-faixa));
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -1096,7 +1104,7 @@ header{padding:16px 22px 14px;border-bottom:1px solid var(--border)}
 .eyebrow{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:800;
          letter-spacing:2.5px;text-transform:uppercase;color:var(--brand-deep)}
 .eyebrow::before{content:"";width:28px;height:2px;background:var(--primary);flex:none}
-h1{margin:9px 0 4px;font-family:var(--font-titulo);font-size:22px;font-weight:900;
+h1{margin:9px 0 4px;font-family:var(--font-titulo);font-size:20px;font-weight:900;
    letter-spacing:-.4px;color:var(--brand)}
 h1 em{font-style:normal;color:var(--primary)}
 .meta{font-size:11.5px;color:var(--dim)}
@@ -1145,10 +1153,10 @@ h1 em{font-style:normal;color:var(--primary)}
 .horizontes button.on{background:#1A3470;border-color:#1A3470;color:#FFFFFF;
                       font-weight:700}
 
-/* --- cards de prazo: CURTO / MEDIO / LONGO --- */
+/* --- cards de prazo: CURTO / MEDIO / LONGO / TUDO --- */
 /* Clicar num card destaca a janela e esmaece o resto do EIXO DE TEMPO. Nao
-   recorta: a lista de tarefas fica intacta, linha por linha. Clicar de novo no
-   card ja ligado volta ao estado neutro, sem destaque nenhum. */
+   recorta: a lista de tarefas fica intacta, linha por linha. O TUDO devolve o
+   grafico inteiro a cor cheia; clicar de novo no card ja ligado cai nele. */
 .prazos{display:flex;align-items:center;flex-wrap:wrap;gap:8px;
         padding:14px 22px 6px;font-size:11px;color:var(--dim)}
 .prazos .rot{font-weight:700;letter-spacing:.10em;text-transform:uppercase;
@@ -1160,7 +1168,11 @@ h1 em{font-style:normal;color:var(--primary)}
                           background .28s var(--saida),box-shadow .28s var(--saida)}
 .prazos button b{display:block;font-family:var(--font-titulo);font-size:12px;
                  letter-spacing:.06em;line-height:1.1}
-.prazos button span{display:block;margin-top:3px;font-size:10.5px;color:var(--dim)}
+/* `line-height` + `min-height` no mesmo valor: o card TUDO nao tem periodo a
+   escrever e seu <span> fica vazio. Caixa de linha vazia mede zero e deixaria
+   esse card mais baixo que os outros tres, com a fileira torta. */
+.prazos button span{display:block;margin-top:3px;font-size:10.5px;
+                    line-height:1.25;min-height:1.25em;color:var(--dim)}
 .prazos button:hover{border-color:var(--border-a);background:var(--bg-1)}
 .prazos button.on{background:#1A3470;border-color:#1A3470;color:#FFFFFF;
                   box-shadow:0 6px 16px rgba(26,52,112,.18)}
@@ -1186,14 +1198,16 @@ h1 em{font-style:normal;color:var(--primary)}
    grudar na janela, em silencio, sem erro nenhum na tela. */
 .quadro{margin:4px 22px 34px;border:1px solid var(--border);border-radius:8px;
         overflow:clip;background:#FFFFFF;box-shadow:0 2px 8px rgba(45,79,158,.06)}
-/* Titulo do quadro: maior e centralizado ("deveria estar maior, e centralizado
-   nesse card, para ficar mais facil de ver"). Era laranja SOLIDO encostado no
-   cabecalho de datas, que tambem virou laranja no pedido anterior — dois
-   laranjas colados com um navy fino no meio, o unico lugar do painel onde a cor
-   falava mais alto que o dado. O cabecalho de datas e pedido explicito e FICA;
-   quem cede e a faixa: branca, texto navy, 11,9:1. */
+/* Titulo do quadro: o rotulo do card, centralizado e DOMINANTE. Pedido duas
+   vezes — a primeira rodada entregou 17px centralizado e ele voltou a pedir
+   olhando a tela, o que descarta cache e centralizacao. A causa era hierarquia:
+   17px nascia MENOR que o <h1> de 22px um palmo acima, entao o nome do card lia
+   como subtitulo do vizinho. Agora 28px contra um h1 de 20px (1,40x): o h1 cedeu
+   porque ele e a segunda vez que a tela diz "cronograma" na mesma dobra.
+   Fundo branco com texto navy (11,9:1), nao o laranja que ela ja teve: navy
+   sobre laranja daria 3,06:1 num texto que agora e o maior da tela. */
 .faixa{background:#FFFFFF;color:var(--brand-deep);font-family:var(--font-titulo);
-       font-size:17px;font-weight:900;letter-spacing:.02em;text-align:center;
+       font-size:28px;font-weight:900;letter-spacing:.02em;text-align:center;
        padding:15px 16px 13px;border-bottom:1px solid var(--border)}
 .wrap{overflow-x:clip}
 .diag{padding:0 22px 26px;font-size:11px;color:var(--dim)}
@@ -1232,17 +1246,19 @@ h1 em{font-style:normal;color:var(--primary)}
 #g .gtaskheading{
   background-color:#1A3470;color:#FFFFFF;font-size:10px;font-weight:700;
   letter-spacing:.10em;text-transform:uppercase;border-color:rgba(255,255,255,.16)}
-/* cabecalho de DATAS do grafico: anos, meses e dias no laranja da casa.
-   MEDIDO, contra a intuicao de que clarear o fundo ajudaria: sobre o navy
-   #1A3470 o laranja da 3,88:1; sobre BRANCO PURO cai para 3,06:1. Clarear o
-   fundo PIORA — a luminancia do laranja (0,2937) esta perto demais da do
-   branco. Por isso o fundo continua navy, que tambem evita duas faixas
-   escuras diferentes lado a lado com o cabecalho da lista.
-   3,88:1 NAO alcanca os 4,5:1 da WCAG para texto. O unico token que alcanca e
-   --txt #1A1A1A (5,70:1), ao custo de uma faixa quase preta encostada no navy
-   da lista. Fica relatado, nao escondido. */
+/* cabecalho de DATAS do grafico: anos, meses e numeros em BRANCO sobre o navy.
+   Reverte o pedido anterior, que pos o laranja aqui — "mudar a fonte do
+   cabecalho onde tem os meses e os numeros, que esta vermelho, tem que ser
+   branco". A reversao era o unico caminho: o laranja parava em 3,88:1 sobre
+   este navy e NAO havia arranjo de fundo que alcancasse os 4,5:1. Clarear
+   PIORA (3,06:1 sobre branco puro: a luminancia do laranja, 0,2937, esta perto
+   demais da do branco) e o unico fundo que passava era o --txt #1A1A1A, ao
+   custo de uma faixa quase preta encostada no navy da lista.
+   Branco sobre o MESMO navy da 11,87:1 — AAA, sem trocar o fundo.
+   O fundo continua navy de proposito: e o que evita duas faixas escuras
+   diferentes lado a lado com o cabecalho da lista. */
 #g .gmajorheading,#g .gminorheading,#g .gminorheadingwkend{
-  background-color:#1A3470;color:#E97132;font-size:10px;font-weight:700;
+  background-color:#1A3470;color:#FFFFFF;font-size:10px;font-weight:700;
   letter-spacing:.10em;text-transform:uppercase;border-color:rgba(255,255,255,.16)}
 #g .gchartlbl{border-bottom:2px solid #E97132}
 /* O `:not(.gtaskheading)` nao e enfeite: a celula de cabecalho carrega as DUAS
@@ -1333,7 +1349,9 @@ h1 em{font-style:normal;color:var(--primary)}
 #g .gcharttable tbody tr:nth-child(even){background-color:rgba(45,79,158,.03)}
 
 @media(max-width:640px){
-  h1{font-size:18px}
+  /* o h1 cede no celular pelo mesmo motivo do desktop: ele repete o assunto da
+     faixa na mesma dobra, e a faixa e o rotulo do card. 22/17 = 1,29x. */
+  h1{font-size:17px}
   header,.legenda,.diag,.horizontes,.prazos{padding-left:14px;padding-right:14px}
   .numeros{gap:8px;padding:14px 14px 2px}
   .card{min-width:112px;padding:11px 12px 9px}
@@ -1342,7 +1360,7 @@ h1 em{font-style:normal;color:var(--primary)}
   .card:hover{transform:none}
   .prazos{gap:6px}
   .prazos button{flex:1 1 auto;padding:7px 10px}
-  .faixa{font-size:14px;padding:12px 12px 11px}
+  .faixa{font-size:22px;padding:12px 12px 11px}
 }
 </style>
 <!-- Regra de UMA linha, reescrita a cada clique, que acende as setas da tarefa
@@ -1355,7 +1373,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 12:59 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 14:04 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
@@ -1364,7 +1382,7 @@ h1 em{font-style:normal;color:var(--primary)}
   <div class="card"><b>04/08/2026</b><span>hoje</span></div>
 </div>
 <div class="aviso"><b>17 tarefas com folga negativa</b> — a pior em -675 dias. São datas exigidas anteriores ao que as dependências do próprio arquivo permitem.</div>
-<div class="prazos" id="prazos"><span class="rot">Prazo em destaque</span><button type="button" data-p="curto" aria-pressed="false" title="Destaca o que acontece nos próximos 1 semana e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>CURTO</b><span>1 semana · até 11/08/2026</span></button><button type="button" data-p="medio" aria-pressed="false" title="Destaca o que acontece nos próximos 1 mês e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>MÉDIO</b><span>1 mês · até 04/09/2026</span></button><button type="button" data-p="longo" aria-pressed="false" title="Destaca o que acontece nos próximos 3 meses e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>LONGO</b><span>3 meses · até 04/11/2026</span></button></div>
+<div class="prazos" id="prazos"><span class="rot">Prazo em destaque</span><button type="button" data-p="curto" aria-pressed="false" title="Destaca o que acontece nos próximos 1 semana e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>CURTO</b><span>1 semana · até 11/08/2026</span></button><button type="button" data-p="medio" aria-pressed="false" title="Destaca o que acontece nos próximos 1 mês e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>MÉDIO</b><span>1 mês · até 04/09/2026</span></button><button type="button" data-p="longo" aria-pressed="false" title="Destaca o que acontece nos próximos 3 meses e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>LONGO</b><span>3 meses · até 04/11/2026</span></button><button type="button" data-p="tudo" class="on" aria-pressed="true" title="Devolve o gráfico inteiro à cor cheia: nenhum trecho do eixo de tempo fica esmaecido. É como a página abre."><b>TUDO</b><span></span></button></div>
 <div class="legenda"><span title="Terminou antes de hoje. Cinza para sair da frente do que ainda vai acontecer."><i class="sw-pass"></i>já passou</span><span title="Terminou antes de hoje e está com folga total negativa: a data exigida é anterior ao que as dependências do próprio arquivo permitem."><i class="sw-atr"></i>atrasada</span><span title="Hoje está entre o início e o término da tarefa."><i class="sw-corr"></i>em curso</span><span title="Começa depois de hoje."><i class="sw-fut"></i>futura</span><span title="Barra-mãe: não é trabalho, é o intervalo que cobre as tarefas filhas."><i class="sw-grp"></i>etapa (agrupa as tarefas)</span><span title="Tarefa de duração zero: uma data única, não um intervalo."><i class="sw-mil">&#9674;</i>marco</span><span title="Filete claro com o que o plano original previa para a mesma tarefa."><i class="sw-base"></i>linha de base</span></div>
 <div class="horizontes" id="horizontes"><span class="rot">Horizonte</span><button type="button" data-h="semana">Semana</button><button type="button" data-h="3meses">3 meses</button><button type="button" data-h="6meses">6 meses</button><button type="button" data-h="tudo">Tudo</button></div>
 <div class="quadro">
@@ -7128,6 +7146,7 @@ var DADOS = JSON.parse("[{\"pID\": 205, \"pName\": \"Empreendimento Areia Preta\
 var HORIZONTES = {"semana": {"escala": "day", "uids": [205, 25, 32, 41, 419, 42, 370, 404, 43, 372, 45, 418, 214, 217, 216, 405, 317, 318, 48, 420, 49, 398, 50, 51, 82, 90, 91, 92, 234, 94, 95, 239, 242, 250, 251, 252, 253, 254, 257, 246, 247, 285, 286, 124, 123, 143, 146]}, "3meses": {"escala": "week", "uids": [205, 25, 32, 36, 360, 361, 41, 419, 42, 404, 43, 372, 45, 418, 214, 389, 218, 217, 216, 403, 405, 406, 317, 318, 310, 311, 312, 313, 314, 48, 420, 398, 50, 51, 427, 428, 429, 430, 426, 425, 54, 55, 57, 401, 59, 61, 82, 84, 90, 91, 92, 233, 234, 235, 94, 95, 238, 239, 253, 432, 246, 247, 248, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 303, 156, 166, 165, 164, 163, 191, 162, 161, 408, 409, 410, 411, 412, 107, 177, 176, 193, 175, 108, 109, 115, 116, 117, 118, 119, 124, 123, 120, 112, 329, 343, 331, 113, 330, 344, 332, 133, 333, 345, 334, 134, 335, 349, 336, 135, 337, 346, 338, 136, 339, 347, 340, 138, 139, 140, 325, 323, 324, 141, 143, 144, 145, 146, 151, 152, 153, 154]}, "6meses": {"escala": "month", "uids": [205, 25, 32, 36, 360, 361, 41, 419, 42, 404, 43, 372, 45, 418, 214, 389, 218, 217, 216, 403, 405, 406, 317, 318, 310, 311, 312, 313, 314, 48, 420, 398, 50, 51, 427, 428, 429, 430, 426, 425, 54, 55, 57, 401, 59, 61, 65, 66, 67, 68, 69, 70, 71, 72, 399, 73, 74, 75, 76, 77, 78, 82, 84, 90, 226, 91, 92, 233, 234, 235, 236, 237, 93, 431, 94, 95, 238, 239, 253, 432, 246, 247, 248, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 106, 303, 156, 166, 165, 164, 163, 191, 162, 161, 261, 262, 263, 264, 265, 266, 258, 259, 159, 174, 408, 409, 410, 411, 412, 107, 177, 176, 193, 175, 108, 109, 115, 116, 117, 118, 119, 110, 132, 131, 130, 129, 128, 127, 179, 111, 122, 126, 124, 123, 120, 112, 329, 343, 331, 113, 330, 344, 332, 133, 333, 345, 334, 134, 335, 349, 336, 135, 337, 346, 338, 136, 339, 347, 340, 138, 139, 140, 325, 323, 324, 141, 327, 143, 144, 145, 328, 146, 147, 148, 149, 150, 151, 152, 153, 154]}, "tudo": {"escala": "quarter", "uids": null}};
 var HORIZONTE_PADRAO = "3meses";
 var PRAZOS = {"curto": {"ini": "2026-08-04", "fim": "2026-08-11"}, "medio": {"ini": "2026-08-04", "fim": "2026-09-04"}, "longo": {"ini": "2026-08-04", "fim": "2026-11-04"}};
+var PRAZO_NEUTRO = "tudo";
 </script>
 <script>
 var g = new JSGantt.GanttChart(document.getElementById('g'), 'month');
@@ -7167,7 +7186,7 @@ document.getElementById('horizontes').addEventListener('click', function(ev){
 });
 
 /* ---- destaque de prazo: veu por cima do eixo, nunca recorte da lista ---- */
-var prazoAtivo = null;
+var prazoAtivo = PRAZO_NEUTRO;
 function _data(iso){
   /* new Date('2026-08-10') e interpretado como UTC e, em BRT, volta 09/08 as
      21h — o veu comecaria um dia antes. Componentes separados = hora local. */
@@ -7184,7 +7203,7 @@ function pintarDestaque(){
   var corpo = g.getChartBody(), tabela = g.getChartTable();
   if (!corpo || !tabela) { return; }
   var esq = _veu(corpo, 'veu-esq'), dir = _veu(corpo, 'veu-dir');
-  var p = prazoAtivo ? PRAZOS[prazoAtivo] : null;
+  var p = PRAZOS[prazoAtivo] || null;
   if (!p || typeof g.chartRowDateToX !== 'function') {
     esq.style.display = 'none'; dir.style.display = 'none'; return; }
   /* o pixel vem do mapeamento do PROPRIO vendor, que ja carrega o vMinDate e a
@@ -7204,8 +7223,9 @@ document.getElementById('prazos').addEventListener('click', function(ev){
   var alvo = ev.target.closest('[data-p]');
   if (!alvo) { return; }
   var chave = alvo.getAttribute('data-p');
-  /* clicar de novo no card ja ligado volta ao estado neutro: sem destaque */
-  prazoAtivo = (prazoAtivo === chave ? null : chave);
+  /* clicar de novo no card ja ligado volta para o TUDO — o estado neutro
+     agora tem botao proprio, entao sempre ha exatamente um dos quatro ligado */
+  prazoAtivo = (prazoAtivo === chave ? PRAZO_NEUTRO : chave);
   var cards = document.querySelectorAll('#prazos [data-p]');
   for (var i = 0; i < cards.length; i++) {
     var on = cards[i].getAttribute('data-p') === prazoAtivo;
