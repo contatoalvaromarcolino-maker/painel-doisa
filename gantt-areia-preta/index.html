@@ -1152,6 +1152,12 @@ h1 em{font-style:normal;color:var(--primary)}
 .horizontes button:hover{border-color:var(--border-a);background:var(--bg-1)}
 .horizontes button.on{background:#1A3470;border-color:#1A3470;color:#FFFFFF;
                       font-weight:700}
+/* O botao das ligacoes veste a MESMA pilula das quatro do horizonte — nenhuma
+   cor, tamanho ou raio proprio, entao o navy de `.on` marca os cinco do mesmo
+   jeito. O que o separa e so o `margin-left:auto`, que o empurra para a outra
+   ponta da barra: ele nao e um quinto horizonte, e um interruptor. Bloco novo
+   nao se justificava — este ja gruda no topo, e o botao herda isso de graca. */
+.horizontes #ligacoes{margin-left:auto}
 
 /* --- cards de prazo: CURTO / MEDIO / LONGO / TUDO --- */
 /* Clicar num card destaca a janela e esmaece o resto do EIXO DE TEMPO. Nao
@@ -1373,7 +1379,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 14:04 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 14:35 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
@@ -1384,7 +1390,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <div class="aviso"><b>17 tarefas com folga negativa</b> — a pior em -675 dias. São datas exigidas anteriores ao que as dependências do próprio arquivo permitem.</div>
 <div class="prazos" id="prazos"><span class="rot">Prazo em destaque</span><button type="button" data-p="curto" aria-pressed="false" title="Destaca o que acontece nos próximos 1 semana e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>CURTO</b><span>1 semana · até 11/08/2026</span></button><button type="button" data-p="medio" aria-pressed="false" title="Destaca o que acontece nos próximos 1 mês e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>MÉDIO</b><span>1 mês · até 04/09/2026</span></button><button type="button" data-p="longo" aria-pressed="false" title="Destaca o que acontece nos próximos 3 meses e esmaece o resto do eixo de tempo. Nenhuma tarefa sai da lista."><b>LONGO</b><span>3 meses · até 04/11/2026</span></button><button type="button" data-p="tudo" class="on" aria-pressed="true" title="Devolve o gráfico inteiro à cor cheia: nenhum trecho do eixo de tempo fica esmaecido. É como a página abre."><b>TUDO</b><span></span></button></div>
 <div class="legenda"><span title="Terminou antes de hoje. Cinza para sair da frente do que ainda vai acontecer."><i class="sw-pass"></i>já passou</span><span title="Terminou antes de hoje e está com folga total negativa: a data exigida é anterior ao que as dependências do próprio arquivo permitem."><i class="sw-atr"></i>atrasada</span><span title="Hoje está entre o início e o término da tarefa."><i class="sw-corr"></i>em curso</span><span title="Começa depois de hoje."><i class="sw-fut"></i>futura</span><span title="Barra-mãe: não é trabalho, é o intervalo que cobre as tarefas filhas."><i class="sw-grp"></i>etapa (agrupa as tarefas)</span><span title="Tarefa de duração zero: uma data única, não um intervalo."><i class="sw-mil">&#9674;</i>marco</span><span title="Filete claro com o que o plano original previa para a mesma tarefa."><i class="sw-base"></i>linha de base</span></div>
-<div class="horizontes" id="horizontes"><span class="rot">Horizonte</span><button type="button" data-h="semana">Semana</button><button type="button" data-h="3meses">3 meses</button><button type="button" data-h="6meses">6 meses</button><button type="button" data-h="tudo">Tudo</button></div>
+<div class="horizontes" id="horizontes"><span class="rot">Horizonte</span><button type="button" data-h="semana">Semana</button><button type="button" data-h="3meses">3 meses</button><button type="button" data-h="6meses">6 meses</button><button type="button" data-h="tudo">Tudo</button><button type="button" id="ligacoes" aria-pressed="false" title="Acende de uma vez todas as setas de dependência entre as barras. Clique de novo para apagar e voltar ao gráfico limpo.">Ver ligações</button></div>
 <div class="quadro">
   <div class="faixa">Cronograma físico · MS Project</div>
   <div class="wrap"><div style="position:relative" class="gantt" id="g"></div></div>
@@ -7171,7 +7177,12 @@ function aplicar(chave){
   g.vProcessNeeded = true;
   lista.forEach(function(t){ g.AddTaskItemObject(t); });
   document.getElementById('n-tarefas').textContent = lista.length;
-  var pilulas = document.querySelectorAll('#horizontes button');
+  /* `[data-h]` nao e enfeite: o botao das ligacoes mora no MESMO <div> e nao e
+     um horizonte. Sem o filtro, este laco apagava a marca dele a cada troca de
+     horizonte e o painel ficava orfao — as ~2.000 setas acesas na tela e o
+     botao desmarcado dizendo que nao estavam. (Achado na verificacao visual,
+     com a suite inteira verde: nenhum teste olhava os dois estados juntos.) */
+  var pilulas = document.querySelectorAll('#horizontes button[data-h]');
   for (var i = 0; i < pilulas.length; i++) {
     var ligada = pilulas[i].getAttribute('data-h') === chave;
     pilulas[i].classList.toggle('on', ligada);
@@ -7235,12 +7246,24 @@ document.getElementById('prazos').addEventListener('click', function(ev){
 });
 
 /* ---- setas de dependencia: nenhuma por padrao, so as da barra clicada ---- */
+/* Dois estados que convivem sem ambiguidade. `tarefaSel` e a barra escolhida;
+   `todasLigacoes` e o botao que acende o cronograma inteiro. O botao NAO apaga
+   a selecao — ele passa por cima enquanto esta ligado e devolve a barra intacta
+   ao desligar. UM so lugar escreve a folha `setas-visiveis`, e ele le os dois:
+   e por isso que "botao ligado com barra selecionada" nao vira um terceiro
+   estado em que a tela discorda do que esta marcado. */
 var tarefaSel = null;
+var todasLigacoes = false;
 var REGRA_SETA = '#g #gLines div.gDepId{u},#g #gLines div.gDepNextId{u}{display:block}';
+/* 2 ids contra 1 da regra que esconde: vence na especificidade, nao no empate
+   resolvido por ordem no documento. O filtro por prefixo `gDep` e o MESMO da
+   regra que esconde — acende as ~2.000 setas e nao encosta na linha de hoje,
+   que mora no mesmo container e nao carrega o prefixo. */
+var REGRA_TODAS = '#g #gLines div[class*="gDep"]{display:block}';
 function mostrarSetas(uid){
   tarefaSel = uid;
   document.getElementById('setas-visiveis').textContent =
-    uid ? REGRA_SETA.split('{u}').join(uid) : '';
+    todasLigacoes ? REGRA_TODAS : (uid ? REGRA_SETA.split('{u}').join(uid) : '');
   var barras = document.querySelectorAll('#g .gtaskbarcontainer');
   for (var i = 0; i < barras.length; i++) {
     var minha = !!uid && barras[i].id.split('_')[1] === uid;
@@ -7263,7 +7286,20 @@ document.getElementById('g').addEventListener('click', function(ev){
   mostrarSetas(tarefaSel === uid ? null : uid);
 });
 document.addEventListener('click', function(ev){
-  if (!ev.target.closest('#g')) { mostrarSetas(null); }
+  /* o botao das ligacoes vive FORA de #g: sem a excecao, ligar o botao com uma
+     barra selecionada limparia a selecao no caminho de volta do proprio clique,
+     e desligar nao teria mais para onde voltar. */
+  if (!ev.target.closest('#g') && !ev.target.closest('#ligacoes')) { mostrarSetas(null); }
+});
+/* ---- o interruptor: acende TODAS as ligacoes de uma vez ---- */
+document.getElementById('ligacoes').addEventListener('click', function(){
+  var b = document.getElementById('ligacoes');
+  todasLigacoes = !todasLigacoes;
+  b.classList.toggle('on', todasLigacoes);
+  b.setAttribute('aria-pressed', todasLigacoes ? 'true' : 'false');
+  /* reentrega a barra selecionada: ligado ela fica marcada por baixo do
+     emaranhado, desligado ela volta a ser a unica acesa */
+  mostrarSetas(tarefaSel);
 });
 
 /* Trocar horizonte, trocar escala ou recolher um grupo refaz o DOM do grafico
