@@ -1052,8 +1052,10 @@ td.gspanning div {
      28px de fonte e ganhou ~13px de altura, que descem direto sobre a barra de
      rolagem do grafico. Fica em token proprio para que a proxima mexida no
      tamanho do titulo apareca nesta conta em vez de empurrar a barra em silencio.
-     Medido em 1440x900. */
-  --h-faixa:62px;
+     MEDIDO no navegador em 1440x900, nao estimado: 40px de caixa de linha
+     (Arial Black 28px) + 28px de padding + 1px de borda = 69px. A conta a olho
+     dava 62px e deixava a barra de rolagem 2px mais baixa que antes da mudanca. */
+  --h-faixa:69px;
   --h-painel:calc(100vh - 199px - var(--h-prazos) - var(--h-faixa));
   color-scheme:light;
 }
@@ -1371,7 +1373,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 13:52 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 13:56 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
