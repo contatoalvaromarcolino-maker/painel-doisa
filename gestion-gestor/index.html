@@ -1429,6 +1429,7 @@ function donutOptions(opts = {}) {
     } : undefined,
     onHover: opts.onSliceClick ? (evt) => { evt.native && (evt.native.target.style.cursor = 'pointer'); } : undefined,
     plugins: {
+      centerTotal: { rotulo: opts.rotuloCentro },
       legend: {
         position: 'right', align: 'center',
         labels: {
@@ -1484,7 +1485,7 @@ const centerTotalPlugin = {
     ctx.shadowBlur = 0;
     ctx.fillStyle = PALETTE.textMuted;
     ctx.font = '600 9px Inter';
-    ctx.fillText('TOTAL', cx, cy + 14);
+    ctx.fillText(opts.rotulo || 'TOTAL', cx, cy + 14);
     ctx.restore();
   }
 };
@@ -1540,6 +1541,9 @@ function renderResponsavelDonut(canvas, backlog) {
       }]
     },
     options: donutOptions({
+      // Soma das fatias, nao numero de acoes: quem divide uma acao aparece
+      // na fatia dos dois. Chamar de TOTAL contradizia o cabecalho da tabela.
+      rotuloCentro: 'ATRIBUIÇÕES',
       onSliceClick: (label) => {
         const key = labelKeys[label];
         if (key) setFilter('pend', state.filterPend === key ? null : key);
