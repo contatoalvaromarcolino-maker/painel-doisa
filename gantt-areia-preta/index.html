@@ -1032,8 +1032,8 @@ td.gspanning div {
   --font-titulo:'Arial Black','Arial',sans-serif;
   /* altura da barra de controles que gruda no topo. O cabecalho de datas gruda
      LOGO ABAIXO dela (top:var(--h-controles)), entao os dois se empilham em vez
-     de um passar por cima do outro. Medido: 14+21+10 = 45px. */
-  --h-controles:45px;
+     de um passar por cima do outro. Medido em 1440x900: 48px. */
+  --h-controles:48px;
   /* altura util do painel do grafico. Limitar a altura e o que traz a barra de
      rolagem horizontal do vendor (.gchartgrid, 7055px de largura) da base do
      DOCUMENTO para a base da JANELA — antes era preciso descer as 304 linhas
@@ -1141,18 +1141,18 @@ h1 em{font-style:normal;color:var(--primary)}
 #g .gtaskheading{
   background-color:#1A3470;color:#FFFFFF;font-size:10px;font-weight:700;
   letter-spacing:.10em;text-transform:uppercase;border-color:rgba(255,255,255,.16)}
-/* cabecalho de DATAS do grafico (anos, meses, dias): laranja da casa sobre
-   fundo claro. Era navy solido com texto branco; texto laranja sobre navy da
-   3,89:1, pior que sobre branco. Fundo BRANCO puro e o arranjo de MAIOR
-   contraste possivel para #E97132: 3,06:1. Nao chega aos 4,5:1 da WCAG para
-   texto e nenhum arranjo chega — a luminancia do proprio laranja (0,2937)
-   trava o teto em 3,06:1 mesmo contra branco puro. Ver relatorio. */
+/* cabecalho de DATAS do grafico: anos, meses e dias no laranja da casa.
+   MEDIDO, contra a intuicao de que clarear o fundo ajudaria: sobre o navy
+   #1A3470 o laranja da 3,88:1; sobre BRANCO PURO cai para 3,06:1. Clarear o
+   fundo PIORA — a luminancia do laranja (0,2937) esta perto demais da do
+   branco. Por isso o fundo continua navy, que tambem evita duas faixas
+   escuras diferentes lado a lado com o cabecalho da lista.
+   3,88:1 NAO alcanca os 4,5:1 da WCAG para texto. O unico token que alcanca e
+   --txt #1A1A1A (5,70:1), ao custo de uma faixa quase preta encostada no navy
+   da lista. Fica relatado, nao escondido. */
 #g .gmajorheading,#g .gminorheading,#g .gminorheadingwkend{
-  background-color:#FFFFFF;color:#E97132;font-size:10px;font-weight:700;
-  letter-spacing:.10em;text-transform:uppercase;border-color:rgba(233,113,50,.28)}
-/* o fim-de-semana perde o tom proprio no cabecalho de proposito: qualquer
-   fundo mais escuro que branco derruba ainda mais os 3,06:1. A distincao de
-   fim-de-semana continua viva nas CELULAS (.gtaskcellwkend), onde nao ha texto. */
+  background-color:#1A3470;color:#E97132;font-size:10px;font-weight:700;
+  letter-spacing:.10em;text-transform:uppercase;border-color:rgba(255,255,255,.16)}
 #g .gchartlbl{border-bottom:2px solid #E97132}
 /* O `:not(.gtaskheading)` nao e enfeite: a celula de cabecalho carrega as DUAS
    classes (`gtaskheading gstartdate`), as duas regras tem a mesma especificidade
@@ -1230,7 +1230,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 11:13 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 11:20 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
