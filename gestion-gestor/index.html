@@ -1439,7 +1439,9 @@ function donutOptions(opts = {}) {
     plugins: {
       centerTotal: { rotulo: opts.rotuloCentro },
       legend: {
-        position: 'right', align: 'center',
+        // <=768px: legenda a direita nao cabe e o Chart.js corta o nome
+        // no meio ('Alvar - 8'). Embaixo ela tem a largura do card.
+        position: (window.innerWidth <= 768 ? 'bottom' : 'right'), align: 'center',
         labels: {
           color: PALETTE.text,
           font: { family: 'Inter', size: 11, weight: '500' },
