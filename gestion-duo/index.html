@@ -1976,7 +1976,7 @@ function findTask(taskId) {
   return state.backlog.find(t => t.id === taskId) || state.moved.find(t => t.id === taskId);
 }
 
-// ─── Modal: Aprovar (mover pra lista) ──────────────────────
+// ─── Modal: Aprovar (status "Em Acompanhamento", não move de lista) ──
 window.openApproveModal = function(taskId) {
   const task = findTask(taskId);
   if (!task) return;
@@ -1985,14 +1985,14 @@ window.openApproveModal = function(taskId) {
     `<option value="${id}" ${id === sug.list_id ? 'selected' : ''}>${escHTML(name)}${id === sug.list_id ? ' · sugestão' : ''}</option>`
   ).join('');
   openModal(`
-    <h3>Aprovar e mover para lista</h3>
-    <div class="modal-sub"><b>${escHTML(task.name)}</b><br>Esta ação sai do backlog e vai pra lista escolhida (mesmo efeito do "Aprovar" no Telegram).</div>
+    <h3>Aprovar (Em Acompanhamento)</h3>
+    <div class="modal-sub"><b>${escHTML(task.name)}</b><br>Esta ação muda o status pra "Em Acompanhamento" (a task continua no Backlog); a lista escolhida fica registrada como comentário, mesmo efeito do "Aprovar" no Telegram.</div>
     ${extractContext(task.description) ? `<div class="modal-context" style="margin:10px 0;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:6px;font-size:12px;color:rgba(255,255,255,0.6);white-space:pre-wrap;max-height:120px;overflow-y:auto"><span style="color:rgba(255,255,255,0.4);font-size:11px">📝 Contexto da reunião</span><br>${escHTML(extractContext(task.description))}</div>` : ''}
-    <label>Lista de destino</label>
+    <label>Lista de referência (registrada em comentário)</label>
     <select id="m-list">${options}</select>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="btn-confirm" id="m-go" onclick="doApprove('${taskId}')">Aprovar e mover</button>
+      <button class="btn-confirm" id="m-go" onclick="doApprove('${taskId}')">Aprovar</button>
     </div>
   `);
 };
@@ -2009,12 +2009,12 @@ window.doApprove = async function(taskId) {
       task_title: task?.name || null,
       approved_by: 'painel',
     });
-    showToast('✅ Aprovado e movido', 'ok');
+    showToast('✅ Aprovado — em acompanhamento', 'ok');
     closeModal();
     await load();
   } catch (e) {
     showToast(`Falha: ${e.message}`, 'err', 7000);
-    btn.disabled = false; btn.textContent = 'Aprovar e mover';
+    btn.disabled = false; btn.textContent = 'Aprovar';
   }
 };
 
@@ -2180,7 +2180,7 @@ window.doApproveInline = async function(sel, taskId) {
   if (!listId) return;
   const task = findTask(taskId);
   const listName = (ALL_LISTS.find(([id]) => id === listId) || [])[1] || listId;
-  const ok = confirm(`Aprovar e mover?\n\n"${task?.name || taskId}"\n\n→ ${listName}\n\nA ação sai do backlog.`);
+  const ok = confirm(`Aprovar?\n\n"${task?.name || taskId}"\n\n→ ${listName} (registrado em comentário)\n\nA task entra em "Em Acompanhamento", sem sair do Backlog.`);
   if (!ok) { sel.value = ''; return; }
   sel.disabled = true;
   try {
@@ -2190,7 +2190,7 @@ window.doApproveInline = async function(sel, taskId) {
       task_title: task?.name || null,
       approved_by: 'painel',
     });
-    showToast(`✅ Movido para ${listName}`, 'ok');
+    showToast(`✅ Em acompanhamento (ref.: ${listName})`, 'ok');
     await load();
   } catch (e) {
     showToast(`Falha: ${e.message}`, 'err', 7000);
