@@ -1539,6 +1539,10 @@ function renderResponsavelDonut(canvas, backlog) {
   const values = entries.map(e => e[1]);
   const colors = labels.map((l,i) => l === 'Sem responsável' ? PALETTE.dim : AURORA[i % AURORA.length]);
 
+  // Legenda embaixo (caixa estreita) come ~80 px; sem folga o anel encolhe
+  // ate o rotulo central transbordar. So este card cresce.
+  canvas.parentElement.style.height =
+    canvas.parentElement.clientWidth < 420 ? '268px' : '';
   destroyChart('respDonut');
   charts.respDonut = new Chart(canvas, {
     type: 'doughnut',
