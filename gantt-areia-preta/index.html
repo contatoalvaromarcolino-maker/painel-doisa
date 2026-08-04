@@ -1078,7 +1078,12 @@ body{margin:0;background:var(--bg);color:var(--txt);
    de controles seguem grudando. O `.quadro` vira contexto de empilhamento
    proprio, e por isso a barra de controles (z-index:60, irma dele) continua
    passando por cima dos cabecalhos do grafico (z-index:30, dentro dele). */
-body>*:not(.luz){position:relative;z-index:1}
+/* Levanta o conteudo acima da camada de pulso. `.horizontes` fica DE FORA: o
+   seletor com :not() tem especificidade (0,1,1) e ganhava de `.horizontes`
+   (0,1,0), reescrevendo position:sticky para relative e z-index:60 para 1 — o
+   sticky do pedido 1 morria calado. Os controles nao precisam da regra: sticky
+   ja abre contexto de empilhamento, e o z-index:60 deles ganha da luz (0). */
+body>*:not(.luz):not(.horizontes){position:relative;z-index:1}
 
 /* --- topo --- */
 .marca{height:4px;background:linear-gradient(90deg,#2D4F9E 0%,#E97132 100%)}
@@ -1283,7 +1288,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 11:24 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 11:39 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
