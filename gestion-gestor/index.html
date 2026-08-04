@@ -811,7 +811,11 @@
     font-size: 10px; font-weight: 800; text-transform: uppercase;
     letter-spacing: 0.12em; color: rgba(255,255,255,0.92);
     border-bottom: 1px solid rgba(var(--col-tint-rgb), 0.30);
-    background: linear-gradient(180deg, rgba(var(--col-tint-rgb),0.10), rgba(0,0,0,0.18));
+    /* Opaco por baixo do gradiente. So' o gradiente (alfa 0,10/0,18) deixava a
+       linha rolada aparecer POR TRAS do rotulo da coluna -- com 231 linhas, sempre.
+       #1B2A47 e' o composto real: #0F1F3D (--primary-dark) sob o vidro do card. */
+    background-color: #1B2A47;
+    background-image: linear-gradient(180deg, rgba(var(--col-tint-rgb),0.10), rgba(0,0,0,0.18));
     position: sticky; top: 0; z-index: 2;
   }
   thead th:first-child { text-align: left; padding-left: 18px; }
@@ -1259,11 +1263,14 @@ function buildAssigneeChips(tasks, members) {
     })
     .sort((a,b) => b.count - a.count);
   if (noneCount > 0) chips.push({ key: '__none__', label: 'Sem responsável', count: noneCount });
+  // Somar os chips conta 2x quem tem 2 responsaveis. O total verdadeiro e o
+  // numero de ACOES -- que e o que a tabela mostra quando 'Todos' e escolhido.
+  chips.totalTarefas = tasks.length;
   return chips;
 }
 
 function renderFilterStrip(currentFilter, chips, onSelect) {
-  const totalCount = chips.reduce((s,c) => s + c.count, 0);
+  const totalCount = chips.totalTarefas ?? chips.reduce((s,c) => s + c.count, 0);
   const allSel = currentFilter == null ? 'selected' : '';
   const allOpt = `<option value="" ${allSel}>Todos (${totalCount})</option>`;
   const rest = chips.map(c => {
