@@ -1135,7 +1135,7 @@ async function fetchPaged(url) {
 async function fetchBacklog()    { return fetchPaged(`${WORKER_URL}/list/${BACKLOG_LIST}/task?include_closed=true`); }
 async function fetchGestionAll() { return []; }   // DUO: as 2 colunas saem da lista confidencial
 async function fetchMembers()    {
-  try { const r = await fetch(`${WORKER_URL}/workspace-members`); if (!r.ok) return []; const d = await r.json(); return d.members || []; }
+  try { const r = await fetch(`${WORKER_URL}/workspace-members?list_id=${BACKLOG_LIST}`); if (!r.ok) return []; const d = await r.json(); return d.members || []; }
   catch { return []; }
 }
 async function fetchDeltas()     {
