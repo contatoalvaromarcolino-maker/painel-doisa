@@ -1355,7 +1355,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 12:27 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 12:51 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
@@ -7216,7 +7216,7 @@ document.getElementById('prazos').addEventListener('click', function(ev){
 
 /* ---- setas de dependencia: nenhuma por padrao, so as da barra clicada ---- */
 var tarefaSel = null;
-var REGRA_SETA = '#g #gLines div.gDepDataId{u},#g #gLines div.gDepNextDataId{u}{display:block}';
+var REGRA_SETA = '#g #gLines div.gDepId{u},#g #gLines div.gDepNextId{u}{display:block}';
 function mostrarSetas(uid){
   tarefaSel = uid;
   document.getElementById('setas-visiveis').textContent =
