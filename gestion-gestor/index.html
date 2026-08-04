@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta name="robots" content="noindex,nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GESTÃO · AÇÕES · ATA · DOIS A</title>
@@ -1014,7 +1015,7 @@
 <div id="toast-stack"></div>
 
 <script>
-const WORKER_URL = 'https://gestion-api.doisa.workers.dev';
+const WORKER_URL = 'https://srv1430902.hstgr.cloud/gestion-proxy';
 const BACKLOG_LIST = '901713574304';
 const TEAM_ID     = '90171115290';
 
@@ -1132,7 +1133,7 @@ async function fetchPaged(url) {
   return all;
 }
 async function fetchBacklog()    { return fetchPaged(`${WORKER_URL}/list/${BACKLOG_LIST}/task?include_closed=false`); }
-async function fetchGestionAll() { return fetchPaged(`${WORKER_URL}/team/${TEAM_ID}/task?tags[]=gestion-ata&include_closed=true`); }
+async function fetchGestionAll() { return []; }   // gestor: acompanhamento agora e por status, nao por busca team-wide
 async function fetchMembers()    {
   try { const r = await fetch(`${WORKER_URL}/workspace-members`); if (!r.ok) return []; const d = await r.json(); return d.members || []; }
   catch { return []; }
@@ -2205,15 +2206,15 @@ async function load() {
     ]);
     const isCancelled = (t) => {
       const s = (t.status?.status || '').toLowerCase();
-      return s === 'cancelado' || s === 'cancelled' || s === 'canceled';
+      return s === 'cancelado' || s === 'cancelled' || s === 'canceled'
+        || s === '🗑 excluir' || s === '🗑 excluídas';
     };
-    // Em Acompanhamento = so o que foi TRIADO para uma lista de destino operacional.
-    // Filtrar por lista (e nao pela tag gestion-ata) exclui na raiz os cartoes de ATA
-    // (ata nao e acao) e as acoes do backlog confidencial da DUO.
-    const DEST_LISTS = new Set(ALL_LISTS.map(([id]) => id));
-    const moved = gestionAll.filter(t => DEST_LISTS.has(t.list?.id || t.list_id) && !isCancelled(t));
+    // Em Acompanhamento = status 'acompanhamento' dentro da propria lista Backlog
+    // (ClickUp nao deixa trocar a lista dona via API -- ver docstring acima).
+    const isAcompanhamento = (t) => (t.status?.status || '').toLowerCase() === 'acompanhamento';
+    const moved = backlog.filter(t => isAcompanhamento(t) && !isCancelled(t));
 
-    state.backlog = backlog.filter(t => !isCancelled(t));
+    state.backlog = backlog.filter(t => !isCancelled(t) && !isAcompanhamento(t));
     state.moved   = moved;
     state.members = members;
     state.deltas  = deltas || state.deltas;
