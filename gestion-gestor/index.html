@@ -1135,7 +1135,7 @@ async function fetchPaged(url) {
 async function fetchBacklog()    { return fetchPaged(`${WORKER_URL}/list/${BACKLOG_LIST}/task?include_closed=false`); }
 async function fetchGestionAll() { return []; }   // gestor: acompanhamento agora e por status, nao por busca team-wide
 async function fetchMembers()    {
-  try { const r = await fetch(`${WORKER_URL}/workspace-members`); if (!r.ok) return []; const d = await r.json(); return d.members || []; }
+  try { const r = await fetch(`${WORKER_URL}/workspace-members?list_id=${BACKLOG_LIST}`); if (!r.ok) return []; const d = await r.json(); return d.members || []; }
   catch { return []; }
 }
 async function fetchDeltas()     {
@@ -2214,7 +2214,12 @@ async function load() {
     const isAcompanhamento = (t) => (t.status?.status || '').toLowerCase() === 'acompanhamento';
     const moved = backlog.filter(t => isAcompanhamento(t) && !isCancelled(t));
 
-    state.backlog = backlog.filter(t => !isCancelled(t) && !isAcompanhamento(t));
+    // 'feito' e type=done, nao type=closed -- include_closed=false nao filtra.
+    // Em 04/08/2026: 334 tarefas na Backlog, 104 ja concluidas. Contar tudo
+    // como pendente de triagem mostrava 334 onde o numero real e 230.
+    const concluidas = backlog.filter(t => isTaskDone(t) && !isCancelled(t)).length;
+    state.backlog = backlog.filter(t => !isCancelled(t) && !isAcompanhamento(t)
+                                        && !isTaskDone(t));
     state.moved   = moved;
     state.members = members;
     state.deltas  = deltas || state.deltas;
@@ -2226,7 +2231,8 @@ async function load() {
     document.getElementById('update-time').textContent = `Atualizado ${nowStr} BRT`;
     const open = moved.filter(t => !isTaskDone(t));
     document.getElementById('footer-count').textContent =
-      `${backlog.length} pendentes · ${open.length} em acompanhamento`;
+      `${state.backlog.length} pendentes · ${open.length} em acompanhamento`
+      + ` · ${concluidas} concluídas`;
   } catch (e) {
     document.getElementById('col-pend').innerHTML = `<div class="loading">Erro ao carregar: ${escHTML(e.message)}</div>`;
     document.getElementById('col-acomp').innerHTML = '';
