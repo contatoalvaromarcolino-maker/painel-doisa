@@ -1030,6 +1030,16 @@ td.gspanning div {
   --crit:#9B2915; --crit-bg:rgba(192,57,43,.10);
   --font-corpo:'Calibri','Segoe UI',system-ui,sans-serif;
   --font-titulo:'Arial Black','Arial',sans-serif;
+  /* altura da barra de controles que gruda no topo. O cabecalho de datas gruda
+     LOGO ABAIXO dela (top:var(--h-controles)), entao os dois se empilham em vez
+     de um passar por cima do outro. Medido: 14+21+10 = 45px. */
+  --h-controles:45px;
+  /* altura util do painel do grafico. Limitar a altura e o que traz a barra de
+     rolagem horizontal do vendor (.gchartgrid, 7055px de largura) da base do
+     DOCUMENTO para a base da JANELA — antes era preciso descer as 304 linhas
+     inteiras para alcancar ela. Desconta o topo fixo (~114px entre controles,
+     faixa e cabecalho) e o rodape de diagnostico (~136px). */
+  --h-painel:calc(100vh - 250px);
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -1061,8 +1071,13 @@ h1 em{font-style:normal;color:var(--primary)}
        border-left:4px solid var(--crit)}
 
 /* --- pilulas de horizonte: mesmo desenho das pilulas de escala do grafico --- */
+/* Gruda no topo da janela. Pai direto do <body>, sem nenhum `overflow` no
+   caminho — e por isso o sticky aqui e simples. z-index acima dos 30 dos
+   cabecalhos do grafico para que eles passem POR BAIXO, nunca por cima. */
 .horizontes{display:flex;align-items:center;flex-wrap:wrap;gap:6px;
-            padding:14px 22px 0;font-size:11px;color:var(--dim)}
+            padding:14px 22px 10px;font-size:11px;color:var(--dim);
+            position:sticky;top:0;z-index:60;background:var(--bg);
+            border-bottom:1px solid var(--border)}
 .horizontes .rot{font-weight:700;letter-spacing:.10em;text-transform:uppercase;
                  margin-right:5px}
 .horizontes button{font-family:inherit;font-size:11px;line-height:1;cursor:pointer;
@@ -1121,14 +1136,35 @@ h1 em{font-style:normal;color:var(--primary)}
 #g td,#g th{border-color:rgba(45,79,158,.07)}
 #g .gchartgrid,#g .glistlbl,#g .gchartlbl,#g .gtasktable,#g .gcharttable,
 #g .gcharttableh{background:#FFFFFF}
-#g .gtaskheading,#g .gmajorheading,#g .gminorheading,#g .gminorheadingwkend{
+/* cabecalho da LISTA da esquerda ("Inicio"): segue navy solido com texto branco.
+   11,6:1 — e o ancoradouro visual do lado esquerdo, nao ha motivo para mexer. */
+#g .gtaskheading{
   background-color:#1A3470;color:#FFFFFF;font-size:10px;font-weight:700;
   letter-spacing:.10em;text-transform:uppercase;border-color:rgba(255,255,255,.16)}
+/* cabecalho de DATAS do grafico (anos, meses, dias): laranja da casa sobre
+   fundo claro. Era navy solido com texto branco; texto laranja sobre navy da
+   3,89:1, pior que sobre branco. Fundo BRANCO puro e o arranjo de MAIOR
+   contraste possivel para #E97132: 3,06:1. Nao chega aos 4,5:1 da WCAG para
+   texto e nenhum arranjo chega — a luminancia do proprio laranja (0,2937)
+   trava o teto em 3,06:1 mesmo contra branco puro. Ver relatorio. */
+#g .gmajorheading,#g .gminorheading,#g .gminorheadingwkend{
+  background-color:#FFFFFF;color:#E97132;font-size:10px;font-weight:700;
+  letter-spacing:.10em;text-transform:uppercase;border-color:rgba(233,113,50,.28)}
+/* o fim-de-semana perde o tom proprio no cabecalho de proposito: qualquer
+   fundo mais escuro que branco derruba ainda mais os 3,06:1. A distincao de
+   fim-de-semana continua viva nas CELULAS (.gtaskcellwkend), onde nao ha texto. */
+#g .gchartlbl{border-bottom:2px solid #E97132}
 /* O `:not(.gtaskheading)` nao e enfeite: a celula de cabecalho carrega as DUAS
    classes (`gtaskheading gstartdate`), as duas regras tem a mesma especificidade
    (1,1,0) e quem vencia era a ordem no arquivo — cinza #3A3A3A sobre navy
    #1A3470, 1,8:1 de contraste. Excluir aqui tira a decisao da ordem das linhas. */
-#g .gname:not(.gtaskheading),#g .gtaskname:not(.gtaskheading),
+/* NOMES da coluna da esquerda (Projetos, 4.2 Estudo Preliminar, Licenciamento)
+   em navy escuro: 12,2:1 sobre branco, e o texto que se le primeiro. */
+#g .gname:not(.gtaskheading),#g .gtaskname:not(.gtaskheading){
+  color:var(--brand-deep);font-size:11px;border-color:rgba(45,79,158,.07)}
+/* As demais celulas da lista seguem no cinza: a coluna "Inicio" em laranja
+   daria 3,06:1 num texto de 11px, e o pedido do laranja era para o cabecalho
+   de datas do GRAFICO, nao para o dado linha a linha. */
 #g .gstartdate:not(.gtaskheading),#g .gdur:not(.gtaskheading),
 #g .genddate:not(.gtaskheading),#g .gres:not(.gtaskheading),
 #g .gcomp:not(.gtaskheading){
@@ -1153,7 +1189,19 @@ h1 em{font-style:normal;color:var(--primary)}
    (1654px medidos em 1440x900) dentro de um quadro de 1379px, e 605px de
    cronograma somem recortados sem nenhuma barra para alcancar. */
 #g .gmainleft,#g .gmainright{overflow:clip;min-width:0}
-#g .glistlbl,#g .gchartlbl{position:sticky;top:0;z-index:30;background:#FFFFFF}
+/* `top:var(--h-controles)` e nao `top:0`: a barra de horizonte agora gruda em
+   top:0 e os dois cabecalhos grudam LOGO ABAIXO dela. Em top:0 os tres
+   disputariam o mesmo pixel e o eixo de meses sumiria por baixo das pilulas. */
+#g .glistlbl,#g .gchartlbl{position:sticky;top:var(--h-controles);z-index:30;
+                           background:#FFFFFF}
+/* O corpo das duas tabelas ganha altura limitada e passa a rolar por dentro.
+   Nao e gambiarra: e o desenho do proprio vendor, que ja sincroniza os dois
+   lados (jsgantt.js:471 scrollTop entre .gtasktablewrapper e .gchartgrid,
+   :472 scrollLeft entre .gchartlbl e .gchartgrid). Com isso a barra horizontal
+   do grafico passa a morar na base do PAINEL, sempre dentro da janela, em vez
+   de na base do documento a 3.300px de distancia. O alinhamento 45/45px dos
+   dois cabecalhos nao e tocado: eles ficam FORA das caixas que rolam. */
+#g .gchartgrid,#g .gtasktablewrapper{max-height:var(--h-painel)}
 /* seletor de escala: vira controle discreto, nao sobra crua sobre o branco.
    A caixa dele e travada em 170px pelo vendor (jsgantt.css:173) com
    white-space:nowrap — os rotulos em portugues sao mais longos que os em
@@ -1182,7 +1230,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 10:51 BRT</div>
+  <div class="meta">Fonte: MS Project · gerado em 04/08/2026 11:13 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
