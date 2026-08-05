@@ -1418,7 +1418,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · <span style="color:var(--crit)" title="Retrato de 881 dias atrás — o cronograma é publicado de hora em hora, mas a conferência de progresso está congelada nesta data.">conferido pela equipe até 07/03/2024</span> · gerado em 05/08/2026 13:22 BRT</div>
+  <div class="meta">Fonte: MS Project · <span style="color:var(--crit)" title="Retrato de 881 dias atrás — o cronograma é publicado de hora em hora, mas a conferência de progresso está congelada nesta data.">conferido pela equipe até 07/03/2024</span> · gerado em 05/08/2026 14:07 BRT</div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">146</b><span>tarefas no recorte</span></div>
@@ -7435,7 +7435,7 @@ function esconderPopup(){
 document.getElementById('g').addEventListener('mouseover', function(ev){
   var barra = ev.target.closest('.gtaskbarcontainer');
   if (!barra) { return; }
-  var item = DADOS_POR_ID[barra.id.split('_')[1]];
+  var item = ITEM_POR_BARRA_ID[barra.id];
   if (item) { mostrarPopup(item, ev); }
 });
 document.getElementById('g').addEventListener('mouseout', function(ev){
@@ -7445,10 +7445,17 @@ document.getElementById('g').addEventListener('mouseout', function(ev){
 window.addEventListener('scroll', esconderPopup, true);
 /* E1: barra com ligacao ganha title — a marca some a cada redesenho junto com o
    resto do DOM do vendor, entao e reaplicada no mesmo afterDraw dos outros. */
+var ITEM_POR_BARRA_ID = {};
+/* E1/E3: o id do .gtaskbarcontainer e o hash getID() do vendor (ver comentario
+   do A2 acima de pintarParadas), nunca o pID cru. mostrarPopup e o clique que
+   abre o ClickUp precisam do item de verdade, entao o mapa sai daqui, do MESMO
+   loop que ja visita vTaskList pra carimbar o title -- sem segundo for. */
 function marcarLigacoes(){
+  ITEM_POR_BARRA_ID = {};
   for (var i = 0; i < g.vTaskList.length; i++) {
     var item = DADOS_POR_ID[g.vTaskList[i].getOriginalID()];
     var barra = g.vTaskList[i].getBarDiv();
+    if (barra) { ITEM_POR_BARRA_ID[barra.id] = item; }
     if (barra && item && item.pCuId) { barra.title = 'abre no ClickUp'; }
   }
 }
@@ -7494,7 +7501,9 @@ document.getElementById('g').addEventListener('click', function(ev){
   mostrarSetas(tarefaSel === uid ? null : uid);
   // E1: clique continua acendendo as setas E, quando ha ligacao, abre a task —
   // pedido literal do Alvaro ("clicando... indo para o clickup automaticamente").
-  var item = DADOS_POR_ID[uid];
+  // uid acima e o hash do vendor (serve so pra REGRA_SETA); o item de verdade
+  // vem do mapa que marcarLigacoes ja mantem, indexado pelo mesmo id de barra.
+  var item = ITEM_POR_BARRA_ID[barra.id];
   if (item && item.pCuId) {
     window.open('https://app.clickup.com/t/' + item.pCuId, '_blank', 'noopener');
   }
