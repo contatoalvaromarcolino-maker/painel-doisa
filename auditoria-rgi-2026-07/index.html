@@ -1,0 +1,1834 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230B2E5B'/%3E%3Cpath d='M3.6 8.4l2.8 2.8 6-6' stroke='%23F07C22' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<title>Auditoria RGI — 2026-07</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg-1:#F5F7FB; --bg-2:#E8ECF5;
+  --border:rgba(45,79,158,.18);
+  --primary:#E97132; --brand:#2D4F9E; --brand-deep:#1A3470;
+  --txt:#1A1A1A; --mut:#3A3A3A; --dim:#7A8299;
+  --ok:#1E7A34; --ok-bg:rgba(46,139,69,.10);
+  --warn:#8B6800; --warn-bg:rgba(224,160,40,.10);
+  --crit:#9B2915; --crit-bg:rgba(192,57,43,.10);
+  --pendente:#1D5FA8; --pendente-bg:rgba(29,95,168,.10);
+  --semfonte:#5A6472; --semfonte-bg:rgba(90,100,114,.10);
+  --neutro:#54606E; --neutro-bg:rgba(84,96,110,.08);
+  --incerto:#7B5AA6; --incerto-bg:rgba(123,90,166,.10);
+  --ausente:#B0552E; --ausente-bg:rgba(176,85,46,.10);
+  --hdr-bg:#FFFFFF; --kpi-bg:#FFFFFF; --card-bg:#FFFFFF;
+  --saida:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--txt);font-family:'Calibri','Segoe UI',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.brand-bar{height:4px;width:100%;position:sticky;top:0;z-index:200;
+  background:linear-gradient(90deg,var(--brand) 0%,var(--primary) 100%);display:flex;
+  align-items:center;justify-content:center}
+header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
+  padding:26px 36px 18px;border-bottom:1px solid var(--border);background:var(--hdr-bg)}
+h1{font-size:clamp(17px,2.5vw,24px);font-weight:900;letter-spacing:-.2px;color:var(--brand);
+  font-family:'Arial Black','Arial',sans-serif}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--brand-deep);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';display:inline-block;width:28px;height:2px;background:var(--primary);
+  border-radius:2px}
+
+.aviso-origem{margin:0;padding:10px 36px;font-size:12px;background:var(--warn-bg);color:var(--warn);
+  border-bottom:1px solid rgba(224,160,40,.30)}
+.aviso-origem.oculto{display:none}
+
+.abas-nav{display:flex;gap:4px;padding:0 36px;border-bottom:1px solid var(--border);
+  background:var(--hdr-bg)}
+.aba-bt{padding:12px 18px;font-size:12.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--dim);background:none;border:none;
+  border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+.aba-bt.ativa{color:var(--brand-deep);border-bottom-color:var(--primary)}
+.aba-painel{display:none}
+.aba-painel.ativa{display:block}
+
+.res{margin:22px 36px 0;border:1px solid var(--border);border-radius:8px;background:var(--kpi-bg);
+  overflow:hidden}
+.res-cab{padding:11px 18px;border-bottom:1px solid var(--border);font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--warn);background:var(--warn-bg)}
+.res-lista{margin:0;padding:12px 18px 14px 36px;display:grid;gap:9px;font-size:12.5px;
+  line-height:1.55;color:var(--mut)}
+.res-tag{display:inline-block;margin-right:8px;padding:1px 7px;border-radius:3px;
+  background:rgba(45,79,158,.10);color:var(--brand-deep);font-size:9.5px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;vertical-align:1px}
+
+.sec{padding:24px 36px 0}
+.sec-cab{margin-bottom:12px}
+.sec-cab h2{font-size:14px;font-weight:800;color:var(--brand-deep);text-transform:uppercase;
+  letter-spacing:.06em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:18px;
+  padding-bottom:24px}
+
+.card{position:relative;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:10px;overflow:visible;box-shadow:0 2px 8px rgba(45,79,158,.06)}
+.card-topo{height:5px;background:linear-gradient(90deg,var(--brand-deep) 0%,var(--brand) 42%,
+  var(--primary) 100%);border-radius:10px 10px 0 0}
+.card.crit .card-topo{background:linear-gradient(90deg,var(--crit) 0%,var(--primary) 100%)}
+.card-corpo{padding:13px 16px 14px}
+.card h3{font-size:13.5px;font-weight:700;color:var(--brand-deep);text-transform:uppercase;
+  letter-spacing:.04em;line-height:1.3;margin-bottom:10px}
+.campos{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;align-items:center;
+  font-size:12.5px;margin-bottom:6px}
+.campos dt{color:var(--dim);font-size:10px;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;white-space:nowrap}
+.campos dd{color:var(--mut)}
+.campos-topo{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.quando{font-size:10.5px;color:var(--dim)}
+
+.chip{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 8px;border-radius:20px;white-space:nowrap}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.crit{background:var(--crit-bg);color:var(--crit)}
+.chip.pendente{background:var(--pendente-bg);color:var(--pendente)}
+.chip.semfonte{background:var(--semfonte-bg);color:var(--semfonte)}
+.chip.neutro{background:var(--neutro-bg);color:var(--neutro)}
+.chip.incerto{background:var(--incerto-bg);color:var(--incerto)}
+.chip.ausente{background:var(--ausente-bg);color:var(--ausente)}
+
+.mais{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--bg-1);
+  color:var(--brand);font-family:inherit;font-size:14px;font-weight:800;line-height:1;cursor:pointer;
+  transition:background .18s var(--saida),color .18s var(--saida)}
+.mais:hover,.mais[aria-expanded="true"]{background:var(--primary);border-color:var(--primary);
+  color:#FFFFFF}
+.acoes{display:flex;gap:8px;margin-top:12px;padding-top:11px;border-top:1px dashed var(--border)}
+.bt-wrap{position:relative;display:inline-flex}
+.bt{display:inline-flex;align-items:center;justify-content:center;padding:9px 18px;
+  border-radius:7px;font-size:12px;font-weight:700;letter-spacing:.04em;text-decoration:none;
+  border:1px solid var(--border);color:var(--brand);background:var(--bg-1);cursor:pointer;
+  font-family:inherit;transition:background .2s var(--saida),color .2s var(--saida)}
+.bt:hover{background:var(--brand);border-color:var(--brand);color:#FFFFFF}
+
+.pop{position:absolute;z-index:60;left:0;top:calc(100% + 8px);width:max(300px,100%);
+  background:#FFFFFF;border:1px solid var(--border);border-radius:9px;padding:11px 13px;
+  box-shadow:0 14px 34px rgba(26,52,112,.20);font-size:11.5px;color:var(--mut)}
+.pop[hidden]{display:none}
+.pop-tit{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:7px}
+.roteiro-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.roteiro-item label{display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:11.5px;
+  font-weight:700;color:var(--mut)}
+.roteiro-item input{margin-top:2px}
+.roteiro-item input:checked ~ .pergunta{color:var(--ok);text-decoration:line-through}
+.roteiro-detalhe{margin:4px 0 0 22px;font-size:10.5px;line-height:1.5;color:var(--dim);
+  display:grid;gap:2px;padding-bottom:6px;border-bottom:1px dashed var(--border)}
+.roteiro-item:last-child .roteiro-detalhe{border-bottom:none;padding-bottom:0}
+
+.alerta{margin-top:10px;font-size:11.5px;border-radius:6px;padding:8px 10px;line-height:1.45}
+.alerta.crit{background:var(--crit-bg);color:var(--crit);border:1px solid rgba(192,57,43,.28)}
+.alerta.warn{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(224,160,40,.30)}
+
+.v-arq{margin-top:6px;font-size:11.5px;color:var(--mut);word-break:break-word}
+.v-arq.off{color:var(--dim);font-style:italic}
+.v-arq.copiavel{cursor:pointer;padding:4px 8px;border:1px dashed var(--border);border-radius:6px;
+  display:block}
+.v-arq.copiavel:hover{background:var(--bg-1)}
+.v-arq code{display:block;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;
+  margin-top:2px}
+
+.passos-viabil{margin:0;padding:0 36px 24px;list-style:none;display:grid;gap:18px;counter-reset:passo}
+.passos-viabil li{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;
+  padding:14px 18px;counter-increment:passo;min-width:0}
+.passos-viabil h3::before{content:counter(passo) '. ';color:var(--primary)}
+.passos-viabil h3{font-size:13.5px;color:var(--brand-deep);margin-bottom:4px}
+.passos-viabil h4{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);
+  margin:10px 0 4px}
+.dim{color:var(--dim);font-size:12px}
+
+.tabela-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabela-vendas{width:100%;min-width:480px;border-collapse:collapse;font-size:12px}
+.tabela-vendas th{text-align:left;color:var(--dim);font-size:10px;text-transform:uppercase;
+  letter-spacing:.08em;padding:6px 8px;border-bottom:1px solid var(--border)}
+.tabela-vendas td{padding:6px 8px;border-bottom:1px dashed var(--border);color:var(--mut)}
+
+.frase-leitura{margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--mut)}
+.atribuicao{margin-top:10px;display:grid;gap:6px}
+.atribuicao details{font-size:11.5px;border:1px solid var(--border);border-radius:6px;padding:6px 10px}
+.atribuicao summary{cursor:pointer;font-weight:700;color:var(--brand)}
+.atribuicao ul{margin:6px 0 0;padding-left:18px;color:var(--mut)}
+
+.graficos-wrap{display:flex;flex-wrap:wrap;gap:18px;padding:0 36px 24px}
+.grafico{flex:1 1 320px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px}
+.grafico-tit{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:6px}
+.svg-linha{width:100%;height:auto}
+.svg-linha .linha-atual{fill:none;stroke:var(--brand);stroke-width:2}
+.svg-linha .linha-anterior{fill:none;stroke:var(--dim);stroke-width:1.5;stroke-dasharray:4 3}
+.svg-linha .eixo{font-size:8px;fill:var(--dim)}
+.legenda-grafico{font-size:10px;color:var(--dim);margin-top:4px}
+.pt-atual{color:var(--brand)} .pt-anterior{color:var(--dim)}
+
+.barra-salvar{position:sticky;bottom:0;display:flex;justify-content:flex-end;align-items:center;
+  gap:14px;padding:12px 36px;background:var(--hdr-bg);border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="brand-bar"></div>
+<div id="aviso-file" class="aviso-origem oculto">
+  Você está vendo a cópia local deste arquivo. Marcações feitas aqui não aparecem no link
+  publicado — são origens diferentes para o navegador. Para manter o histórico, marque no link
+  publicado.
+</div>
+<header>
+  <span class="eyebrow">Auditoria da rodada RGI</span>
+  <h1>2026-07</h1>
+</header>
+<nav class="abas-nav">
+  <button type="button" class="aba-bt ativa" data-aba="aba1">1. O que o robô fez</button>
+  <button type="button" class="aba-bt" data-aba="aba2">2. O que fazer no Viabil</button>
+  <button type="button" class="aba-bt" data-aba="aba3">3. Análise financeira</button>
+</nav>
+<section id="aba1" class="aba-painel ativa"><div class="res"><div class="res-cab">Avisos desta rodada</div><ul class="res-lista"><li>achei 508 registro(s) do ledger de 2026-07 guardado(s) sob chave de mês malformada em ledger-07\2026.jsonl, ledger-2026\07.jsonl, ledger-26-07.jsonl, ledger-julho.jsonl — contados aqui, mas o(s) arquivo(s) merece(m) limpeza (P1-B do plano de auditoria).</li></ul></div><div class="sec"><div class="sec-cab"><h2>IDC</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>IDC do Potengi (Valor Agregado ÷ Custo Realizado) <span class="chip crit" title="Rodou 672 vezes nesta competência">672×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[AVISO] não achei a planilha de IDC do potengi na rodada. Procurei por: acompanhamento projeto incorp, idc, orcamento incorporacao. Nada foi calculado — e nada foi chutado.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-idc-potengi">+</button>
+                      <div class="pop roteiro" id="pop-idc-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:potengi:item-0">
+              <span class="pergunta">O IDC que apareceu é do mês ANTERIOR ao mês desta rodada, não do mês da própria rodada?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba Resumo EAP - RGI do arquivo DAJP - Acompanhamento Projeto Incorp do Potengi</div>
+              <div><b>Esperado:</b> a rodada de um mês sempre carrega o IDC do mês anterior — é regra sua, não atraso do robô. Rodada de julho mostra o IDC de junho.</div>
+              <div><b>Sintoma se estiver errado:</b> você compara o número contra o mês da própria rodada e ele parece &#x27;errado&#x27;, quando na verdade está certo, só que é de um mês antes</div>
+              <div><b>Por quê:</b> regra do Álvaro, registrada para nunca ser confundida com atraso do robô.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:potengi:item-1">
+              <span class="pergunta">O robô leu a aba certa, e avisou se teve de usar a aba antiga?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na mesma aba do arquivo do Potengi</div>
+              <div><b>Esperado:</b> se a aba lida foi a versão antiga do resumo em vez da versão nova, existe um aviso na tela dizendo isso — aceito durante a transição, mas precisa aparecer escrito</div>
+              <div><b>Sintoma se estiver errado:</b> o número saiu sem nenhum aviso de qual aba foi lida, ou saiu de uma aba diferente dessas duas</div>
+              <div><b>Por quê:</b> a aba está em transição de nome — sem aviso, você não sabe se está vendo dado da aba nova ou da antiga.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:potengi:item-2">
+              <span class="pergunta">Cada valor bate com o rótulo certo da planilha, mesmo se uma linha nova entrou acima?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na mesma aba, comparando linha a linha com a planilha que você abriria à mão</div>
+              <div><b>Esperado:</b> cada número do robô corresponde ao rótulo da linha/coluna, não à posição na tela</div>
+              <div><b>Sintoma se estiver errado:</b> o número mudou sem explicação depois que alguém editou a planilha de origem, mesmo sem trocar valor nenhum</div>
+              <div><b>Por quê:</b> já houve caso real de um apartamento lido pela posição errada depois que uma linha nova entrou acima dele.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:potengi:item-3">
+              <span class="pergunta">Rodar o IDC de novo, sozinho, muda algum arquivo?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta da rodada, conferindo se algum arquivo mudou de data/hora depois de só conferir o IDC</div>
+              <div><b>Esperado:</b> não — o IDC é leitura pura, pode ser conferido quantas vezes quiser, a qualquer hora, sem risco</div>
+              <div><b>Sintoma se estiver errado:</b> algum arquivo mudou de data/hora depois de rodar só a conferência do IDC</div>
+              <div><b>Por quê:</b> etapa de leitura nunca deveria escrever nada — se escrever, é sinal de que algo saiu do combinado.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:potengi:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>IDC do Pipa (Valor Agregado ÷ Custo Realizado) <span class="chip crit" title="Rodou 422 vezes nesta competência">422×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[AVISO] não achei a planilha de IDC do pipa na rodada. Procurei por: acompanhamento projeto incorp, idc, orcamento incorporacao. Nada foi calculado — e nada foi chutado.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-idc-pipa">+</button>
+                      <div class="pop roteiro" id="pop-idc-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:pipa:item-0">
+              <span class="pergunta">O IDC que apareceu é do mês ANTERIOR ao mês desta rodada, não do mês da própria rodada?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba Resumo EAP - RGI do arquivo DARP - Acompanhamento Projeto Incorp do Pipa</div>
+              <div><b>Esperado:</b> a rodada de um mês sempre carrega o IDC do mês anterior — é regra sua, não atraso do robô. Rodada de julho mostra o IDC de junho.</div>
+              <div><b>Sintoma se estiver errado:</b> você compara o número contra o mês da própria rodada e ele parece &#x27;errado&#x27;, quando na verdade está certo, só que é de um mês antes</div>
+              <div><b>Por quê:</b> regra do Álvaro, registrada para nunca ser confundida com atraso do robô.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:pipa:item-1">
+              <span class="pergunta">O robô leu a aba certa, e avisou se teve de usar a aba antiga?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na mesma aba do arquivo do Pipa</div>
+              <div><b>Esperado:</b> se a aba lida foi a versão antiga do resumo em vez da versão nova, existe um aviso na tela dizendo isso — aceito durante a transição, mas precisa aparecer escrito</div>
+              <div><b>Sintoma se estiver errado:</b> o número saiu sem nenhum aviso de qual aba foi lida, ou saiu de uma aba diferente dessas duas</div>
+              <div><b>Por quê:</b> a aba está em transição de nome — sem aviso, você não sabe se está vendo dado da aba nova ou da antiga.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:pipa:item-2">
+              <span class="pergunta">Cada valor bate com o rótulo certo da planilha, mesmo se uma linha nova entrou acima?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na mesma aba, comparando linha a linha com a planilha que você abriria à mão</div>
+              <div><b>Esperado:</b> cada número do robô corresponde ao rótulo da linha/coluna, não à posição na tela</div>
+              <div><b>Sintoma se estiver errado:</b> o número mudou sem explicação depois que alguém editou a planilha de origem, mesmo sem trocar valor nenhum</div>
+              <div><b>Por quê:</b> já houve caso real de um apartamento lido pela posição errada depois que uma linha nova entrou acima dele.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:pipa:item-3">
+              <span class="pergunta">Rodar o IDC de novo, sozinho, muda algum arquivo?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta da rodada, conferindo se algum arquivo mudou de data/hora depois de só conferir o IDC</div>
+              <div><b>Esperado:</b> não — o IDC é leitura pura, pode ser conferido quantas vezes quiser, a qualquer hora, sem risco</div>
+              <div><b>Sintoma se estiver errado:</b> algum arquivo mudou de data/hora depois de rodar só a conferência do IDC</div>
+              <div><b>Por quê:</b> etapa de leitura nunca deveria escrever nada — se escrever, é sinal de que algo saiu do combinado.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:idc:pipa:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Desembolso</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Desembolso 12 meses do Potengi (linha &#x27;Subtotal&#x27; do DAJP) <span class="chip crit" title="Rodou 544 vezes nesta competência">544×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[AVISO] não achei o DAJP de 12 meses do potengi na rodada. Nada foi lido — e nada foi chutado.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-desembolso-potengi">+</button>
+                      <div class="pop roteiro" id="pop-desembolso-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:potengi:item-0">
+              <span class="pergunta">O número bate com o total geral da planilha, já na versão corrigida — não numa versão anterior?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba Previsão de Fluxo de Caixa do arquivo DAJP - Acompanhamento Projeto Incorp do Potengi desta rodada, linha Subtotal</div>
+              <div><b>Esperado:</b> o valor de cada mês é exatamente o total que está na planilha corrigida que a equipe do Potengi mandou</div>
+              <div><b>Sintoma se estiver errado:</b> o valor não bate com o total da planilha, ou parece vir de uma versão anterior</div>
+              <div><b>Por quê:</b> o desembolso é leitura pura da linha Subtotal — se o valor não bate com ela, o arquivo lido não é o certo.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:potengi:item-1">
+              <span class="pergunta">Algum mês aparece com R$ 0,00 — e, se sim, é porque de fato não houve gasto, ou porque a planilha ainda não chegou naquele mês?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na mesma linha Subtotal, mês a mês</div>
+              <div><b>Esperado:</b> os dois casos aparecem diferentes na tela: &#x27;não gastou&#x27; é zero de verdade; &#x27;mês ainda não preenchido&#x27; vem marcado como pendente, nunca como zero puro</div>
+              <div><b>Sintoma se estiver errado:</b> um mês futuro ou ainda não preenchido aparece como R$ 0,00 igual a um mês que realmente não teve gasto — os dois ficam indistinguíveis</div>
+              <div><b>Por quê:</b> mesma regra de nunca-zero-calado que já custou R$ 37,2 milhões numa rodada real em outra etapa.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:potengi:item-2">
+              <span class="pergunta">O robô confirmou pelo texto do topo da planilha que este arquivo é do Potengi, e não pegou o arquivo do Pipa por engano?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na primeira linha da aba (célula A1) do arquivo DAJP, e no nome/pasta do arquivo (equipe Gabriela Rodrigues, Potengi)</div>
+              <div><b>Esperado:</b> a planilha se identifica no próprio texto do topo como sendo do Potengi — a prova é o texto de dentro, não só o nome do arquivo</div>
+              <div><b>Sintoma se estiver errado:</b> o valor do desembolso do Potengi está estranhamente parecido com o do Pipa</div>
+              <div><b>Por quê:</b> já aconteceu de verdade: um arquivo do Pipa, mal guardado na pasta do Potengi, foi lido como se fosse o número do Potengi — R$ 10,6 milhões publicados no lugar dos R$ 18,2 milhões reais, sem nenhum aviso, até ser descoberto.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:potengi:item-3">
+              <span class="pergunta">Rodar o desembolso de novo, sozinho, muda algum arquivo?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta da rodada, conferindo se algum arquivo mudou de data/hora depois de só conferir o desembolso</div>
+              <div><b>Esperado:</b> não — o desembolso é leitura pura, pode ser conferido a qualquer hora sem risco</div>
+              <div><b>Sintoma se estiver errado:</b> algum arquivo mudou de data depois de só conferir o desembolso</div>
+              <div><b>Por quê:</b> etapa de leitura nunca deveria escrever nada.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:potengi:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Desembolso 12 meses do Pipa (linha &#x27;Subtotal&#x27; do DARP) <span class="chip crit" title="Rodou 418 vezes nesta competência">418×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[AVISO] não achei o DARP de 12 meses do pipa na rodada. Nada foi lido — e nada foi chutado.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-desembolso-pipa">+</button>
+                      <div class="pop roteiro" id="pop-desembolso-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:pipa:item-0">
+              <span class="pergunta">O número bate com o total geral da planilha, já na versão corrigida — não numa versão anterior?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba Previsão de Fluxo de Caixa do arquivo DARP - Acompanhamento Projeto Incorp do Pipa desta rodada, linha Subtotal</div>
+              <div><b>Esperado:</b> o valor de cada mês é exatamente o total que está na planilha corrigida que a equipe do Pipa mandou</div>
+              <div><b>Sintoma se estiver errado:</b> o valor não bate com o total da planilha, ou parece vir de uma versão anterior</div>
+              <div><b>Por quê:</b> o desembolso é leitura pura da linha Subtotal — se o valor não bate com ela, o arquivo lido não é o certo.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:pipa:item-1">
+              <span class="pergunta">Algum mês aparece com R$ 0,00 — e, se sim, é porque de fato não houve gasto, ou porque a planilha ainda não chegou naquele mês?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na mesma linha Subtotal, mês a mês</div>
+              <div><b>Esperado:</b> os dois casos aparecem diferentes na tela: &#x27;não gastou&#x27; é zero de verdade; &#x27;mês ainda não preenchido&#x27; vem marcado como pendente, nunca como zero puro</div>
+              <div><b>Sintoma se estiver errado:</b> um mês futuro ou ainda não preenchido aparece como R$ 0,00 igual a um mês que realmente não teve gasto — os dois ficam indistinguíveis</div>
+              <div><b>Por quê:</b> mesma regra de nunca-zero-calado que já custou R$ 37,2 milhões numa rodada real em outra etapa.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:pipa:item-2">
+              <span class="pergunta">O robô confirmou pelo texto do topo da planilha que este arquivo é do Pipa, e não pegou o arquivo do Potengi por engano?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na primeira linha da aba (célula A1) do arquivo DARP, e no nome/pasta do arquivo (equipe Lara Soares, Pipa)</div>
+              <div><b>Esperado:</b> a planilha se identifica no próprio texto do topo como sendo do Pipa — a prova é o texto de dentro, não só o nome do arquivo</div>
+              <div><b>Sintoma se estiver errado:</b> o valor do desembolso do Pipa está estranhamente parecido com o do Potengi</div>
+              <div><b>Por quê:</b> já aconteceu de verdade um arquivo trocado entre os dois empreendimentos, publicando o número errado sem nenhum aviso até ser descoberto.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:pipa:item-3">
+              <span class="pergunta">Rodar o desembolso de novo, sozinho, muda algum arquivo?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta da rodada, conferindo se algum arquivo mudou de data/hora depois de só conferir o desembolso</div>
+              <div><b>Esperado:</b> não — o desembolso é leitura pura, pode ser conferido a qualquer hora sem risco</div>
+              <div><b>Sintoma se estiver errado:</b> algum arquivo mudou de data depois de só conferir o desembolso</div>
+              <div><b>Por quê:</b> etapa de leitura nunca deveria escrever nada.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:desembolso:pipa:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Recebimento de arquivos</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Conferir quais arquivos da rodada chegaram <span class="chip crit" title="Rodou 754 vezes nesta competência">754×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[SEM FONTE] envio:conferir não achou a pasta da rodada (Nenhuma rodada &#x27;NN. Mês AA&#x27; em C:\Users\User\AppData\Local\Temp\pytest-of-User\pytest-1191\test_o_arquivo_de_teste_nao_de0\38. Julho 26). Nenhuma conclusão sobre o que chegou saiu daqui.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-envio-conferir">+</button>
+                      <div class="pop roteiro" id="pop-envio-conferir" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/3</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:envio:conferir:item-0">
+              <span class="pergunta">A lista de arquivos que chegaram bate com o que você sabe que foi enviado?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no painel de conferência de envio desta rodada, etapa [1/10]</div>
+              <div><b>Esperado:</b> cada arquivo que você sabe que foi mandado aparece marcado como recebido, com data e hora</div>
+              <div><b>Sintoma se estiver errado:</b> um arquivo que você sabe que foi enviado aparece como &#x27;não chegou&#x27;</div>
+              <div><b>Por quê:</b> a etapa [1/10] é a porta de entrada da rodada inteira — um arquivo perdido aqui vira número faltando em tudo que depende dele mais adiante.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:envio:conferir:item-1">
+              <span class="pergunta">Um arquivo que faltou aparece como aviso, ou o robô seguiu em frente calado?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no mesmo painel, na linha do arquivo que faltou</div>
+              <div><b>Esperado:</b> falta de arquivo sempre vira um aviso visível na tela</div>
+              <div><b>Sintoma se estiver errado:</b> algum número da rodada saiu &#x27;normal&#x27; mesmo com um arquivo faltando — sinal de que a ausência virou zero disfarçado de dado, em vez de aviso</div>
+              <div><b>Por quê:</b> regra do robô: nunca tratar &#x27;não recebi&#x27; como &#x27;recebi zero&#x27;. Uma célula vazia lida como R$ 0,00 já moveu R$ 37,2 milhões em uma rodada real — é o mesmo risco aqui, um degrau antes.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:envio:conferir:item-2">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Diferenças da rodada</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Diferenças entre esta rodada e a anterior <span class="chip crit" title="Rodou 417 vezes nesta competência">417×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[SEM FONTE] fatos:rodada não achou a pasta da rodada (Nenhuma rodada &#x27;NN. Mês AA&#x27; em C:\Users\User\AppData\Local\Temp\pytest-of-User\pytest-1191\test_o_arquivo_de_teste_nao_de0\38. Julho 26). Nenhum fato foi apurado — e nenhum foi inventado.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-fatos-rodada">+</button>
+                      <div class="pop roteiro" id="pop-fatos-rodada" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/3</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:fatos:rodada:item-0">
+              <span class="pergunta">As diferenças mostradas entre esta rodada e a anterior batem com o que mudou de verdade?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no relatório de diferenças entre rodadas desta competência</div>
+              <div><b>Esperado:</b> cada diferença aponta uma linha pelo nome, não pela posição — se a planilha ganhou uma linha nova, a comparação continua certa</div>
+              <div><b>Sintoma se estiver errado:</b> uma diferença aparece grande demais ou pequena demais para o que você sabe que mudou, ou aparece uma diferença onde nada mudou de fato</div>
+              <div><b>Por quê:</b> mesma regra de nome-nunca-posição que vale em todo o motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:fatos:rodada:item-1">
+              <span class="pergunta">Uma mudança real que você conhece (por exemplo, um distrato ou uma venda nova) aparece listada?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no mesmo relatório de diferenças</div>
+              <div><b>Esperado:</b> toda mudança de mês para mês que você sabe que aconteceu aparece na lista</div>
+              <div><b>Sintoma se estiver errado:</b> você sabe de uma mudança e ela não está na lista de diferenças</div>
+              <div><b>Por quê:</b> o relatório de diferenças só tem valor se pega tudo que mudou — uma mudança real que fica de fora é pior do que nenhum relatório.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:fatos:rodada:item-2">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Base geral</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Gerar a BASE única a partir dos arquivos da Micaeli <span class="chip crit" title="Rodou 716 vezes nesta competência">716×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[SEM FONTE] base:micaeli não achou o arquivo/pasta (Não achei o Resumo do Pipa na rodada &#x27;38. Julho 26&#x27;. Procurei em: nenhuma pasta candidata.). Nada foi calculado — e nada foi inventado no lugar.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-base-micaeli">+</button>
+                      <div class="pop roteiro" id="pop-base-micaeli" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:base:micaeli:item-0">
+              <span class="pergunta">Quantos meses de inadimplência aparecem, e batem com o cronograma de recebíveis?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no arquivo BASE desta rodada, e no arquivo de recebíveis do empreendimento (Recebíveis &lt;mês&gt;.xlsx no Pipa, Recebíveis &lt;mês&gt;.xls no Potengi)</div>
+              <div><b>Esperado:</b> o número de meses de inadimplência é exatamente o do cronograma que veio na planilha de recebíveis daquele empreendimento</div>
+              <div><b>Sintoma se estiver errado:</b> o número de meses não bate, ou falta um mês do meio sem nenhum aviso</div>
+              <div><b>Por quê:</b> a inadimplência é a base do fluxo de recebimento futuro — um mês perdido aqui distorce todo o cronograma de caixa dali para frente.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:base:micaeli:item-1">
+              <span class="pergunta">A inadimplência aparece espalhada nos meses seguintes, ou concentrada estranhamente num mês só?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no BASE desta rodada, na distribuição mês a mês da inadimplência</div>
+              <div><b>Esperado:</b> a inadimplência é diluída ao longo do cronograma futuro, mês a mês</div>
+              <div><b>Sintoma se estiver errado:</b> um único mês concentra um valor desproporcional de inadimplência, como se tivesse recebido de uma vez o que era para vir espalhado</div>
+              <div><b>Por quê:</b> distribuição errada não muda o total, mas muda a leitura de quando o caixa aperta — é exatamente o tipo de erro que passa batido olhando só o total.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:base:micaeli:item-2">
+              <span class="pergunta">Os valores de venda do mês e as unidades de fato distratadas batem com o que você sabe que aconteceu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no BASE desta rodada, nos campos de vendas do mês e distratos do mês de cada empreendimento</div>
+              <div><b>Esperado:</b> toda unidade vendida ou distratada no mês está contada — nem a mais, nem a menos</div>
+              <div><b>Sintoma se estiver errado:</b> uma venda ou um distrato que você sabe que aconteceu no mês não aparece, ou aparece um que você não reconhece</div>
+              <div><b>Por quê:</b> quando a planilha de origem e o cálculo do robô discordam, vale a planilha — já houve caso real de uma unidade injetada em dobro por engano, que somou R$ 12 milhões a mais num único mês antes de ser pego.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:base:micaeli:item-3">
+              <span class="pergunta">Algum mês sem preenchimento na fonte virou R$ 0,00 em vez de aparecer como pendente?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no BASE desta rodada, em qualquer campo de valor mês a mês</div>
+              <div><b>Esperado:</b> ausência de dado na fonte nunca vira zero — vira um aviso de pendência</div>
+              <div><b>Sintoma se estiver errado:</b> um mês que você sabe que ainda não foi preenchido na origem aparece como R$ 0,00, igual a um mês que de fato não teve movimento</div>
+              <div><b>Por quê:</b> uma célula vazia lida como zero já moveu R$ 37,2 milhões numa rodada real sem soar nenhum alarme — é o erro mais caro do catálogo, e o mais silencioso.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:base:micaeli:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Lançamentos</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Montar a planilha de lançamentos do Potengi <span class="chip crit" title="Rodou 632 vezes nesta competência">632×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[AVISO] nenhuma pasta de entrega encontrada em &#x27;C:\\Users\\User\\AppData\\Local\\Temp\\pytest-of-User\\pytest-1191\\test_o_arquivo_de_teste_nao_de0\\38. Julho 26&#x27; para &#x27;potengi&#x27; — nem no layout novo (&lt;rodada&gt;\&lt;Empreendimento&gt;\&lt;Pessoa&gt;) nem no antigo (&lt;rodada&gt;\Dados\Micaeli\&lt;Empreendimento&gt;).</div><div class="alerta warn">[SEM FONTE] lancamentos:potengi não achou o que ler (Não achei o export do BI do Potengi na rodada &#x27;38. Julho 26&#x27;. Procurei em: nenhuma pasta candidata.). Nada foi gerado — e nada foi inventado no lugar.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-lancamentos-potengi">+</button>
+                      <div class="pop roteiro" id="pop-lancamentos-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:potengi:item-0">
+              <span class="pergunta">Vá ao mês da rodada: realmente não houve despesa naquele mês, ou houve e o robô não pegou?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no arquivo LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx desta rodada, na linha do mês corrente</div>
+              <div><b>Esperado:</b> todo mês sem despesa lançada está assim porque de fato não houve gasto — não porque o robô deixou passar</div>
+              <div><b>Sintoma se estiver errado:</b> um mês aparece sem despesa, mas você sabe de algum gasto que deveria estar lá</div>
+              <div><b>Por quê:</b> o mês corrente é o mais sensível a arquivo desatualizado ou duplicado na pasta — já houve caso real de um lançamento do mês anterior sendo lido no lugar do vivo.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:potengi:item-1">
+              <span class="pergunta">Quando a planilha de origem e o cálculo do robô discordam, o número final é o da planilha?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, comparando linha a linha com a planilha que a equipe te mandou</div>
+              <div><b>Esperado:</b> a planilha de origem sempre manda — o robô transporta e confere, nunca corrige por conta própria</div>
+              <div><b>Sintoma se estiver errado:</b> o número final é diferente do que está na planilha de origem, sem nenhum aviso explicando por quê</div>
+              <div><b>Por quê:</b> já houve caso real de uma unidade injetada em dobro por engano no cálculo, somando R$ 12 milhões a mais num único mês.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:potengi:item-2">
+              <span class="pergunta">A projeção do lançamento vai até a data de entrega das chaves deste empreendimento, nem antes nem depois?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, no fim da série projetada</div>
+              <div><b>Esperado:</b> a projeção do Potengi vai até a entrega das chaves prevista, ajustada rubrica a rubrica</div>
+              <div><b>Sintoma se estiver errado:</b> a projeção para meses antes da entrega, ou continua contando meses que já passaram dela</div>
+              <div><b>Por quê:</b> já houve caso real de uma janela de projeção ficar 3 meses curta em relação à data de entrega, cortando meses de despesa que deveriam entrar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:potengi:item-3">
+              <span class="pergunta">Os valores casam com a linha certa da planilha, mesmo se alguém inseriu uma linha nova acima?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, comparando pelo nome da rubrica, não pela posição na tela</div>
+              <div><b>Esperado:</b> cada valor corresponde ao NOME da rubrica/mês, não à posição da linha</div>
+              <div><b>Sintoma se estiver errado:</b> um valor mudou sozinho depois que a planilha de origem ganhou ou perdeu uma linha, mesmo sem o valor de verdade ter mudado</div>
+              <div><b>Por quê:</b> já houve caso real de um apartamento sendo lido pela posição errada depois que uma linha nova entrou acima dele na planilha.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:potengi:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Montar a planilha de lançamentos do Pipa <span class="chip crit" title="Rodou 506 vezes nesta competência">506×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip semfonte">SEM FONTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  <div class="alerta warn">[AVISO] nenhuma pasta de entrega encontrada em &#x27;C:\\Users\\User\\AppData\\Local\\Temp\\pytest-of-User\\pytest-1191\\test_o_arquivo_de_teste_nao_de0\\38. Julho 26&#x27; para &#x27;pipa&#x27; — nem no layout novo (&lt;rodada&gt;\&lt;Empreendimento&gt;\&lt;Pessoa&gt;) nem no antigo (&lt;rodada&gt;\Dados\Micaeli\&lt;Empreendimento&gt;).</div><div class="alerta warn">[SEM FONTE] lancamentos:pipa não achou o que ler (Não achei o export do BI do Pipa na rodada &#x27;38. Julho 26&#x27;. Procurei em: nenhuma pasta candidata.). Nada foi gerado — e nada foi inventado no lugar.</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-lancamentos-pipa">+</button>
+                      <div class="pop roteiro" id="pop-lancamentos-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/5</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:pipa:item-0">
+              <span class="pergunta">Vá ao mês da rodada: realmente não houve despesa naquele mês, ou houve e o robô não pegou?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no arquivo LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx desta rodada, na linha do mês corrente</div>
+              <div><b>Esperado:</b> todo mês sem despesa lançada está assim porque de fato não houve gasto — não porque o robô deixou passar</div>
+              <div><b>Sintoma se estiver errado:</b> um mês aparece sem despesa, mas você sabe de algum gasto que deveria estar lá</div>
+              <div><b>Por quê:</b> o mês corrente é o mais sensível a arquivo desatualizado ou duplicado na pasta — já houve caso real de um lançamento do mês anterior sendo lido no lugar do vivo.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:pipa:item-1">
+              <span class="pergunta">Quando a planilha de origem e o cálculo do robô discordam, o número final é o da planilha?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, comparando linha a linha com a planilha que a equipe te mandou</div>
+              <div><b>Esperado:</b> a planilha de origem sempre manda — o robô transporta e confere, nunca corrige por conta própria</div>
+              <div><b>Sintoma se estiver errado:</b> o número final é diferente do que está na planilha de origem, sem nenhum aviso explicando por quê</div>
+              <div><b>Por quê:</b> já houve caso real de uma unidade injetada em dobro por engano no cálculo, somando R$ 12 milhões a mais num único mês.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:pipa:item-2">
+              <span class="pergunta">A projeção do lançamento vai até a data de entrega das chaves deste empreendimento, nem antes nem depois?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, no fim da série projetada</div>
+              <div><b>Esperado:</b> a projeção do Pipa vai até a entrega das chaves prevista, ajustada rubrica a rubrica</div>
+              <div><b>Sintoma se estiver errado:</b> a projeção para meses antes da entrega, ou continua contando meses que já passaram dela</div>
+              <div><b>Por quê:</b> já houve caso real de uma janela de projeção ficar 3 meses curta em relação à data de entrega, cortando meses de despesa que deveriam entrar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:pipa:item-3">
+              <span class="pergunta">Os valores casam com a linha certa da planilha, mesmo se alguém inseriu uma linha nova acima?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, comparando pelo nome da rubrica, não pela posição na tela</div>
+              <div><b>Esperado:</b> cada valor corresponde ao NOME da rubrica/mês, não à posição da linha</div>
+              <div><b>Sintoma se estiver errado:</b> um valor mudou sozinho depois que a planilha de origem ganhou ou perdeu uma linha, mesmo sem o valor de verdade ter mudado</div>
+              <div><b>Por quê:</b> já houve caso real de um apartamento sendo lido pela posição errada depois que uma linha nova entrou acima dele na planilha.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:lancamentos:pipa:item-4">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Curva de obra</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Aplicar a curva de obra no Potengi <span class="chip crit" title="Rodou 590 vezes nesta competência">590×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip pendente">PENDENTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  
+                  <div class="alerta crit">Pendência: os lançamentos deste empreendimento ainda não foram gerados nesta execução. Rode `lancamentos:potengi` antes (ou peça `curva:potengi` que o executor resolve a dependência sozinho).</div>
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-curva-potengi">+</button>
+                      <div class="pop roteiro" id="pop-curva-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/3</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:curva:potengi:item-0">
+              <span class="pergunta">A curva de obra aplicada bate com a curva que veio na planilha de origem?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no arquivo LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, na parte da curva de obra</div>
+              <div><b>Esperado:</b> cada mês da curva bate com o rótulo do mês na planilha de origem, mesmo que a ordem das linhas tenha mudado</div>
+              <div><b>Sintoma se estiver errado:</b> a curva parece deslocada em um ou mais meses, como se estivesse um mês adiantada ou atrasada</div>
+              <div><b>Por quê:</b> a curva casa por nome do mês, não pela posição da linha — já houve erro real de leitura pela posição errada em outra etapa que lê a mesma planilha.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:curva:potengi:item-1">
+              <span class="pergunta">Cada mês recebeu o valor da curva uma única vez, sem duplicar?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, comparando o total da curva com o total da fonte</div>
+              <div><b>Esperado:</b> o total aplicado bate exatamente com o total da curva de origem</div>
+              <div><b>Sintoma se estiver errado:</b> um mês está com valor maior do que a curva de origem manda, como se tivesse somado duas vezes</div>
+              <div><b>Por quê:</b> curva, financiamento e cashflow escrevem no mesmo arquivo de lançamentos — a ordem entre eles importa, e escrever fora de ordem é o jeito mais fácil de duplicar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:curva:potengi:item-2">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Aplicar a curva de obra no Pipa <span class="chip crit" title="Rodou 464 vezes nesta competência">464×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip pendente">PENDENTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  
+                  <div class="alerta crit">Pendência: os lançamentos deste empreendimento ainda não foram gerados nesta execução. Rode `lancamentos:pipa` antes (ou peça `curva:pipa` que o executor resolve a dependência sozinho).</div>
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-curva-pipa">+</button>
+                      <div class="pop roteiro" id="pop-curva-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/3</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:curva:pipa:item-0">
+              <span class="pergunta">A curva de obra aplicada bate com a curva que veio na planilha de origem?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no arquivo LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, na parte da curva de obra</div>
+              <div><b>Esperado:</b> cada mês da curva bate com o rótulo do mês na planilha de origem, mesmo que a ordem das linhas tenha mudado</div>
+              <div><b>Sintoma se estiver errado:</b> a curva parece deslocada em um ou mais meses, como se estivesse um mês adiantada ou atrasada</div>
+              <div><b>Por quê:</b> a curva casa por nome do mês, não pela posição da linha — já houve erro real de leitura pela posição errada em outra etapa que lê a mesma planilha.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:curva:pipa:item-1">
+              <span class="pergunta">Cada mês recebeu o valor da curva uma única vez, sem duplicar?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, comparando o total da curva com o total da fonte</div>
+              <div><b>Esperado:</b> o total aplicado bate exatamente com o total da curva de origem</div>
+              <div><b>Sintoma se estiver errado:</b> um mês está com valor maior do que a curva de origem manda, como se tivesse somado duas vezes</div>
+              <div><b>Por quê:</b> curva, financiamento e cashflow escrevem no mesmo arquivo de lançamentos — a ordem entre eles importa, e escrever fora de ordem é o jeito mais fácil de duplicar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:curva:pipa:item-2">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Financiamento (SFH)</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>SFH — financiamento de obra (Potengi) <span class="chip crit" title="Rodou 590 vezes nesta competência">590×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip pendente">PENDENTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  
+                  <div class="alerta crit">Pendência: os lançamentos do Potengi ainda não foram gerados nesta execução.</div>
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-financiamento-potengi">+</button>
+                      <div class="pop roteiro" id="pop-financiamento-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:financiamento:potengi:item-0">
+              <span class="pergunta">O financiamento de obra só aparece preenchido no Potengi, e o Pipa continua pendente?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx (coluna do financiamento de obra) e no LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx (deve seguir vazio, não preenchido por estimativa)</div>
+              <div><b>Esperado:</b> o Potengi tem os valores do financiamento; o Pipa fica pendente, porque a fonte de financiamento do Pipa ainda não foi decidida por você</div>
+              <div><b>Sintoma se estiver errado:</b> o Pipa aparece com algum valor de financiamento preenchido — sinal de que alguém estimou no lugar de esperar sua decisão</div>
+              <div><b>Por quê:</b> já houve uma vez em que o robô calculou um valor estimado de financiamento para o Pipa sem autorização, e isso foi revertido na hora quando descoberto.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:financiamento:potengi:item-1">
+              <span class="pergunta">Os valores do financiamento batem com a planilha de origem, mês a mês pelo nome do mês?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, comparando com a planilha bancária de origem</div>
+              <div><b>Esperado:</b> cada valor corresponde ao mês certo pelo rótulo, mesmo que a planilha tenha mudado de ordem</div>
+              <div><b>Sintoma se estiver errado:</b> um valor de financiamento aparece no mês errado</div>
+              <div><b>Por quê:</b> mesma regra de nome-nunca-posição que vale para toda leitura de planilha neste motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:financiamento:potengi:item-2">
+              <span class="pergunta">Nenhum mês sem informação de financiamento virou R$ 0,00 silencioso?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, na coluna de financiamento mês a mês</div>
+              <div><b>Esperado:</b> mês sem informação de financiamento aparece como pendente, nunca como R$ 0,00 puro</div>
+              <div><b>Sintoma se estiver errado:</b> um mês sem dado de financiamento aparece como zero, indistinguível de um mês que de fato não teve movimento</div>
+              <div><b>Por quê:</b> mesma regra de nunca-zero-calado que já custou R$ 37,2 milhões numa rodada real em outra etapa.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:financiamento:potengi:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Gráficos do RGI</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Gráficos do RGI — &#x27;Financiamento de Obra&#x27; na aba CashFlow POT <span class="chip crit" title="Rodou 590 vezes nesta competência">590×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip pendente">PENDENTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  
+                  <div class="alerta crit">Pendência: a série do financiamento não está na memória desta execução. Rode `financiamento:potengi` antes — sem a série, esta etapa escreveria zeros, e zero aqui é indistinguível de &#x27;não financiou nada&#x27;.</div>
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-graficos-potengi">+</button>
+                      <div class="pop roteiro" id="pop-graficos-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/3</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:graficos:potengi:item-0">
+              <span class="pergunta">A série de financiamento de obra no gráfico é a mesma que a etapa de financiamento calculou nesta mesma rodada?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no arquivo GRAFICOS-RGI-&lt;mês&gt;.xlsx, aba CashFlow POT</div>
+              <div><b>Esperado:</b> o gráfico usa exatamente a série que a etapa de financiamento produziu nesta execução — os dois números batem, casa com casa</div>
+              <div><b>Sintoma se estiver errado:</b> o gráfico mostra um valor de financiamento diferente do que está no arquivo de lançamentos da mesma rodada</div>
+              <div><b>Por quê:</b> o gráfico é gerado a partir do que ficou na memória da execução, não de uma releitura separada do disco — se a ordem das etapas mudar, os dois podem divergir.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:graficos:potengi:item-1">
+              <span class="pergunta">Algum mês do gráfico virou zero por falta de dado, sem aviso?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> no GRAFICOS-RGI-&lt;mês&gt;.xlsx, aba CashFlow POT, mês a mês</div>
+              <div><b>Esperado:</b> mês sem dado de origem aparece marcado como pendente no gráfico, nunca como zero puro</div>
+              <div><b>Sintoma se estiver errado:</b> um mês sem preenchimento na fonte aparece como uma barra ou ponto zerado, sem nenhum aviso</div>
+              <div><b>Por quê:</b> mesma regra de nunca-zero-calado que vale em toda leitura deste motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:graficos:potengi:item-2">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>CashFlow</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>CashFlow do Potengi — colunas B/C/D/E <span class="chip crit" title="Rodou 590 vezes nesta competência">590×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip pendente">PENDENTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  
+                  <div class="alerta crit">Pendência: os lançamentos de potengi ainda não foram gerados nesta execução. Rode `lancamentos:potengi` e `curva:potengi` antes (ou peça `cashflow:potengi` que o executor resolve as dependências sozinho). Sem isso eu leria do disco o que estivesse lá — que pode ser a rodada passada — e escreveria B/C/D/E com ele.</div>
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-cashflow-potengi">+</button>
+                      <div class="pop roteiro" id="pop-cashflow-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:potengi:item-0">
+              <span class="pergunta">O desembolso entrou na coluna certa da planilha de fluxo de caixa do Potengi?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba CashFlow do LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, colunas B, C, D e E</div>
+              <div><b>Esperado:</b> a coluna D traz o valor do desembolso de 12 meses — é decisão sua de 01/08/2026, vale mesmo que algum comentário antigo no código diga diferente</div>
+              <div><b>Sintoma se estiver errado:</b> a coluna D não tem o valor do desembolso, ou tem um valor diferente do total que está na planilha de desembolso do Potengi</div>
+              <div><b>Por quê:</b> a regra de qual desembolso entra em qual coluna já foi decidida e revertida uma vez — um roteiro que não repete a regra deixa a porta aberta para reverter de novo.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:potengi:item-1">
+              <span class="pergunta">Rodar o cashflow de novo, sem mexer em nada, usa os lançamentos DESTA rodada, e não um arquivo velho que sobrou na pasta?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta da rodada, verificando a data/hora do LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx usado</div>
+              <div><b>Esperado:</b> o cashflow só roda se os lançamentos desta própria rodada já estiverem prontos na memória da execução — nunca lê um arquivo de tentativa anterior</div>
+              <div><b>Sintoma se estiver errado:</b> o cashflow terminou rápido demais, ou os números batem com uma rodada passada, não com esta</div>
+              <div><b>Por quê:</b> sem essa trava, uma execução isolada do cashflow numa pasta com sobra de um arquivo BASE de tentativa anterior escreveria os números da rodada VELHA, com sucesso reportado — foi achado por revisão de código em 02/08/2026 e travado antes de rodar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:potengi:item-2">
+              <span class="pergunta">As quatro colunas casam com a fonte pelo nome do mês, mesmo se a planilha ganhou uma linha nova?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba CashFlow do LANCAMENTOS-POTENGI-&lt;mês&gt;.xlsx, comparando com a fonte por nome, não por posição</div>
+              <div><b>Esperado:</b> cada valor corresponde ao mês certo pelo rótulo</div>
+              <div><b>Sintoma se estiver errado:</b> um valor aparece deslocado em um mês</div>
+              <div><b>Por quê:</b> mesma regra de nome-nunca-posição que vale em toda leitura deste motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:potengi:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>CashFlow do Pipa — colunas B/C/E (D e F pendentes de decisão) <span class="chip crit" title="Rodou 464 vezes nesta competência">464×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip pendente">PENDENTE</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  
+                  
+                  <div class="alerta crit">Pendência: os lançamentos de pipa ainda não foram gerados nesta execução. Rode `lancamentos:pipa` e `curva:pipa` antes (ou peça `cashflow:pipa` que o executor resolve as dependências sozinho). Sem isso eu leria do disco o que estivesse lá — que pode ser a rodada passada — e escreveria B/C/D/E com ele.</div>
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-cashflow-pipa">+</button>
+                      <div class="pop roteiro" id="pop-cashflow-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:pipa:item-0">
+              <span class="pergunta">As colunas B, C e E da planilha de fluxo de caixa do Pipa vieram preenchidas, e as colunas D e F continuam vazias?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba CashFlow do LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, colunas B, C, D, E e F</div>
+              <div><b>Esperado:</b> B, C e E vêm preenchidas normalmente; D e F ficam pendentes, porque a fonte delas para o Pipa ainda não foi definida por você</div>
+              <div><b>Sintoma se estiver errado:</b> as colunas D ou F do Pipa aparecem com algum valor preenchido — já houve uma vez em que isso aconteceu por inferência não autorizada, e foi desfeito</div>
+              <div><b>Por quê:</b> decisão em aberto registrada no catálogo: D e F do Pipa esperam sua definição, não uma estimativa do robô.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:pipa:item-1">
+              <span class="pergunta">Rodar o cashflow de novo, sem mexer em nada, usa os lançamentos DESTA rodada, e não um arquivo velho que sobrou na pasta?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta da rodada, verificando a data/hora do LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx usado</div>
+              <div><b>Esperado:</b> o cashflow só roda se os lançamentos desta própria rodada já estiverem prontos na memória da execução — nunca lê um arquivo de tentativa anterior</div>
+              <div><b>Sintoma se estiver errado:</b> o cashflow terminou rápido demais, ou os números batem com uma rodada passada, não com esta</div>
+              <div><b>Por quê:</b> sem essa trava, uma execução isolada do cashflow numa pasta com sobra de um arquivo BASE de tentativa anterior escreveria os números da rodada VELHA, com sucesso reportado — foi achado por revisão de código em 02/08/2026 e travado antes de rodar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:pipa:item-2">
+              <span class="pergunta">As colunas preenchidas casam com a fonte pelo nome do mês, mesmo se a planilha ganhou uma linha nova?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba CashFlow do LANCAMENTOS-PIPA-&lt;mês&gt;.xlsx, comparando com a fonte por nome, não por posição</div>
+              <div><b>Esperado:</b> cada valor corresponde ao mês certo pelo rótulo</div>
+              <div><b>Sintoma se estiver errado:</b> um valor aparece deslocado em um mês</div>
+              <div><b>Por quê:</b> mesma regra de nome-nunca-posição que vale em toda leitura deste motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:cashflow:pipa:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Comparativo de viabilidades</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Comparativo de viabilidades do Potengi — conferência, fórmulas e INCC <span class="chip crit" title="Rodou 536 vezes nesta competência">536×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip ok">OK</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  <dl class="campos"><dt>Mes</dt><dd>2026.07</dd></dl>
+                  
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-comparativo-potengi">+</button>
+                      <div class="pop roteiro" id="pop-comparativo-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:potengi:item-0">
+              <span class="pergunta">Quando a planilha de origem e o cálculo do robô discordam, o número final é o da planilha?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba COMPARATIVO DRE da árvore de viabilidade do Potengi no Viabil</div>
+              <div><b>Esperado:</b> a planilha de origem sempre manda — o robô confere e aponta a diferença, nunca corrige sozinho</div>
+              <div><b>Sintoma se estiver errado:</b> o valor final é diferente do que está na planilha de origem, sem aviso explicando</div>
+              <div><b>Por quê:</b> mesma regra de fonte-manda que vale em todo o motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:potengi:item-1">
+              <span class="pergunta">A árvore de viabilidade só mudou se você autorizou a gravação?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na árvore de viabilidade do Potengi no Viabil</div>
+              <div><b>Esperado:</b> fora de uma autorização explícita, esta etapa só lê e aponta diferença — não grava nada na árvore viva</div>
+              <div><b>Sintoma se estiver errado:</b> a árvore de viabilidade mudou sem você ter pedido a gravação</div>
+              <div><b>Por quê:</b> já houve caso real de um teste gravando sem querer numa árvore viva — a etapa de comparação só pode escrever com autorização explícita, nunca por padrão.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:potengi:item-2">
+              <span class="pergunta">Uma célula marcada como #N/A ou texto na origem continua assim no comparativo, sem virar número?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba COMPARATIVO DRE do Potengi, nas células que você sabe que estavam com #N/A ou texto</div>
+              <div><b>Esperado:</b> #N/A continua #N/A, texto continua texto — nenhum dos dois vira número ou R$ 0,00 na saída</div>
+              <div><b>Sintoma se estiver errado:</b> uma célula que você sabe que era #N/A ou texto na origem aparece como um valor numérico</div>
+              <div><b>Por quê:</b> converter #N/A em número escondido é o mesmo erro de zero-calado, só que disfarçado de dado válido.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:potengi:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Comparativo de viabilidades do Pipa — conferência, fórmulas e INCC <span class="chip crit" title="Rodou 440 vezes nesta competência">440×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip ok">OK</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  <dl class="campos"><dt>Mes</dt><dd>2026.07</dd></dl>
+                  
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-comparativo-pipa">+</button>
+                      <div class="pop roteiro" id="pop-comparativo-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:pipa:item-0">
+              <span class="pergunta">Quando a planilha de origem e o cálculo do robô discordam, o número final é o da planilha?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba COMPARATIVO DRE da árvore de viabilidade do Pipa no Viabil</div>
+              <div><b>Esperado:</b> a planilha de origem sempre manda — o robô confere e aponta a diferença, nunca corrige sozinho</div>
+              <div><b>Sintoma se estiver errado:</b> o valor final é diferente do que está na planilha de origem, sem aviso explicando</div>
+              <div><b>Por quê:</b> mesma regra de fonte-manda que vale em todo o motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:pipa:item-1">
+              <span class="pergunta">A árvore de viabilidade só mudou se você autorizou a gravação?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na árvore de viabilidade do Pipa no Viabil</div>
+              <div><b>Esperado:</b> fora de uma autorização explícita, esta etapa só lê e aponta diferença — não grava nada na árvore viva</div>
+              <div><b>Sintoma se estiver errado:</b> a árvore de viabilidade mudou sem você ter pedido a gravação</div>
+              <div><b>Por quê:</b> já houve caso real de um teste gravando sem querer numa árvore viva — a etapa de comparação só pode escrever com autorização explícita, nunca por padrão.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:pipa:item-2">
+              <span class="pergunta">Uma célula marcada como #N/A ou texto na origem continua assim no comparativo, sem virar número?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na aba COMPARATIVO DRE do Pipa, nas 19 células que você sabe que estavam com #N/A</div>
+              <div><b>Esperado:</b> #N/A continua #N/A, texto continua texto — nenhum dos dois vira número ou R$ 0,00 na saída</div>
+              <div><b>Sintoma se estiver errado:</b> uma célula que você sabe que era #N/A ou texto na origem aparece como um valor numérico</div>
+              <div><b>Por quê:</b> já houve caso real de 19 células #N/A no comparativo do Pipa — é exatamente o arquivo onde esse item mais precisa ser conferido.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:comparativo:pipa:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div><div class="sec"><div class="sec-cab"><h2>Quadros do deck</h2></div><div class="grid">
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Os 3 quadros do Potengi que viram imagem no deck (slides 5/33 e 6/34) <span class="chip crit" title="Rodou 536 vezes nesta competência">536×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip warn">OK, com aviso</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  <dl class="campos"><dt>Mes</dt><dd>2026-07</dd></dl>
+                  <div class="alerta warn">INDICADORES: cabeçalho repetido na linha 14 — o bloco de baixo é o espaço reservado e ficou de fora (resposta 16)</div><div class="alerta warn">INDICADORES: 1 valor(es) gravado(s) como TEXTO, não como número — o Excel não soma isso (ex.: TIR (A.M.)!mes_atual = &#x27;6,76%&#x27;)</div><div class="alerta warn">COMPARATIVO DRE: 1 coluna(s) à esquerda dos meses também têm texto e NÃO viraram rótulo (I=1x) — usei B e C por serem as que mais aparecem. Texto solto ali desloca os níveis; confira se não é linha de verdade.</div><div class="alerta warn">Correção: 6 valor(es) gravado(s) como TEXTO, não como número — o Excel não soma isso (ex.: 2025-08-01!tir_a.m._(%) = &#x27;7,70%&#x27;; 2025-09-01!tir_a.m._(%) = &#x27;7,24%&#x27;; 2025-10-01!tir_a.m._(%) = &#x27;7,59%&#x27;; 2025-11-01!tir_a.m._(%) = &#x27;6,22%&#x27;; 2026-04-01!tir_a.m._(%) = &#x27;6,93%&#x27;)</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-quadros-potengi">+</button>
+                      <div class="pop roteiro" id="pop-quadros-potengi" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:potengi:item-0">
+              <span class="pergunta">Os quadros saíram como imagem numa pasta para você colar, sem o robô mexer direto no PowerPoint?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta de quadros gerada para o Potengi nesta rodada, e nos slides do deck onde eles entram</div>
+              <div><b>Esperado:</b> o robô grava as imagens numa pasta; colar no slide é passo seu, à mão — decisão sua</div>
+              <div><b>Sintoma se estiver errado:</b> o deck de apresentação aparece alterado sozinho, sem você ter colado nada</div>
+              <div><b>Por quê:</b> etapa de geração de imagem nunca deveria escrever direto no arquivo de apresentação — colar é ato seu, de propósito.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:potengi:item-1">
+              <span class="pergunta">Uma célula que era #N/A ou texto na planilha de origem continua marcada como tal no quadro, sem virar número?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> nos quadros do Potengi, comparando com a aba COMPARATIVO DRE de onde os números saem</div>
+              <div><b>Esperado:</b> #N/A continua #N/A, texto continua texto — nenhum dos dois vira número ou R$ 0,00</div>
+              <div><b>Sintoma se estiver errado:</b> uma célula que você sabe que era #N/A ou texto na origem aparece como um valor numérico no quadro</div>
+              <div><b>Por quê:</b> mesmo risco de conversão silenciosa que já apareceu real no comparativo do Pipa.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:potengi:item-2">
+              <span class="pergunta">Os números do quadro casam com a linha certa da planilha, mesmo se ela ganhou uma linha nova?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> nos quadros do Potengi, comparando com a planilha de origem por nome de linha, não posição</div>
+              <div><b>Esperado:</b> cada número corresponde ao rótulo certo</div>
+              <div><b>Sintoma se estiver errado:</b> um número parece deslocado de linha</div>
+              <div><b>Por quê:</b> mesma regra de nome-nunca-posição que vale em todo o motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:potengi:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-topo"></div>
+                <div class="card-corpo">
+                  <h3>Os 3 quadros do Pipa que viram imagem no deck (slides 5/33 e 6/34) <span class="chip crit" title="Rodou 326 vezes nesta competência">326×</span></h3>
+                  <div class="campos-topo">
+                    <span class="chip warn">OK, com aviso</span>
+                    <span class="quando">10/08/2026 12:01</span>
+                  </div>
+                  <dl class="campos"><dt>Mes</dt><dd>2026-07</dd></dl>
+                  <div class="alerta warn">INDICADORES: cabeçalho repetido na linha 14 — o bloco de baixo é o espaço reservado e ficou de fora (resposta 16)</div><div class="alerta warn">INDICADORES: 1 célula(s) com erro do Excel — vão para o slide como estão (ex.: EXPOSIÇÃO MÁX. SEM FINANCIAMENTO!percentual = #DIV/0!)</div><div class="alerta warn">INDICADORES: 3 valor(es) gravado(s) como TEXTO, não como número — o Excel não soma isso (ex.: TIR (A.M.)!mes_atual = &#x27;8,42%&#x27;; EXPOSIÇÃO MÁX.!mes_passado = &#x27;4.450.547&#x27;; EXPOSIÇÃO MÁX.!mes_atual = &#x27;2.642.853&#x27;)</div><div class="alerta warn">COMPARATIVO DRE: 1 coluna(s) à esquerda dos meses também têm texto e NÃO viraram rótulo (I=1x) — usei B e C por serem as que mais aparecem. Texto solto ali desloca os níveis; confira se não é linha de verdade.</div><div class="alerta warn">COMPARATIVO DRE: 19 célula(s) com erro do Excel — vão para o slide como estão (ex.: Outorga Onerosa!mes_passado = #N/A; Outorga Onerosa!mes_atual = #N/A; Outorga Onerosa!diferenca = #N/A; Demolição!mes_passado = #N/A; Demolição!mes_atual = #N/A)</div><div class="alerta warn">COMPARATIVO DRE: 3 célula(s) VAZIA(S) em linha que tem valor nas outras (ex.: Despesas com Financiamento!mes_atual; RET!mes_atual; Tarifas Bancárias!mes_atual). Se a planilha foi corrigida agora, é fórmula que ainda não recalculou: abra o Comparativo no Excel, deixe recalcular, salve e rode de novo — do jeito que está, esse número não existe no quadro.</div><div class="alerta warn">Correção: 4 valor(es) gravado(s) como TEXTO, não como número — o Excel não soma isso (ex.: 2025-08-01!tir_a.m._(%) = &#x27;5,55%&#x27;; 2025-09-01!tir_a.m._(%) = &#x27;6,32%&#x27;; 2025-11-01!tir_a.m._(%) = &#x27;5,30%&#x27;; 2026-07-02!tir_a.m._(%) = &#x27;8,42%&#x27;)</div>
+                  
+                  <div class="entregavel"><div class="v-arq off">sem entregável registrado nesta execução.</div></div>
+                  <div class="acoes">
+                    <div class="bt-wrap">
+                      <button type="button" class="mais" aria-expanded="false" aria-controls="pop-quadros-pipa">+</button>
+                      <div class="pop roteiro" id="pop-quadros-pipa" hidden>
+                        <div class="pop-tit">Conferência — <span class="contagem">0/4</span></div>
+                        <ul class="roteiro-lista">
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:pipa:item-0">
+              <span class="pergunta">Os quadros saíram como imagem numa pasta para você colar, sem o robô mexer direto no PowerPoint?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> na pasta de quadros gerada para o Pipa nesta rodada, e nos slides do deck onde eles entram</div>
+              <div><b>Esperado:</b> o robô grava as imagens numa pasta; colar no slide é passo seu, à mão — decisão sua</div>
+              <div><b>Sintoma se estiver errado:</b> o deck de apresentação aparece alterado sozinho, sem você ter colado nada</div>
+              <div><b>Por quê:</b> etapa de geração de imagem nunca deveria escrever direto no arquivo de apresentação — colar é ato seu, de propósito.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:pipa:item-1">
+              <span class="pergunta">Uma célula que era #N/A ou texto na planilha de origem continua marcada como tal no quadro, sem virar número?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> nos quadros do Pipa, comparando com a aba COMPARATIVO DRE de onde os números saem</div>
+              <div><b>Esperado:</b> #N/A continua #N/A, texto continua texto — nenhum dos dois vira número ou R$ 0,00</div>
+              <div><b>Sintoma se estiver errado:</b> uma célula que você sabe que era #N/A ou texto na origem aparece como um valor numérico no quadro</div>
+              <div><b>Por quê:</b> já houve caso real de 19 células #N/A no comparativo do Pipa vazando para o quadro se essa checagem faltar.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:pipa:item-2">
+              <span class="pergunta">Os números do quadro casam com a linha certa da planilha, mesmo se ela ganhou uma linha nova?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> nos quadros do Pipa, comparando com a planilha de origem por nome de linha, não posição</div>
+              <div><b>Esperado:</b> cada número corresponde ao rótulo certo</div>
+              <div><b>Sintoma se estiver errado:</b> um número parece deslocado de linha</div>
+              <div><b>Por quê:</b> mesma regra de nome-nunca-posição que vale em todo o motor.</div>
+            </div>
+          </li>
+          <li class="roteiro-item">
+            <label>
+              <input type="checkbox" class="marca" data-key="auditoria-rgi:2026-07:quadros:pipa:item-3">
+              <span class="pergunta">Algum número aqui te surpreendeu?</span>
+            </label>
+            <div class="roteiro-detalhe">
+              <div><b>Onde:</b> em qualquer aba, arquivo ou valor que os itens acima mandaram olhar</div>
+              <div><b>Esperado:</b> nada te faz parar e pensar &#x27;isso não bate com o que eu esperava&#x27;</div>
+              <div><b>Sintoma se estiver errado:</b> um valor grande demais, pequeno demais, ou que mudou sem motivo que você conheça</div>
+              <div><b>Por quê:</b> é a rede que pega o erro que nenhum item específico previu — nenhum roteiro cobre tudo.</div>
+            </div>
+          </li></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div></section>
+<section id="aba2" class="aba-painel"><div class="res"><div class="res-cab">Competência dos exports usada nesta análise</div><ul class="res-lista"><li>2026-07 <span class="res-tag">igual à competência da rodada</span></li></ul></div><ol class="passos-viabil"><li><h3>Atualizar a tabela de vendas</h3><p class="dim">Uma linha por unidade que mudou — identificação, status, valor que estava e valor que passa a ser. As que não mudaram não aparecem: é o pedido original do helper, para ele só mexer no que mudou.</p><h4>Pipa</h4><div class="tabela-scroll"><table class="tabela-vendas"><thead><tr><th>Unidade</th><th>Status</th><th>Valor que estava</th><th>Valor que passa a ser</th><th>Diferença</th></tr></thead><tbody><tr><td>CASA 21</td><td>VENDIDA</td><td>R$ 2.936.932,94</td><td>R$ 2.960.481,45</td><td>R$ 23.548,51</td></tr><tr><td>CASA 22</td><td>VENDIDA</td><td>R$ 2.899.512,06</td><td>R$ 2.963.896,57</td><td>R$ 64.384,51</td></tr><tr><td>CASA 23</td><td>ESTOQUE</td><td>R$ 3.043.440,66</td><td>R$ 3.070.222,93</td><td>R$ 26.782,28</td></tr><tr><td>CASA 24</td><td>VENDIDA</td><td>R$ 2.923.018,53</td><td>R$ 2.944.204,87</td><td>R$ 21.186,34</td></tr><tr><td>CASA 25</td><td>VENDIDA</td><td>R$ 2.950.289,35</td><td>R$ 2.971.771,40</td><td>R$ 21.482,05</td></tr><tr><td>CASA 26</td><td>VENDIDA</td><td>R$ 2.959.211,96</td><td>R$ 2.983.464,55</td><td>R$ 24.252,59</td></tr><tr><td>CASA 27</td><td>VENDIDA</td><td>R$ 2.813.508,22</td><td>R$ 2.834.502,56</td><td>R$ 20.994,34</td></tr><tr><td>CASA 28</td><td>VENDIDA</td><td>R$ 2.933.656,23</td><td>R$ 2.956.173,39</td><td>R$ 22.517,16</td></tr><tr><td>CASA 29</td><td>ESTOQUE</td><td>R$ 3.076.803,09</td><td>R$ 3.103.878,96</td><td>R$ 27.075,87</td></tr><tr><td>CASA 30</td><td>VENDIDA</td><td>R$ 2.830.706,37</td><td>R$ 2.852.055,12</td><td>R$ 21.348,75</td></tr><tr><td>CASA 31</td><td>VENDIDA</td><td>R$ 3.258.921,63</td><td>R$ 3.276.878,69</td><td>R$ 17.957,06</td></tr><tr><td>CASA 32</td><td>VENDIDA</td><td>R$ 2.799.987,50</td><td>R$ 2.821.058,62</td><td>R$ 21.071,12</td></tr><tr><td>CASA 33</td><td>VENDIDA</td><td>R$ 2.768.277,48</td><td>R$ 2.790.884,90</td><td>R$ 22.607,42</td></tr><tr><td>CASA 34</td><td>VENDIDA</td><td>R$ 2.752.924,68</td><td>R$ 2.772.623,12</td><td>R$ 19.698,44</td></tr><tr><td>CASA 35</td><td>VENDIDA</td><td>R$ 2.772.810,31</td><td>R$ 2.743.343,56</td><td>-R$ 29.466,75</td></tr><tr><td>CASA 37</td><td>VENDIDA</td><td>R$ 2.867.248,19</td><td>R$ 2.887.197,89</td><td>R$ 19.949,70</td></tr><tr><td>CASA 38</td><td>ESTOQUE</td><td>R$ 3.073.727,72</td><td>R$ 3.100.776,53</td><td>R$ 27.048,80</td></tr><tr><td>CASA 39</td><td>ESTOQUE</td><td>R$ 3.047.640,12</td><td>R$ 3.074.459,36</td><td>R$ 26.819,23</td></tr><tr><td>CASA 40</td><td>ESTOQUE</td><td>R$ 3.407.670,21</td><td>R$ 3.437.657,71</td><td>R$ 29.987,50</td></tr><tr><td>CASA 41</td><td>VENDIDA</td><td>R$ 2.547.166,98</td><td>R$ 2.565.943,01</td><td>R$ 18.776,03</td></tr><tr><td>CASA 42</td><td>VENDIDA</td><td>R$ 2.480.779,33</td><td>R$ 2.499.061,79</td><td>R$ 18.282,46</td></tr><tr><td>CASA 43</td><td>VENDIDA</td><td>R$ 2.377.023,42</td><td>R$ 2.397.321,07</td><td>R$ 20.297,65</td></tr><tr><td>CASA 44</td><td>ESTOQUE</td><td>R$ 2.722.442,76</td><td>R$ 2.746.400,26</td><td>R$ 23.957,50</td></tr><tr><td>CASA 45</td><td>VENDIDA</td><td>R$ 2.515.040,43</td><td>R$ 2.534.062,42</td><td>R$ 19.021,99</td></tr><tr><td>CASA 46</td><td>VENDIDA</td><td>R$ 2.641.700,62</td><td>R$ 2.660.411,80</td><td>R$ 18.711,18</td></tr><tr><td>CASA 47</td><td>ESTOQUE</td><td>R$ 2.701.212,12</td><td>R$ 2.724.982,79</td><td>R$ 23.770,67</td></tr><tr><td>CASA 48</td><td>ESTOQUE</td><td>R$ 2.699.621,42</td><td>R$ 2.723.378,09</td><td>R$ 23.756,67</td></tr><tr><td>CASA 49</td><td>ESTOQUE</td><td>R$ 2.697.691,36</td><td>R$ 2.721.431,04</td><td>R$ 23.739,68</td></tr><tr><td>CASA 50</td><td>ESTOQUE</td><td>R$ 2.695.591,62</td><td>R$ 2.719.312,83</td><td>R$ 23.721,21</td></tr><tr><td>CASA 51</td><td>VENDIDA</td><td>R$ 2.458.419,68</td><td>R$ 2.476.691,36</td><td>R$ 18.271,68</td></tr><tr><td>CASA 52</td><td>ESTOQUE</td><td>R$ 2.692.261,74</td><td>R$ 2.715.953,65</td><td>R$ 23.691,90</td></tr><tr><td>CASA 53</td><td>VENDIDA</td><td>R$ 2.689.313,63</td><td>R$ 2.578.364,64</td><td>-R$ 110.948,99</td></tr><tr><td>CASA 54</td><td>VENDIDA</td><td>R$ 2.484.349,41</td><td>R$ 2.505.162,77</td><td>R$ 20.813,36</td></tr><tr><td>CASA 55</td><td>ESTOQUE</td><td>R$ 2.682.547,82</td><td>R$ 2.706.154,25</td><td>R$ 23.606,42</td></tr><tr><td>CASA 56</td><td>ESTOQUE</td><td>R$ 2.677.393,93</td><td>R$ 2.700.955,00</td><td>R$ 23.561,07</td></tr></tbody></table></div><h4>Potengi</h4><div class="tabela-scroll"><table class="tabela-vendas"><thead><tr><th>Unidade</th><th>Torre</th><th>Status</th><th>Valor que estava</th><th>Valor que passa a ser</th><th>Diferença</th></tr></thead><tbody><tr><td>APT 701</td><td>A</td><td>ESTOQUE</td><td>R$ 3.027.915,19</td><td>R$ 3.054.560,85</td><td>R$ 26.645,65</td></tr><tr><td>APT 702</td><td>A</td><td>ESTOQUE</td><td>R$ 3.027.915,19</td><td>R$ 3.054.560,85</td><td>R$ 26.645,65</td></tr><tr><td>APT 1002</td><td>A</td><td>ESTOQUE</td><td>R$ 3.112.380,34</td><td>R$ 3.139.769,29</td><td>R$ 27.388,95</td></tr><tr><td>APT 1102</td><td>A</td><td>ESTOQUE</td><td>R$ 3.141.248,18</td><td>R$ 3.168.891,16</td><td>R$ 27.642,98</td></tr><tr><td>APT 1201</td><td>A</td><td>ESTOQUE</td><td>R$ 3.169.046,83</td><td>R$ 3.196.934,45</td><td>R$ 27.887,61</td></tr><tr><td>APT 1301</td><td>A</td><td>ESTOQUE</td><td>R$ 3.196.845,49</td><td>R$ 3.224.977,73</td><td>R$ 28.132,24</td></tr><tr><td>APT 1302</td><td>A</td><td>ESTOQUE</td><td>R$ 3.196.845,49</td><td>R$ 3.224.977,73</td><td>R$ 28.132,24</td></tr><tr><td>APT 1601</td><td>A</td><td>ESTOQUE</td><td>R$ 3.356.153,18</td><td>R$ 3.385.687,32</td><td>R$ 29.534,15</td></tr><tr><td>APT 1701</td><td>A</td><td>ESTOQUE</td><td>R$ 3.392.505,27</td><td>R$ 3.422.359,31</td><td>R$ 29.854,05</td></tr><tr><td>APT 1801</td><td>A</td><td>ESTOQUE</td><td>R$ 3.429.926,53</td><td>R$ 3.460.109,89</td><td>R$ 30.183,35</td></tr><tr><td>APT 1902</td><td>A</td><td>ESTOQUE</td><td>R$ 3.469.486,16</td><td>R$ 3.500.017,64</td><td>R$ 30.531,48</td></tr><tr><td>APT 2102</td><td>A</td><td>ESTOQUE</td><td>R$ 3.548.605,41</td><td>R$ 3.579.833,14</td><td>R$ 31.227,73</td></tr><tr><td>APT 2201</td><td>A</td><td>ESTOQUE</td><td>R$ 3.587.095,86</td><td>R$ 3.618.662,30</td><td>R$ 31.566,44</td></tr><tr><td>APT 2202</td><td>A</td><td>ESTOQUE</td><td>R$ 3.587.095,86</td><td>R$ 3.618.662,30</td><td>R$ 31.566,44</td></tr><tr><td>APT 2401</td><td>A</td><td>ESTOQUE</td><td>R$ 3.665.145,93</td><td>R$ 3.697.399,22</td><td>R$ 32.253,28</td></tr><tr><td>APT 2501</td><td>A</td><td>ESTOQUE</td><td>R$ 3.702.567,20</td><td>R$ 3.735.149,79</td><td>R$ 32.582,59</td></tr><tr><td>APT 2901</td><td>A</td><td>ESTOQUE</td><td>R$ 3.826.591,98</td><td>R$ 3.860.265,99</td><td>R$ 33.674,01</td></tr><tr><td>APT 3101</td><td>A</td><td>ESTOQUE</td><td>R$ 3.882.189,29</td><td>R$ 3.916.352,56</td><td>R$ 34.163,27</td></tr><tr><td>APT 3302</td><td>A</td><td>ESTOQUE</td><td>R$ 3.916.403,02</td><td>R$ 3.950.867,37</td><td>R$ 34.464,35</td></tr><tr><td>APT 3601</td><td>A</td><td>ESTOQUE</td><td>R$ 3.984.830,48</td><td>R$ 4.019.896,99</td><td>R$ 35.066,51</td></tr><tr><td>APT 3602</td><td>A</td><td>ESTOQUE</td><td>R$ 3.984.830,48</td><td>R$ 4.019.896,99</td><td>R$ 35.066,51</td></tr><tr><td>APT 3801 — IRMÃ 01 DR. SÉRGIO</td><td>A</td><td>VENDIDA</td><td>R$ 3.000.000,00</td><td>R$ 3.041.555,73</td><td>R$ 41.555,73</td></tr><tr><td>APT 4101</td><td>A</td><td>ESTOQUE</td><td>R$ 4.093.886,75</td><td>R$ 4.129.912,95</td><td>R$ 36.026,20</td></tr><tr><td>APT 4102</td><td>A</td><td>ESTOQUE</td><td>R$ 4.093.886,75</td><td>R$ 4.129.912,95</td><td>R$ 36.026,20</td></tr><tr><td>APT 4202</td><td>A</td><td>ESTOQUE</td><td>R$ 7.797.523,13</td><td>R$ 7.866.141,34</td><td>R$ 68.618,20</td></tr><tr><td>SALA 5</td><td>B</td><td>VENDIDA</td><td>—</td><td>R$ 2.640.000,00</td><td>—</td></tr></tbody></table></div></li><li><h3>Importar os lançamentos</h3><p class="dim">O caminho do arquivo que o robô gerou está ao lado — é o que entra no Viabil.</p><h4>Potengi</h4><div class="v-arq off">sem entregável registrado nesta execução.</div><h4>Pipa</h4><div class="v-arq off">sem entregável registrado nesta execução.</div></li><li><h3>Exportar a DRE</h3><p class="dim">Alimenta a análise da aba 3 do mês seguinte.</p><div class="v-arq">arquivo usado: <code>Comparativo DRE Pipa 07-2026 R00.xlsx</code></div><div class="alerta warn">DRE: 2 arquivos empatados (sem revisão que desempate) — escolhido &#x27;Comparativo DRE Pipa 07-2026 R00.xlsx&#x27; por data de modificação mais recente.</div><div class="alerta warn">DRE: row 33 &#x27;Valor Pago no Terreno&#x27; -&gt; &#x27;VALOR_PAGO_TERRENO&#x27;: nao parseavel (&#x27;N/D&#x27;)</div><div class="alerta warn">DRE: 2 arquivos empatados (sem revisão que desempate) — escolhido &#x27;125MM Comparativo DRE Potengi 07-2026 R00.xlsx&#x27; por data de modificação mais recente.</div><div class="alerta warn">DRE: row 33 &#x27;Valor Pago no Terreno&#x27; -&gt; &#x27;VALOR_PAGO_TERRENO&#x27;: nao parseavel (&#x27;N/D&#x27;)</div><div class="alerta warn">DRE: row 52 &#x27;Pay-Back&#x27; -&gt; &#x27;PAYBACK_DRE&#x27;: nao parseavel (&#x27;N/D&#x27;)</div><div class="alerta warn">DRE: row 70 &#x27;Pay-Back&#x27; -&gt; &#x27;PAYBACK_COM_FIN_DRE&#x27;: nao parseavel (&#x27;N/D&#x27;)</div><div class="alerta warn">DRE: row 78 &#x27;Payback (Nominal)&#x27; -&gt; &#x27;PAYBACK_NOMINAL_DRE&#x27;: nao parseavel (&#x27;N/D&#x27;)</div></li><li><h3>Exportar o Cashflow</h3><p class="dim">Alimenta a análise da aba 3 do mês seguinte.</p><div class="v-arq">arquivo usado: <code>Cashflow Pipa 07-2026 R00.xlsx</code></div></li><li><h3>Exportar o arquivo nativo .viab</h3><p class="dim">Alimenta a análise da aba 3 do mês seguinte.</p><div class="v-arq off">nenhum arquivo desse tipo encontrado nesta pasta ainda.</div></li><li><h3>Exportar a tabela de vendas</h3><p class="dim">Alimenta a análise da aba 3 do mês seguinte.</p><div class="v-arq off">nenhum arquivo desse tipo encontrado nesta pasta ainda.</div></li></ol></section>
+<section id="aba3" class="aba-painel"><div class="sec"><div class="sec-cab"><h2>Pipa</h2></div><div class="grid">
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>VGV bruto</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>—</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">VGV bruto: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq off" title="arquivo não encontrado nesta pasta.">indisponível — origem</div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Receitas</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 88.843.095,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Receitas: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Lucro nominal</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 22.892.891,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Lucro nominal: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Custo de obra</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 54.800.344,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Custo de obra: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Taxas (TIR a.a.)</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>17206,00%</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Taxas (TIR a.a.): sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Exposição máxima</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 2.623.375,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Exposição máxima: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>02. Pipa\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\Comparativo DRE Pipa 07-2026 R00.xlsx</code></div></div></div></div><div class="graficos-wrap">
+      <div class="grafico">
+        <div class="grafico-tit">Cashflow mensal</div>
+        <svg viewBox="0 0 520 160" class="svg-linha">
+          <polyline points="28.0,125.5 32.3,125.5 36.7,125.6 41.0,125.6 45.3,125.8 49.7,125.8 54.0,125.9 58.4,126.0 62.7,126.1 67.0,126.1 71.4,126.2 75.7,126.2 80.0,126.3 84.4,126.3 88.7,126.3 93.0,126.4 97.4,126.4 101.7,126.6 106.1,126.7 110.4,126.8 114.7,126.9 119.1,127.0 123.4,127.0 127.7,127.1 132.1,127.1 136.4,127.3 140.7,127.3 145.1,127.4 149.4,127.5 153.8,127.7 158.1,128.0 162.4,126.0 166.8,125.4 171.1,124.3 175.4,124.1 179.8,123.8 184.1,123.5 188.4,123.6 192.8,122.7 197.1,122.6 201.5,123.2 205.8,123.4 210.1,122.6 214.5,122.4 218.8,122.7 223.1,123.7 227.5,125.1 231.8,126.3 236.1,128.7 240.5,132.0 244.8,123.3 249.2,123.8 253.5,124.2 257.8,124.6 262.2,122.6 266.5,122.4 270.8,121.6 275.2,121.4 279.5,115.6 283.9,110.4 288.2,104.8 292.5,99.4 296.9,90.4 301.2,81.2 305.5,72.2 309.9,61.7 314.2,54.0 318.5,46.0 322.9,44.1 327.2,42.0 331.6,36.3 335.9,34.6 340.2,31.3 344.6,28.0 348.9,28.2 353.2,33.4 357.6,38.5 361.9,43.6 366.2,48.8 370.6,53.9 374.9,58.9 379.3,64.0 383.6,69.1 387.9,74.2 392.3,79.3 396.6,84.3 400.9,89.4 405.3,89.5 409.6,89.5 413.9,89.5 418.3,89.5 422.6,89.5 427.0,93.0" class="linha-anterior"></polyline>
+          <polyline points="28.0,125.5 32.3,125.5 36.7,125.6 41.0,125.6 45.3,125.8 49.7,125.8 54.0,125.9 58.4,126.0 62.7,126.1 67.0,126.1 71.4,126.2 75.7,126.2 80.0,126.3 84.4,126.3 88.7,126.3 93.0,126.4 97.4,126.4 101.7,126.6 106.1,126.7 110.4,126.8 114.7,126.9 119.1,127.0 123.4,127.0 127.7,127.1 132.1,127.1 136.4,127.3 140.7,127.3 145.1,127.4 149.4,127.5 153.8,127.7 158.1,128.0 162.4,126.0 166.8,125.4 171.1,124.3 175.4,124.1 179.8,123.8 184.1,123.5 188.4,123.6 192.8,122.7 197.1,122.6 201.5,123.1 205.8,123.4 210.1,122.5 214.5,122.2 218.8,122.7 223.1,123.5 227.5,124.1 231.8,124.5 236.1,124.7 240.5,126.3 244.8,129.4 249.2,120.6 253.5,121.0 257.8,121.5 262.2,119.4 266.5,119.2 270.8,118.4 275.2,118.3 279.5,112.5 283.9,107.3 288.2,101.5 292.5,96.3 296.9,88.0 301.2,79.5 305.5,71.3 309.9,60.9 314.2,53.7 318.5,46.6 322.9,44.7 327.2,43.1 331.6,41.5 335.9,36.2 340.2,33.0 344.6,29.9 348.9,30.0 353.2,35.1 357.6,40.1 361.9,45.2 366.2,50.2 370.6,55.2 374.9,60.2 379.3,65.2 383.6,70.2 387.9,75.2 392.3,80.2 396.6,85.2 400.9,90.2 405.3,90.2 409.6,90.1 413.9,90.1 418.3,90.0 422.6,89.9 427.0,93.3 431.3,93.2 435.6,93.1 440.0,93.1 444.3,93.0 448.6,92.9 453.0,92.8 457.3,92.7 461.6,92.6 466.0,92.6 470.3,92.5 474.7,92.4 479.0,92.3 483.3,92.2 487.7,92.1 492.0,92.2" class="linha-atual"></polyline>
+          <text x="28.0" y="154" class="eixo">jun/2022</text><text x="106.1" y="154" class="eixo">dez/2023</text><text x="184.1" y="154" class="eixo">jun/2025</text><text x="262.2" y="154" class="eixo">dez/2026</text><text x="340.2" y="154" class="eixo">jun/2028</text><text x="418.3" y="154" class="eixo">dez/2029</text>
+        </svg>
+        <div class="legenda-grafico"><span class="pt-atual">●</span> mês atual <span class="pt-anterior">●</span> mês anterior</div>
+      </div>
+      <div class="grafico">
+        <div class="grafico-tit">Curva de exposição (saldo acumulado)</div>
+        <svg viewBox="0 0 520 160" class="svg-linha">
+          <polyline points="28.0,125.2 32.3,125.3 36.7,125.3 41.0,125.4 45.3,125.5 49.7,125.6 54.0,125.6 58.4,125.7 62.7,125.8 67.0,125.9 71.4,125.9 75.7,126.0 80.0,126.0 84.4,126.1 88.7,126.1 93.0,126.2 97.4,126.2 101.7,126.4 106.1,126.5 110.4,126.6 114.7,126.8 119.1,126.9 123.4,126.9 127.7,127.0 132.1,127.1 136.4,127.2 140.7,127.3 145.1,127.4 149.4,127.5 153.8,127.8 158.1,128.1 162.4,126.2 166.8,125.6 171.1,124.5 175.4,124.3 179.8,124.0 184.1,123.7 188.4,123.8 192.8,122.9 197.1,122.8 201.5,123.3 205.8,123.6 210.1,122.7 214.5,122.5 218.8,122.8 223.1,123.8 227.5,125.1 231.8,126.3 236.1,128.7 240.5,132.0 244.8,123.5 249.2,124.0 253.5,124.3 257.8,124.8 262.2,122.8 266.5,122.6 270.8,121.8 275.2,121.6 279.5,115.8 283.9,110.6 288.2,105.0 292.5,99.5 296.9,90.4 301.2,81.1 305.5,72.0 309.9,61.3 314.2,53.7 318.5,45.8 322.9,43.9 327.2,41.9 331.6,36.2 335.9,34.5 340.2,31.3 344.6,28.0 348.9,28.2 353.2,33.3 357.6,38.4 361.9,43.4 366.2,48.5 370.6,53.5 374.9,58.5 379.3,63.6 383.6,68.6 387.9,73.6 392.3,78.6 396.6,83.6 400.9,88.6 405.3,88.7 409.6,88.7 413.9,88.8 418.3,88.8 422.6,88.8 427.0,92.2" class="linha-anterior"></polyline>
+          <polyline points="28.0,125.2 32.3,125.3 36.7,125.3 41.0,125.4 45.3,125.5 49.7,125.6 54.0,125.6 58.4,125.7 62.7,125.8 67.0,125.9 71.4,125.9 75.7,126.0 80.0,126.0 84.4,126.1 88.7,126.1 93.0,126.2 97.4,126.2 101.7,126.4 106.1,126.5 110.4,126.6 114.7,126.8 119.1,126.9 123.4,126.9 127.7,127.0 132.1,127.1 136.4,127.2 140.7,127.3 145.1,127.4 149.4,127.5 153.8,127.8 158.1,128.1 162.4,126.2 166.8,125.6 171.1,124.5 175.4,124.3 179.8,124.0 184.1,123.7 188.4,123.8 192.8,122.9 197.1,122.8 201.5,123.2 205.8,123.5 210.1,122.6 214.5,122.3 218.8,122.8 223.1,123.5 227.5,124.1 231.8,124.5 236.1,124.7 240.5,126.3 244.8,129.3 249.2,120.7 253.5,121.1 257.8,121.6 262.2,119.5 266.5,119.2 270.8,118.4 275.2,118.2 279.5,112.4 283.9,107.3 288.2,101.4 292.5,96.2 296.9,87.8 301.2,79.1 305.5,70.7 309.9,60.1 314.2,53.0 318.5,46.0 322.9,44.1 327.2,42.6 331.6,41.0 335.9,35.8 340.2,32.6 344.6,29.5 348.9,29.6 353.2,34.6 357.6,39.6 361.9,44.6 366.2,49.6 370.6,54.5 374.9,59.4 379.3,64.4 383.6,69.3 387.9,74.2 392.3,79.2 396.6,84.1 400.9,89.1 405.3,89.0 409.6,89.0 413.9,88.9 418.3,88.9 422.6,88.8 427.0,92.1 431.3,92.0 435.6,91.9 440.0,91.9 444.3,91.8 448.6,91.7 453.0,91.6 457.3,91.5 461.6,91.5 466.0,91.4 470.3,91.3 474.7,91.2 479.0,91.1 483.3,91.1 487.7,91.0 492.0,91.0" class="linha-atual"></polyline>
+          <text x="28.0" y="154" class="eixo">jun/2022</text><text x="106.1" y="154" class="eixo">dez/2023</text><text x="184.1" y="154" class="eixo">jun/2025</text><text x="262.2" y="154" class="eixo">dez/2026</text><text x="340.2" y="154" class="eixo">jun/2028</text><text x="418.3" y="154" class="eixo">dez/2029</text>
+        </svg>
+        <div class="legenda-grafico"><span class="pt-atual">●</span> mês atual <span class="pt-anterior">●</span> mês anterior</div>
+      </div></div></div><div class="sec"><div class="sec-cab"><h2>Potengi</h2></div><div class="grid">
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>VGV bruto</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>—</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">VGV bruto: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq off" title="arquivo não encontrado nesta pasta.">indisponível — origem</div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Receitas</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 202.844.150,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Receitas: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Lucro nominal</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 33.744.159,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Lucro nominal: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Custo de obra</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 142.938.302,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Custo de obra: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Taxas (TIR a.a.)</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>12916,00%</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Taxas (TIR a.a.): sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx</code></div></div></div>
+      <div class="card">
+        <div class="card-topo"></div>
+        <div class="card-corpo">
+          <h3>Exposição máxima</h3>
+          <div class="campos-topo"><span class="chip incerto">sem baseline anterior</span></div>
+          <dl class="campos">
+            <dt>Mês anterior</dt><dd>—</dd>
+            <dt>Mês atual</dt><dd>R$ 9.715.227,00</dd>
+            <dt>Diferença</dt><dd>—</dd>
+          </dl>
+          <p class="frase-leitura">Exposição máxima: sem baseline do mês anterior — primeiro mês com dado, nada para comparar.</p><div class="v-arq copiavel" data-copiar="01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx" tabindex="0" title="Clique para copiar o caminho">DRE<code>01. Potengi\007. Viabilidade\007.02 Viabilidade Financeira\02. Viabil\2026.07\125MM Comparativo DRE Potengi 07-2026 R00.xlsx</code></div></div></div></div><div class="graficos-wrap">
+      <div class="grafico">
+        <div class="grafico-tit">Cashflow mensal</div>
+        <svg viewBox="0 0 520 160" class="svg-linha">
+          <polyline points="28.0,110.8 33.9,111.0 39.7,111.9 45.6,112.4 51.5,113.1 57.4,113.3 63.2,113.7 69.1,113.8 75.0,114.2 80.9,115.0 86.7,117.2 92.6,117.6 98.5,115.2 104.4,112.9 110.2,112.1 116.1,111.6 122.0,110.0 127.8,110.0 133.7,105.4 139.6,106.3 145.5,107.3 151.3,110.5 157.2,113.8 163.1,115.1 169.0,116.9 174.8,117.2 180.7,116.8 186.6,118.8 192.5,117.5 198.3,120.7 204.2,125.0 210.1,126.8 215.9,132.0 221.8,98.7 227.7,96.5 233.6,97.2 239.4,95.0 245.3,94.0 251.2,96.5 257.1,101.4 262.9,111.8 268.8,121.1 274.7,111.8 280.6,98.0 286.4,99.3 292.3,98.6 298.2,102.1 304.1,112.5 309.9,117.6 315.8,120.2 321.7,110.2 327.5,107.3 333.4,118.6 339.3,105.5 345.2,107.3 351.0,100.1 356.9,96.4 362.8,70.5 368.7,50.4 374.5,44.7 380.4,51.3 386.3,53.6 392.2,53.4 398.0,52.8 403.9,51.0 409.8,48.9 415.6,46.7 421.5,44.3 427.4,41.9 433.3,39.4 439.1,37.8 445.0,36.4 450.9,35.2 456.8,34.1 462.6,33.2 468.5,32.5 474.4,31.9 480.3,31.6 486.1,31.4 492.0,40.3" class="linha-anterior"></polyline>
+          <polyline points="28.0,110.8 33.9,111.0 39.7,111.9 45.6,112.4 51.5,113.1 57.4,113.3 63.2,113.7 69.1,113.8 75.0,114.2 80.9,115.0 86.7,117.2 92.6,117.6 98.5,115.2 104.4,112.9 110.2,112.1 116.1,111.6 122.0,110.0 127.8,110.0 133.7,105.4 139.6,106.3 145.5,107.3 151.3,110.5 157.2,113.8 163.1,115.1 169.0,116.9 174.8,117.2 180.7,116.8 186.6,118.8 192.5,117.5 198.3,120.7 204.2,125.0 210.1,126.8 215.9,132.0 221.8,98.7 227.7,96.5 233.6,97.2 239.4,95.0 245.3,94.0 251.2,96.5 257.1,101.4 262.9,111.8 268.8,121.1 274.7,111.8 280.6,98.0 286.4,99.4 292.3,98.7 298.2,106.7 304.1,113.1 309.9,111.4 315.8,107.8 321.7,88.8 327.5,75.7 333.4,79.9 339.3,65.1 345.2,72.1 351.0,74.6 356.9,80.9 362.8,62.4 368.7,47.1 374.5,59.6 380.4,48.9 386.3,51.1 392.2,50.3 398.0,49.5 403.9,47.7 409.8,45.7 415.6,43.5 421.5,41.1 427.4,38.6 433.3,36.1 439.1,34.5 445.0,33.0 450.9,31.8 456.8,30.7 462.6,29.8 468.5,29.1 474.4,28.5 480.3,28.2 486.1,28.0 492.0,36.9" class="linha-atual"></polyline>
+          <text x="28.0" y="154" class="eixo">jun/2022</text><text x="104.4" y="154" class="eixo">jul/2023</text><text x="180.7" y="154" class="eixo">ago/2024</text><text x="257.1" y="154" class="eixo">set/2025</text><text x="333.4" y="154" class="eixo">out/2026</text><text x="409.8" y="154" class="eixo">nov/2027</text><text x="486.1" y="154" class="eixo">dez/2028</text>
+        </svg>
+        <div class="legenda-grafico"><span class="pt-atual">●</span> mês atual <span class="pt-anterior">●</span> mês anterior</div>
+      </div>
+      <div class="grafico">
+        <div class="grafico-tit">Curva de exposição (saldo acumulado)</div>
+        <svg viewBox="0 0 520 160" class="svg-linha">
+          <polyline points="28.0,109.5 33.9,109.7 39.7,110.6 45.6,111.1 51.5,111.8 57.4,112.0 63.2,112.4 69.1,112.6 75.0,113.0 80.9,113.9 86.7,116.1 92.6,116.5 98.5,114.3 104.4,112.1 110.2,111.3 116.1,110.8 122.0,109.3 127.8,109.3 133.7,104.8 139.6,105.6 145.5,106.6 151.3,109.7 157.2,113.0 163.1,114.3 169.0,116.1 174.8,116.4 180.7,116.2 186.6,118.2 192.5,117.1 198.3,120.3 204.2,124.7 210.1,126.6 215.9,132.0 221.8,99.5 227.7,97.2 233.6,97.8 239.4,95.6 245.3,94.6 251.2,96.9 257.1,101.6 262.9,111.8 268.8,121.0 274.7,112.0 280.6,98.4 286.4,99.7 292.3,98.9 298.2,102.3 304.1,112.5 309.9,117.5 315.8,120.2 321.7,110.4 327.5,107.6 333.4,118.7 339.3,105.9 345.2,107.7 351.0,100.6 356.9,97.0 362.8,71.4 368.7,51.6 374.5,46.0 380.4,52.5 386.3,54.7 392.2,54.5 398.0,53.9 403.9,52.1 409.8,50.1 415.6,48.0 421.5,45.6 427.4,43.2 433.3,40.7 439.1,39.2 445.0,37.8 450.9,36.5 456.8,35.5 462.6,34.6 468.5,33.9 474.4,33.4 480.3,33.0 486.1,32.9 492.0,41.6" class="linha-anterior"></polyline>
+          <polyline points="28.0,109.5 33.9,109.7 39.7,110.6 45.6,111.1 51.5,111.8 57.4,112.0 63.2,112.4 69.1,112.6 75.0,113.0 80.9,113.9 86.7,116.1 92.6,116.5 98.5,114.3 104.4,112.1 110.2,111.3 116.1,110.8 122.0,109.3 127.8,109.3 133.7,104.8 139.6,105.6 145.5,106.6 151.3,109.7 157.2,113.0 163.1,114.3 169.0,116.1 174.8,116.4 180.7,116.2 186.6,118.2 192.5,117.1 198.3,120.3 204.2,124.7 210.1,126.6 215.9,132.0 221.8,99.5 227.7,97.2 233.6,97.8 239.4,95.6 245.3,94.6 251.2,96.9 257.1,101.6 262.9,111.8 268.8,121.0 274.7,112.0 280.6,98.5 286.4,99.8 292.3,99.0 298.2,106.8 304.1,113.1 309.9,111.5 315.8,107.9 321.7,89.2 327.5,76.2 333.4,80.1 339.3,65.4 345.2,71.9 351.0,74.2 356.9,80.1 362.8,61.9 368.7,46.8 374.5,59.1 380.4,48.6 386.3,50.8 392.2,49.9 398.0,49.2 403.9,47.4 409.8,45.5 415.6,43.3 421.5,40.9 427.4,38.4 433.3,36.0 439.1,34.4 445.0,33.0 450.9,31.7 456.8,30.6 462.6,29.8 468.5,29.1 474.4,28.5 480.3,28.2 486.1,28.0 492.0,36.7" class="linha-atual"></polyline>
+          <text x="28.0" y="154" class="eixo">jun/2022</text><text x="104.4" y="154" class="eixo">jul/2023</text><text x="180.7" y="154" class="eixo">ago/2024</text><text x="257.1" y="154" class="eixo">set/2025</text><text x="333.4" y="154" class="eixo">out/2026</text><text x="409.8" y="154" class="eixo">nov/2027</text><text x="486.1" y="154" class="eixo">dez/2028</text>
+        </svg>
+        <div class="legenda-grafico"><span class="pt-atual">●</span> mês atual <span class="pt-anterior">●</span> mês anterior</div>
+      </div></div></div></section>
+<div class="barra-salvar">
+  <span id="status-salvo" class="dim">marcações deste mês ainda não viraram histórico.</span>
+  <button type="button" id="bt-salvar" class="bt">Salvar marcações</button>
+</div>
+<script>
+const MES_ATUAL = "2026-07";
+
+(function () {
+  function fecharPops(exceto) {
+    document.querySelectorAll('.pop').forEach(function (p) {
+      if (p !== exceto) {
+        p.hidden = true;
+        var bt = p.parentElement.querySelector('.mais');
+        if (bt) bt.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+  document.querySelectorAll('.mais').forEach(function (b) {
+    b.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      var pop = b.nextElementSibling;
+      var abrir = pop.hidden;
+      fecharPops(pop);
+      pop.hidden = !abrir;
+      b.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function () { fecharPops(null); });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') fecharPops(null); });
+
+  document.querySelectorAll('.aba-bt').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.aba-bt').forEach(function (x) { x.classList.remove('ativa'); });
+      document.querySelectorAll('.aba-painel').forEach(function (x) { x.classList.remove('ativa'); });
+      b.classList.add('ativa');
+      document.getElementById(b.dataset.aba).classList.add('ativa');
+    });
+  });
+
+  function atualizarContagem(pop) {
+    var caixas = pop.querySelectorAll('input.marca');
+    var marcadas = pop.querySelectorAll('input.marca:checked').length;
+    var contagem = pop.querySelector('.contagem');
+    if (contagem) contagem.textContent = marcadas + '/' + caixas.length;
+  }
+
+  document.querySelectorAll('input.marca').forEach(function (cb) {
+    var chave = cb.dataset.key;
+    cb.checked = localStorage.getItem(chave) === '1';
+    cb.addEventListener('change', function () {
+      if (cb.checked) localStorage.setItem(chave, '1');
+      else localStorage.removeItem(chave);
+      atualizarContagem(cb.closest('.pop'));
+      var status = document.getElementById('status-salvo');
+      if (status) status.textContent = 'marcações deste mês ainda não viraram histórico — clique em Salvar marcações.';
+    });
+  });
+  document.querySelectorAll('.pop.roteiro').forEach(atualizarContagem);
+
+  document.querySelectorAll('.v-arq.copiavel').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var caminho = el.dataset.copiar;
+      if (navigator.clipboard) navigator.clipboard.writeText(caminho).catch(function () {});
+      var original = el.style.background;
+      el.style.background = 'var(--ok-bg)';
+      setTimeout(function () { el.style.background = original; }, 400);
+    });
+  });
+
+  var btSalvar = document.getElementById('bt-salvar');
+  if (btSalvar) {
+    btSalvar.addEventListener('click', function () {
+      var prefixo = 'auditoria-rgi:' + MES_ATUAL + ':';
+      var marcacoes = {};
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k.indexOf(prefixo) === 0) marcacoes[k] = localStorage.getItem(k) === '1';
+      }
+      var payload = { mes: MES_ATUAL, salvo_em: new Date().toISOString(), marcacoes: marcacoes };
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'MARCACOES-AUDITORIA-' + MES_ATUAL + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      var status = document.getElementById('status-salvo');
+      if (status) status.textContent = 'salvo agora — copie o arquivo para saida/marcacoes/.';
+    });
+  }
+
+  if (location.protocol === 'file:') {
+    var aviso = document.getElementById('aviso-file');
+    if (aviso) aviso.classList.remove('oculto');
+  }
+})();
+
+</script>
+</body></html>
