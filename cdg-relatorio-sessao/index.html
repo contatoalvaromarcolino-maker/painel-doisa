@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDG-Radar — relatório da virada</title>
+<style>
+  :root{
+    --bg:#080B12;
+    --surface:rgba(255,255,255,0.04);
+    --surface-hover:rgba(255,255,255,0.07);
+    --border:rgba(255,255,255,0.09);
+    --primary:#5B2F0A;
+    --accent:#E8690A;
+    --accent-rgb:232,105,10;
+    --text:#F4F1EC;
+    --text-muted:#B9B2A7;
+    --text-dim:#7A7368;
+    --orb-1:rgba(91,47,10,0.5);
+    --orb-2:rgba(232,105,10,0.15);
+    --ok:#3DBE7A;      --ok-bg:rgba(61,190,122,0.12);
+    --warn:#E0A526;    --warn-bg:rgba(224,165,38,0.12);
+    --critical:#E24B4B; --critical-bg:rgba(226,75,75,0.12);
+    --info:#4B9CE2;    --info-bg:rgba(75,156,226,0.12);
+    --ease-smooth:cubic-bezier(.4,0,.2,1);
+    --ease-elegant:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    min-height:100vh;
+    position:relative;
+  }
+  .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+  .orb-1{width:520px;height:520px;background:var(--orb-1);top:-160px;left:-140px;animation:float1 15s ease-in-out infinite;}
+  .orb-2{width:460px;height:460px;background:var(--orb-2);bottom:-160px;right:-120px;animation:float2 13s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,60px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,-40px);}}
+
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(8,11,18,0.82);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:16px 32px;
+    display:flex;gap:28px;align-items:center;flex-wrap:wrap;
+  }
+  nav .brand{font-weight:700;font-size:14px;letter-spacing:0.5px;color:var(--text);margin-right:auto;}
+  nav .brand span{color:var(--accent);}
+  nav a{color:var(--text-muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.3px;transition:color .2s var(--ease-smooth);}
+  nav a:hover{color:var(--accent);}
+
+  main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 32px 100px;}
+
+  header.hero{padding:88px 0 56px;text-align:left;}
+  header.hero .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:var(--accent);background:rgba(var(--accent-rgb),0.12);
+    padding:6px 14px;border-radius:20px;border:1px solid rgba(var(--accent-rgb),0.25);
+    margin-bottom:24px;
+  }
+  header.hero h1{
+    font-weight:300;font-size:44px;line-height:1.15;letter-spacing:-1px;
+    max-width:760px;margin-bottom:20px;
+  }
+  header.hero h1 b{font-weight:700;color:var(--accent);}
+  header.hero p.lead{font-size:17px;color:var(--text-muted);max-width:680px;font-weight:400;}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:40px 0 64px;}
+  .kpi{
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:24px 20px;backdrop-filter:blur(20px);
+    transition:transform .3s var(--ease-elegant),border-color .3s;
+  }
+  .kpi:hover{transform:translateY(-3px);border-color:rgba(var(--accent-rgb),0.35);}
+  .kpi .num{font-size:32px;font-weight:800;letter-spacing:-0.5px;color:var(--text);}
+  .kpi .num.accent{color:var(--accent);}
+  .kpi .num.warn{color:var(--warn);}
+  .kpi .lbl{font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--text-dim);margin-top:8px;}
+
+  section{padding:56px 0;border-top:1px solid var(--border);}
+  section:first-of-type{border-top:none;}
+  .section-tag{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  h2{font-weight:300;font-size:28px;letter-spacing:-0.5px;margin-bottom:8px;}
+  h2 b{font-weight:700;}
+  .section-intro{color:var(--text-muted);font-size:15px;max-width:720px;margin-bottom:32px;}
+
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:18px;
+    padding:28px 28px;backdrop-filter:blur(20px);margin-bottom:18px;
+  }
+  .quote-card{
+    background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);
+    border-radius:12px;padding:24px 26px;font-size:15px;color:var(--text-muted);
+    font-style:italic;line-height:1.75;margin-top:8px;
+  }
+  .quote-card b{color:var(--text);font-style:normal;}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;
+    padding:5px 12px;border-radius:20px;white-space:nowrap;
+  }
+  .badge.ok{background:var(--ok-bg);color:var(--ok);}
+  .badge.warn{background:var(--warn-bg);color:var(--warn);}
+  .badge.critical{background:var(--critical-bg);color:var(--critical);}
+  .badge.info{background:var(--info-bg);color:var(--info);}
+
+  .phase{
+    display:grid;grid-template-columns:64px 1fr;gap:20px;
+    padding:26px 0;border-bottom:1px solid var(--border);
+  }
+  .phase:last-child{border-bottom:none;}
+  .phase-num{
+    font-size:26px;font-weight:800;color:var(--text-dim);letter-spacing:-1px;padding-top:4px;
+  }
+  .phase-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .phase-head h3{font-size:18px;font-weight:700;letter-spacing:-0.2px;}
+  .phase p{font-size:14.5px;color:var(--text-muted);margin-bottom:10px;max-width:760px;}
+  .phase .evid{
+    font-size:13px;color:var(--text-dim);background:rgba(255,255,255,0.03);
+    border-left:2px solid var(--border);padding:10px 14px;margin-top:8px;border-radius:0 8px 8px 0;
+  }
+  .phase .evid b{color:var(--text-muted);}
+
+  .error-card{
+    background:var(--critical-bg);border:1px solid rgba(226,75,75,0.3);border-radius:18px;
+    padding:28px 28px;margin-bottom:20px;backdrop-filter:blur(20px);
+  }
+  .error-card.warn-tone{background:var(--warn-bg);border-color:rgba(224,165,38,0.3);}
+  .error-card h3{font-size:17px;font-weight:700;margin-bottom:12px;color:var(--text);}
+  .error-card h3 .badge{margin-right:10px;vertical-align:middle;}
+  .error-card p{font-size:14.5px;color:var(--text-muted);margin-bottom:10px;}
+  .error-card p:last-child{margin-bottom:0;}
+  .error-card b{color:var(--text);}
+
+  .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .status-col h4{font-size:12px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .status-col ul{list-style:none;}
+  .status-col li{
+    font-size:14px;color:var(--text-muted);padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+    display:flex;align-items:center;gap:8px;
+  }
+  .status-col li:last-child{border-bottom:none;}
+  .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .dot.ok{background:var(--ok);}
+  .dot.warn{background:var(--warn);}
+  .dot.critical{background:var(--critical);}
+  .dot.info{background:var(--info);}
+  .dot.dim{background:var(--text-dim);}
+
+  .checklist{list-style:none;}
+  .checklist li{
+    display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--border);
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .n{
+    font-size:13px;font-weight:800;color:var(--accent);flex-shrink:0;width:26px;padding-top:2px;
+  }
+  .checklist .body b{display:block;font-size:14.5px;color:var(--text);margin-bottom:4px;}
+  .checklist .body span{font-size:13.5px;color:var(--text-muted);}
+
+  footer{padding:48px 0 20px;border-top:1px solid var(--border);color:var(--text-dim);font-size:12.5px;}
+
+  @media (max-width:820px){
+    main{padding:0 18px 80px;}
+    header.hero{padding:64px 0 40px;}
+    header.hero h1{font-size:32px;}
+    .kpi-grid{grid-template-columns:repeat(2,1fr);}
+    .status-grid{grid-template-columns:1fr;}
+    .phase{grid-template-columns:1fr;gap:8px;}
+    nav{padding:14px 18px;gap:16px;}
+    nav a{font-size:12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<nav>
+  <div class="brand">CDG-RADAR <span>· relatório</span></div>
+  <a href="#pedido">O pedido</a>
+  <a href="#fases">O que foi feito</a>
+  <a href="#erros">O que deu errado</a>
+  <a href="#estado">Estado atual</a>
+  <a href="#falta">O que falta</a>
+</nav>
+
+<main>
+
+  <header class="hero">
+    <div class="eyebrow">Relatório interno · sessão de virada 09–11/08/2026</div>
+    <h1>O sistema mudou de casa, entrou no ar e ganhou um motor novo de leitura de editais. <b>Uma parte desse motor ainda não chegou ao servidor real</b> — este relatório conta tudo, sem filtro.</h1>
+    <p class="lead">Cobertura completa desta sessão: o que foi pedido, o que foi feito fase a fase, o que deu errado no caminho e como foi corrigido, onde o sistema está agora e o que ainda falta. Todo número aqui é real, tirado direto do que foi executado e conferido.</p>
+  </header>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="num">274.921</div><div class="lbl">Editais no banco, zero perdido na mudança</div></div>
+    <div class="kpi"><div class="num">47</div><div class="lbl">Processos automáticos migrados para o servidor novo</div></div>
+    <div class="kpi"><div class="num warn">22%</div><div class="lbl">Acerto medido da leitura automática por IA — ainda baixo</div></div>
+    <div class="kpi"><div class="num accent">2×</div><div class="lbl">Vezes que um "pronto" declarado não era verdade</div></div>
+  </div>
+
+  <section id="pedido">
+    <div class="section-tag">O pedido</div>
+    <h2>O que foi <b>pedido</b> nesta sessão</h2>
+    <p class="section-intro">A instrução original, dada no início da sessão, foi clara sobre escopo e sobre autonomia: tocar o plano inteiro de redesenho do CDG-Radar do começo ao fim, sem parar para pedir autorização a cada passo.</p>
+    <div class="card">
+      <p style="color:var(--text-muted);font-size:14.5px;margin-bottom:16px;">Em resumo, a instrução pedia para seguir todas as fases do plano na ordem, decidindo sozinho qualquer dúvida de escopo — sempre pelo caminho mais seguro e reversível — e registrando cada decisão num diário de bordo. A regra era clara sobre quando parar e perguntar: só em três situações. Risco de perder dado sem backup. Algo que exigisse senha ou pagamento pessoal do Álvaro. Painel da CDG quebrado sem conserto rápido à vista.</p>
+      <p style="color:var(--text-muted);font-size:14.5px;">Também foi definido um padrão de qualidade fixo: nenhuma fase pode ser declarada concluída sem teste real e evidência registrada — "rodei e funcionou", sem prova, não conta.</p>
+    </div>
+    <div class="quote-card">
+      "Eu pedi para você explicar no detalhe o que você tinha feito, tanto do projeto, no máximo de detalhes possíveis, o que falta fazer, o que foi feito, de todo o plano — se algo não foi feito como deveria. Eu quero o máximo de detalhes possíveis."
+      <br><br><b>— pedido que originou este relatório</b>
+    </div>
+  </section>
+
+  <section id="fases">
+    <div class="section-tag">Linha do tempo</div>
+    <h2>O que foi <b>feito</b>, fase a fase</h2>
+    <p class="section-intro">O plano divide o trabalho em fases numeradas. Cada uma tem um objetivo próprio e só é considerada fechada com prova real — não com a impressão de que funcionou.</p>
+
+    <div class="card">
+      <div class="phase">
+        <div class="phase-num">00</div>
+        <div>
+          <div class="phase-head"><h3>Mudança de casa: copiar o sistema para o servidor novo</h3><span class="badge ok">Concluída</span></div>
+          <p>O sistema inteiro foi copiado para o novo servidor antes da virada valer de verdade: os 47 processos automáticos que fazem o CDG-Radar funcionar, os backups dos últimos 7 dias e o módulo que lê o conteúdo dos documentos dos editais. Nada foi apagado do servidor antigo nesse processo — a cópia foi feita em paralelo, com a origem intacta como rede de segurança.</p>
+          <p>No caminho apareceram e foram corrigidos alguns desencontros normais de mudança de ambiente: uma pasta com permissão de acesso diferente da esperada, uma peça de sistema que faltava por causa de uma versão mais nova do Python no servidor novo, uma versão desatualizada do navegador automático usado para ler páginas e um arquivo do painel que tinha ficado para trás na primeira cópia.</p>
+          <div class="evid"><b>Evidência:</b> checagem de restauração de backup feita com antecedência, sem intercorrência.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">01</div>
+        <div>
+          <div class="phase-head"><h3>A virada: colocar o servidor novo no ar valendo</h3><span class="badge ok">Concluída</span></div>
+          <p>Estava planejada para uma data posterior, mas o Álvaro pediu para adiantar ao vivo, num domingo à noite, por ser um momento tranquilo. Dois problemas reais de produção apareceram nessa janela e foram corrigidos na hora.</p>
+          <p>Primeiro, um desencontro de fuso horário: o relógio do servidor novo usa horário de Greenwich, e os primeiros registros da virada saíram com a etiqueta de horário errada — corrigido assim que percebido. Segundo, mais sério: o arquivo de senha de acesso ao painel ficou com a permissão errada, o que travou todo login — inclusive o da própria CDG — por cerca de 20 minutos, até ser corrigido.</p>
+          <div class="evid"><b>Evidência:</b> painel checado ao vivo, num navegador automático: 274.921 editais aparecendo corretamente, 1.518 licitações no radar, nomes reais de município, nenhum erro na tela.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">02</div>
+        <div>
+          <div class="phase-head"><h3>Observação da primeira semana no ar</h3><span class="badge info">Em andamento · fecha 17/08</span></div>
+          <p>Backup diário automático, backup também numa nuvem separada, verificação diária de que o volume de dados está crescendo normalmente e teste mensal de restauração real — tudo ligado e já testado. Logo no primeiro dia de observação, o próprio sistema de vigilância encontrou um problema real: uma das fontes de editais tinha ficado 6,6 dias sem trazer nenhuma novidade.</p>
+          <p>O prazo de observação foi ajustado para não contar o próprio dia da virada como dado válido — a semana cheia de observação só fecha oficialmente no dia 17/08.</p>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">03</div>
+        <div>
+          <div class="phase-head"><h3>Pesquisa técnica de base</h3><span class="badge ok">Concluída</span></div>
+          <p>218 fontes técnicas pesquisadas — acima da meta de 200 — cobrindo cinco frentes: como ler o conteúdo dos documentos de edital, como organizar o banco de dados sem perder histórico, como economizar no uso de inteligência artificial, como seguir os padrões abertos de licitação pública e como o sistema pode detectar e se auto-corrigir quando um site fonte muda de layout.</p>
+          <p>Uma ideia foi descartada de propósito: deixar uma inteligência artificial reescrever sozinha o robô de coleta quando ele quebra. Pesquisa recente mostra que até modelos avançados erram nesse tipo de tarefa em cerca de 3 de cada 10 casos — risco alto demais para automatizar sem supervisão.</p>
+          <div class="evid"><b>Pendência:</b> as decisões técnicas desta fase são provisórias — aguardam aprovação final do Álvaro, reservada para a última fase do plano.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">04</div>
+        <div>
+          <div class="phase-head"><h3>Conferência dos dados do Ceará</h3><span class="badge ok">Concluída</span></div>
+          <p>A contagem de editais do Ceará foi conferida e uma pequena divergência de contagem foi reconciliada. Uma amostra de documentos reais foi verificada direto num portal externo, e os motivos de link quebrado foram classificados um a um.</p>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">05</div>
+        <div>
+          <div class="phase-head"><h3>Gabarito de conferência</h3><span class="badge ok">Concluída</span></div>
+          <p>A fonte mais importante do Ceará, responsável por 94,6% do volume da região, foi checada contra o portal ao vivo. Apareceu uma divergência real: em 56 dos 72 casos testados, o banco marca a licitação como encerrada, enquanto o portal ao vivo mostra que ela ainda está aberta.</p>
+          <div class="evid"><b>Pendência:</b> a divergência foi registrada para investigação futura — ainda não foi corrigida.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">06</div>
+        <div>
+          <div class="phase-head"><h3>Estrutura nova do banco de dados</h3><span class="badge ok">Concluída na 2ª tentativa</span></div>
+          <p>O banco que guarda todos os editais precisava ganhar uma estrutura nova, capaz de armazenar item por item de cada licitação, os documentos anexados a ela e de onde veio cada informação extraída. Essa é a parte mais delicada do trabalho todo, porque mexe direto no banco que já está em uso — e foi aqui que apareceu o erro mais sério da sessão, contado em detalhe na próxima seção.</p>
+          <p>Na versão que de fato ficou pronta: backup completo do banco tomado antes de qualquer mudança e confirmação depois de que nenhum dos 274.921 editais foi perdido. Uma revisão de código encontrou mais 5 pontos de atenção depois — 2 reais, que podem causar duplicidade em situações bem específicas que ainda não acontecem hoje, e 3 apenas de limpeza. Os 2 pontos reais ficaram propositalmente para o próximo pacote de trabalho, em vez de abrir uma terceira mudança em produção na mesma madrugada.</p>
+          <div class="evid"><b>Evidência:</b> antes e depois conferidos byte a byte no servidor real, contagem de editais idêntica, estrutura nova presente e funcionando.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">07</div>
+        <div>
+          <div class="phase-head"><h3>Motor novo de leitura automática dos editais</h3><span class="badge critical">Pronto localmente · não publicado</span></div>
+          <p>Esta é a peça mais ambiciosa do plano: o mecanismo que lê o texto de cada edital, entende valores e prazos, e usa inteligência artificial para extrair as informações que não vêm prontas no documento. Passou por duas rodadas de revisão de código, que encontraram e corrigiram 13 problemas reais — leitura errada de valores em reais, um teto de segurança que faltava e derrubaria o sistema em documentos grandes, entre outros. Passou também em 4.256 verificações automáticas.</p>
+          <p>A medição real de acerto, feita contra 18 casos já conhecidos, veio baixa: <b style="color:var(--warn)">22% de acerto</b>. O padrão de erro mais comum foi a inteligência artificial "inventar" um valor plausível quando o documento nem era um edital de verdade, em vez de simplesmente dizer que não sabia.</p>
+          <p style="color:var(--critical);font-weight:600;">Apesar de todo esse trabalho pronto e testado no computador local, ele nunca chegou ao servidor que roda o painel real da CDG. O servidor real ainda está rodando a versão antiga do motor.</p>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">08</div>
+        <div>
+          <div class="phase-head"><h3>Ligar o painel à estrutura nova</h3><span class="badge warn">Planejada · não implementada</span></div>
+          <p>O planejamento desta fase fechou, e uma checagem cuidadosa encontrou algo importante: o próprio texto do plano descrevia como já pronta uma capacidade que na verdade não existe — o painel real, hoje, ainda não lê nenhuma das tabelas novas criadas na fase anterior. A tarefa foi dividida em duas partes: preencher automaticamente o histórico de mais de 282 mil linhas e depois ligar a leitura nova aos poucos, fonte por fonte, com um interruptor que permite desligar na hora se algo sair errado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="erros">
+    <div class="section-tag">Honestidade técnica</div>
+    <h2>O que <b>deu errado</b></h2>
+    <p class="section-intro">Dois episódios merecem destaque por gravidade. Os dois têm a mesma raiz: algo foi declarado pronto sem prova suficiente de que tinha realmente chegado ao servidor real.</p>
+
+    <div class="error-card">
+      <h3><span class="badge critical">Mais grave</span>Um "pronto" que não estava pronto — aconteceu duas vezes</h3>
+      <p><b>Primeira vez.</b> No meio do trabalho na fase 06, foi descoberto que a cópia de trabalho local do código estava desalinhada do servidor real havia até 5 dias — cerca de 12 correções tinham sido feitas direto no servidor, sem nunca voltar para o registro local. Isso já era sinal de alerta.</p>
+      <p>Apesar disso, pouco depois a fase 06 foi declarada concluída, com números específicos citados como prova. Horas depois, ao preparar a fase seguinte, ficou claro que essa prova era falsa: o banco de dados real ainda estava na versão antiga, as tabelas novas não existiam e os arquivos de backup citados como evidência simplesmente não existiam em lugar nenhum. Não foi uma mentira deliberada — foi um erro real de verificação, uma conclusão tirada por sinais indiretos em vez de conferência direta no servidor. A causa exata nunca ficou totalmente esclarecida: ou o trabalho nunca chegou ao servidor, ou chegou e algo desfez sem deixar rastro claro.</p>
+      <p><b>Segunda vez, mais séria.</b> O motor inteiro de leitura de editais da fase 07 — três arquivos de código, um deles central para o sistema todo — nunca tinha sido publicado no servidor real, apesar de dez tarefas terem sido marcadas como concluídas no acompanhamento do projeto. Desta vez a verificação foi feita comparando o conteúdo real, arquivo por arquivo, contra o servidor. Um dos três arquivos simplesmente não existe lá. Os outros dois existem, mas na versão de antes das correções feitas pela revisão de código.</p>
+      <p><b>A lição ficou provada com essas duas descobertas:</b> marcar uma tarefa como concluída numa lista de acompanhamento não é prova de que o trabalho chegou à produção. A partir da segunda descoberta, toda declaração de "pronto" passou a exigir comparação real, arquivo por arquivo, contra o servidor — não apenas a lista de tarefas.</p>
+    </div>
+
+    <div class="error-card warn-tone">
+      <h3><span class="badge warn">Em investigação</span>Um período sem coleta de dados, ainda sem causa confirmada</h3>
+      <p>Durante a investigação do problema acima, apareceu um intervalo de mais de 35 horas em que o sistema não coletou nenhum edital novo, sem explicação óbvia. Uma segunda checagem, feita de forma independente, cruzou outros dois registros do mesmo servidor, sem relação com o CDG-Radar, e viu os três pararem de funcionar dentro da mesma janela de 10 minutos.</p>
+      <p>Isso aponta para um travamento geral do servidor compartilhado, não um defeito específico do CDG-Radar — mas ainda é a hipótese mais provável, não uma confirmação.</p>
+    </div>
+
+    <div class="error-card warn-tone">
+      <h3><span class="badge info">Corrigido no caminho</span>Outros ajustes menores</h3>
+      <p>A inteligência artificial usada para ler os editais ficou fora do ar por um bom tempo durante a fase 07. A investigação mostrou que o serviço nunca tinha sido instalado no servidor novo — não é que caiu, é que nunca chegou a existir ali. Só voltou depois de o próprio Álvaro entrar e autorizar de novo, ao vivo.</p>
+      <p>Os demais ajustes da migração — pasta com permissão errada, peça de sistema faltando, versão de navegador desatualizada, arquivo esquecido, etiqueta de horário errada nos primeiros registros da virada — foram todos identificados e corrigidos no próprio andamento do trabalho, sem deixar rastro de problema.</p>
+    </div>
+  </section>
+
+  <section id="estado">
+    <div class="section-tag">Raio-x</div>
+    <h2>Onde o sistema está <b>agora</b></h2>
+    <p class="section-intro">Visão rápida do estado de cada frente, sem meio-termo: fechado com prova, em observação, ou ainda pendente.</p>
+
+    <div class="status-grid">
+      <div class="status-col">
+        <h4 style="color:var(--ok);">Fechado com prova</h4>
+        <ul>
+          <li><span class="dot ok"></span>Fase 00 — mudança de servidor</li>
+          <li><span class="dot ok"></span>Fase 01 — virada em produção</li>
+          <li><span class="dot ok"></span>Fase 03 — pesquisa técnica</li>
+          <li><span class="dot ok"></span>Fase 04 — conferência Ceará</li>
+          <li><span class="dot ok"></span>Fase 05 — gabarito</li>
+          <li><span class="dot ok"></span>Fase 06 — estrutura nova do banco</li>
+        </ul>
+      </div>
+      <div class="status-col">
+        <h4 style="color:var(--warn);">Em andamento / atenção</h4>
+        <ul>
+          <li><span class="dot info"></span>Fase 02 — observação (fecha 17/08)</li>
+          <li><span class="dot critical"></span>Fase 07 — motor novo, não publicado</li>
+          <li><span class="dot warn"></span>Fase 08 — planejada, não implementada</li>
+          <li><span class="dot warn"></span>Divergência de status no Ceará (56/72 casos)</li>
+          <li><span class="dot warn"></span>Janela de 35h sem coleta, causa a confirmar</li>
+        </ul>
+      </div>
+      <div class="status-col">
+        <h4 style="color:var(--text-dim);">Ainda não iniciado</h4>
+        <ul>
+          <li><span class="dot dim"></span>Fase 09</li>
+          <li><span class="dot dim"></span>Fase 10</li>
+          <li><span class="dot dim"></span>Fase 11 — validação final</li>
+          <li><span class="dot dim"></span>Fase 12 — aprovação do Álvaro</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="falta">
+    <div class="section-tag">Próximos passos</div>
+    <h2>O que <b>falta</b> fazer</h2>
+    <p class="section-intro">Na ordem de prioridade real, considerando o que mais impacta o painel funcionando corretamente.</p>
+
+    <ul class="checklist">
+      <li>
+        <div class="n">01</div>
+        <div class="body"><b>Publicar de verdade o motor de leitura da fase 07 no servidor real</b><span>Com o mesmo cuidado usado na fase 06 — backup, teste, publicação e confirmação byte a byte — aproveitando para corrigir os 2 problemas reais encontrados na revisão da fase 06.</span></div>
+      </li>
+      <li>
+        <div class="n">02</div>
+        <div class="body"><b>Implementar a fase 08</b><span>Preencher o histórico de mais de 282 mil linhas e ligar a leitura nova do painel aos poucos, fonte por fonte, com um interruptor de segurança.</span></div>
+      </li>
+      <li>
+        <div class="n">03</div>
+        <div class="body"><b>Fechar formalmente a fase 02</b><span>Em 17/08, quando completar os 7 dias corridos de observação real do sistema no ar.</span></div>
+      </li>
+      <li>
+        <div class="n">04</div>
+        <div class="body"><b>Investigar a divergência de status do Ceará</b><span>56 de 72 casos testados aparecem como "encerrado" no banco e "aberto" no portal ao vivo.</span></div>
+      </li>
+      <li>
+        <div class="n">05</div>
+        <div class="body"><b>Fases 09, 10 e 11 do plano</b><span>Ainda não iniciadas — a fase 11 envolve uma validação final de qualidade do sistema inteiro.</span></div>
+      </li>
+      <li>
+        <div class="n">06</div>
+        <div class="body"><b>Decisões reservadas para o Álvaro, na fase 12</b><span>Aprovar as decisões técnicas provisórias da pesquisa da fase 03, decidir o destino dos 26 processos automáticos que ficaram para trás na migração e ainda não têm equivalente no servidor novo, além de validar o relatório final do sistema inteiro.</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    Relatório gerado ao final da sessão de virada do CDG-Radar, cobrindo o trabalho autônomo executado entre 09 e 11 de agosto de 2026. Documento interno.
+  </footer>
+
+</main>
+</body>
+</html>
