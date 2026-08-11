@@ -1437,7 +1437,7 @@ h1 em{font-style:normal;color:var(--primary)}
 #g td.sync i.sem-par{background:#b9bfc7}
 #g td.sync i.nao-se-aplica{background:transparent}
 #g td.sync-cab{width:26px;text-align:center;font-size:10px}
-@media (max-width:520px){#g td.sync,#g td.sync-cab{width:18px}}
+@media (max-width:520px){#g td.sync,#g td.sync-cab,#g td.sync-bt{width:18px}}
 /* Mesma cor da bola, na legenda: a classe e a MESMA (em-dia, divergente,
    ...), so o seletor-pai muda -- reaproveitar o nome evita que a legenda
    e a bola um dia divirjam de cor sem ninguem perceber. */
@@ -1445,6 +1445,26 @@ h1 em{font-style:normal;color:var(--primary)}
 .legenda i.divergente{background:#c0392b}
 .legenda i.sem-data{background:#e0a800}
 .legenda i.sem-par{background:#b9bfc7}
+
+/* Task 31: botao "Sincronizar" (so em linha divergente) e a caixa de
+   confirmacao das quatro datas. sync-bt-cab e o par de cabecalho do
+   sync-bt do corpo -- mesma logica de sync/sync-cab, uma coluna acima. */
+#g td.sync-bt,#g td.sync-bt-cab{width:24px;text-align:center;padding:0}
+#g td.sync-bt button{border:0;background:none;cursor:pointer;font-size:13px;
+  line-height:1;padding:2px;color:#2c5f8a}
+#g td.sync-bt button:hover{color:#0b3d61}
+.caixa-sync{position:fixed;inset:0;background:rgba(11,18,28,.55);display:flex;
+  align-items:center;justify-content:center;z-index:9999}
+.caixa-sync .painel{background:#fff;border-radius:8px;max-width:520px;width:92%;
+  padding:20px;font:15px/1.5 system-ui,Segoe UI,Arial}
+.caixa-sync h3{margin:0 0 10px;font-size:17px}
+.caixa-sync table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+.caixa-sync td,.caixa-sync th{padding:5px 6px;border-bottom:1px solid #e3e6ea;text-align:left}
+.caixa-sync .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.caixa-sync button{padding:8px 12px;border-radius:5px;border:1px solid #c8ced6;
+  background:#fff;cursor:pointer;font-size:14px}
+.caixa-sync button.forte{background:#1f4e79;color:#fff;border-color:#1f4e79}
+.caixa-sync .aviso{color:#c0392b;margin-top:10px;min-height:20px}
 </style>
 <!-- Regra de UMA linha, reescrita a cada clique, que acende as setas da tarefa
      selecionada. Fica depois do CSS do painel de proposito, mas nao depende
@@ -1457,7 +1477,7 @@ h1 em{font-style:normal;color:var(--primary)}
 <header>
   <div class="eyebrow">Dois A · Incorporação</div>
   <h1>Cronograma · <em>Areia Preta</em></h1>
-  <div class="meta">Fonte: MS Project · <span style="color:var(--crit)" title="Retrato de 887 dias atrás — o cronograma é publicado de hora em hora, mas a conferência de progresso está congelada nesta data.">conferido pela equipe até 07/03/2024</span> · gerado em <span id="gerado_em">11/08/2026 04:17 BRT</span></div>
+  <div class="meta">Fonte: MS Project · <span style="color:var(--crit)" title="Retrato de 887 dias atrás — o cronograma é publicado de hora em hora, mas a conferência de progresso está congelada nesta data.">conferido pela equipe até 07/03/2024</span> · gerado em <span id="gerado_em">11/08/2026 08:09 BRT</span></div>
 </header>
 <div class="numeros">
   <div class="card"><b id="n-tarefas">143</b><span>tarefas no recorte</span></div>
@@ -7251,6 +7271,15 @@ var HORIZONTES = {"semana": {"escala": "day", "uids": [205, 25, 32, 36, 360, 361
 var HORIZONTE_PADRAO = "3meses";
 var PRAZOS = {"curto": {"ini": "2026-08-11", "fim": "2026-08-18"}, "medio": {"ini": "2026-08-11", "fim": "2026-09-11"}, "longo": {"ini": "2026-08-11", "fim": "2026-11-11"}};
 var PRAZO_NEUTRO = "tudo";
+/* Tasks 30/31: a caixa de sincronizacao (abaixo, desenharSync/abrirCaixaSync)
+   usa as tres para montar o POST ao proxy (gantt/proxy.py, /gantt-sync/ no
+   nginx). CHAVE_SYNC nasce vazia na chamada de producao de proposito -- este
+   HTML e publicado sem autenticacao no GitHub Pages, e uma chave de verdade
+   aqui seria uma chave publica. Ver a secao de seguranca do relatorio da
+   Task 30/31. */
+var CHAVE_SYNC = '';
+var EMPREENDIMENTO = 'areia-preta';
+var PROXY_SYNC = 'https://srv1430902.hstgr.cloud/gantt-sync';
 </script>
 <script>
 var g = new JSGantt.GanttChart(document.getElementById('g'), 'month');
@@ -7512,8 +7541,9 @@ function marcarLigacoes(){
 var SYNC_ROTULO = {"em-dia": "em dia com o ClickUp", "divergente": "divergente do ClickUp", "sem-data": "a task do ClickUp está sem data", "sem-par": "sem ligação na de-para", "nao-se-aplica": ""};
 function desenharSync(){
   /* Cabecalho: duas linhas. A primeira tem uma celula com colspan que cobre
-     todas as colunas -- sem somar 1 nela, a tabela de cima sai um passo
-     fora do lugar da de baixo e as duas deixam de alinhar. */
+     todas as colunas -- soma DOIS nela (a bola de sincronia + o botao,
+     Task 31), sem isso a tabela de cima sai fora do lugar da de baixo e as
+     duas deixam de alinhar. */
   var cab = document.querySelector('#g table.gtasktableh');
   if (cab && !cab.querySelector('.sync-cab')) {
     var linhas = cab.querySelectorAll('tr');
@@ -7541,7 +7571,89 @@ function desenharSync(){
        que e o espacador da borda. Entrar antes dele desalinha a tabela
        inteira. */
     linha.insertBefore(td, linha.children[1] || null);
+
   }
+}
+
+/* Task 31: caixa de confirmacao do botao Sincronizar. As quatro datas
+   (item.pStart/pEnd/pCuIni/pCuFim) ja saem de _item() em ISO -- a mesma
+   forma que date.fromisoformat() do proxy exige -- entao a caixa usa o
+   valor cru no corpo do POST e so formata para exibicao com _dataBr(). */
+function fecharCaixaSync(){
+  var v = document.querySelector('.caixa-sync');
+  if (v) { v.remove(); }
+}
+function abrirCaixaSync(item){
+  fecharCaixaSync();
+  var v = document.createElement('div');
+  v.className = 'caixa-sync';
+  var cuIni = item.pCuIni ? _dataBr(item.pCuIni) : '—';
+  var cuFim = item.pCuFim ? _dataBr(item.pCuFim) : '—';
+  v.innerHTML = '<div class="painel"><h3>Sincronizar ' + _esc(item.pName) + '</h3>'
+    + '<table><tr><th></th><th>Início</th><th>Término</th></tr>'
+    + '<tr><td>MS Project</td><td>' + _dataBr(item.pStart) + '</td><td>' + _dataBr(item.pEnd) + '</td></tr>'
+    + '<tr><td>ClickUp</td><td>' + cuIni + '</td><td>' + cuFim + '</td></tr>'
+    + '</table><p>Qual das duas vale?</p>'
+    + '<div class="acoes">'
+    + '<button class="forte" data-d="clickup">Usar a data do MS Project (muda o ClickUp)</button>'
+    + '<button data-d="project">Usar a data do ClickUp (gera revisão do Project)</button>'
+    + '<button data-d="">Cancelar</button></div>'
+    + '<div class="aviso"></div></div>';
+  /* O rotulo diz o EFEITO, nao a direcao interna. "clickup" no data-d quer
+     dizer "escrever no ClickUp", que e o oposto do que a palavra sugere numa
+     leitura rapida -- e por isso o texto do botao fala do efeito. */
+  v.addEventListener('click', function(ev){
+    if (ev.target === v) { fecharCaixaSync(); return; }
+    var d = ev.target.getAttribute('data-d');
+    if (d === null) { return; }
+    if (d === '') { fecharCaixaSync(); return; }
+    ev.target.disabled = true;
+    var aviso = v.querySelector('.aviso');
+    aviso.textContent = 'enviando...';
+    var corpo = {empreendimento: EMPREENDIMENTO, uid: item.pID, direcao: d,
+                  chave: CHAVE_SYNC,
+                  de: {inicio: item.pCuIni, fim: item.pCuFim},
+                  para: {inicio: item.pStart, fim: item.pEnd}};
+    if (d === 'project') {
+      corpo.de = {inicio: item.pStart, fim: item.pEnd};
+      corpo.para = {inicio: item.pCuIni, fim: item.pCuFim};
+    }
+    fetch(PROXY_SYNC + '/sincronizar', {method: 'POST',
+      headers: {'Content-Type': 'application/json'}, body: JSON.stringify(corpo)})
+      .then(function(r){ return r.json().then(function(j){ return {s: r.status, j: j}; }); })
+      .then(function(r){
+        if (r.j.ok) {
+          aviso.textContent = r.j.motivo || 'feito. A coluna atualiza na próxima rodada.';
+          if (d === 'clickup' && r.j.id) {
+            /* So a direcao ClickUp ganha Desfazer: a revisao do Project e
+               um arquivo novo, e desfazer ali seria apagar arquivo -- o
+               que este sistema nao faz (Task 27). */
+            var u = document.createElement('button');
+            u.textContent = 'Desfazer';
+            u.onclick = function(){
+              u.disabled = true;
+              aviso.textContent = 'desfazendo...';
+              fetch(PROXY_SYNC + '/desfazer', {method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: r.j.id, chave: CHAVE_SYNC})})
+                .then(function(x){ return x.json(); })
+                .then(function(x){ aviso.textContent = x.ok
+                    ? 'desfeito: a data anterior voltou.'
+                    : (x.motivo || 'não deu para desfazer.'); });
+            };
+            v.querySelector('.acoes').appendChild(u);
+          } else {
+            setTimeout(fecharCaixaSync, 2500);
+          }
+        } else {
+          aviso.textContent = r.j.motivo || 'não deu certo.';
+          ev.target.disabled = false;
+        }
+      })
+      .catch(function(e){ aviso.textContent = 'falha de rede: ' + e;
+                           ev.target.disabled = false; });
+  });
+  document.body.appendChild(v);
 }
 
 /* ---- setas de dependencia: nenhuma por padrao, so as da barra clicada ---- */
