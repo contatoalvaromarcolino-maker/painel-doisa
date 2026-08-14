@@ -34,10 +34,20 @@ body{background:#5A6478;font-family:Inter,system-ui,sans-serif;color:var(--txt);
  opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .24s var(--ease-soft),transform .24s var(--ease-soft)}
 .dd.open .ddm{opacity:1;transform:none;pointer-events:auto}
 .ddi{font:400 9.5px Inter;text-align:left;color:var(--txt);background:none;border:none;border-radius:6px;padding:5px 9px;
- cursor:pointer;white-space:nowrap;transition:background .18s var(--ease-soft)}
+ cursor:pointer;white-space:nowrap;transition:background .18s var(--ease-soft);display:flex;align-items:center;gap:7px;width:100%}
 .ddi:hover{background:var(--surface-h)}
-.ddi.on{font-weight:700;color:var(--brand-deep);background:rgba(233,113,50,.1)}
-.ddi.on::after{content:"\u2713";color:var(--primary);float:right;margin-left:14px;font-weight:800}
+.ddi.on{font-weight:600;color:var(--brand-deep)}
+.ck{width:11px;height:11px;flex-shrink:0;position:relative;border:1.4px solid var(--border);border-radius:3px;
+ background:#fff;transition:background .18s var(--ease-soft),border-color .18s var(--ease-soft)}
+.ddi.on .ck{background:var(--primary);border-color:var(--primary)}
+.ddi.on .ck::after{content:"";position:absolute;left:3.2px;top:.6px;width:3px;height:6px;
+ border:solid #fff;border-width:0 1.6px 1.6px 0;transform:rotate(45deg)}
+.ddall{font-weight:700;color:var(--brand-deep)}
+.ddall.ind .ck{background:var(--primary);border-color:var(--primary)}
+.ddall.ind .ck::after{content:"";position:absolute;left:1.6px;top:4px;width:5.5px;height:0;
+ border-top:1.6px solid #fff;transform:none}
+.ddsep{height:1px;background:var(--border);margin:3px 6px;flex-shrink:0}
+.ddls{display:flex;flex-direction:column;gap:1px;max-height:54mm;overflow-y:auto}
 .bd{flex:1;padding:11mm 11mm 8mm;display:flex;flex-direction:column;gap:4.6mm;min-width:0}
 .hd2{display:flex;align-items:flex-end;gap:10px;border-bottom:1.5px solid var(--brand-deep);padding-bottom:8px}
 .eyebrow{font-size:8.5px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--brand-deep)}
@@ -257,8 +267,11 @@ td.tr2{white-space:nowrap}
    Portado das funcoes de gen_portfolio.py; o desenho e o mesmo, o dado e real. */
 (function () {
   var COR = D.cor, MESES = D.meses, SEMDONO = '— sem responsável';
-  var fEmp = -1;        // -1 = todos
-  var fResp = -2;       // -2 = todos, -1 = sem responsavel, >=0 = indice
+  // filtro multiplo: um booleano por item, tudo marcado no inicio.
+  // em SR a ultima posicao e "sem responsavel", que e um recorte como qualquer outro.
+  var SE = D.emps.map(function () { return true; });
+  var SR = D.resp.map(function () { return true; }).concat([true]);
+  var NOMES_RESP = D.resp.concat(['Sem responsável']);
   var RANKS = {};
   var LINHAS = [];
   var CORES_AG = ['#1E7A34', '#E0A028', '#E97132', '#9B2915', '#7A8299'];
@@ -280,19 +293,27 @@ td.tr2{white-space:nowrap}
   }
 
   // ---------------------------------------------------------------- calculo
+  function sim(x) { return x; }
+  function marcados(sel) { return sel.filter(sim).length; }
+  function empsOn() {
+    return D.emps.map(function (_, i) { return i; }).filter(function (i) { return SE[i]; });
+  }
+
   function base() {
+    var iSD = SR.length - 1;
     return D.t.filter(function (t) {
-      if (fEmp >= 0 && t[0] !== fEmp) return false;
-      if (fResp === -1) { if (t[1].length) return false; }
-      else if (fResp >= 0) { if (t[1].indexOf(fResp) < 0) return false; }
-      return true;
+      if (!SE[t[0]]) return false;
+      // tarefa com dois donos entra se ao menos um deles estiver marcado
+      if (!t[1].length) return SR[iSD];
+      return t[1].some(function (i) { return SR[i]; });
     });
   }
 
   function calc() {
     var ts = base();
     var m = {};
-    m.emps = fEmp >= 0 ? [fEmp] : D.emps.map(function (_, i) { return i; });
+    m.tot = ts.length;
+    m.emps = empsOn();
     m.abertas = ts.filter(function (t) { return t[3] === 0; });
     m.feitas = ts.filter(function (t) { return t[3] === 1; });
     m.arquivadas = ts.filter(function (t) { return t[3] === 2; });
@@ -712,6 +733,31 @@ td.tr2{white-space:nowrap}
         pFeito ? pFeito.feito : '', saiuMes && pFeito ? Math.round(100 * pFeito.feito / saiuMes) + '%' : '',
         '#1E7A34', 'pp', 'k6');
 
+    // recorte sem nenhuma tarefa: dizer qual filtro esvaziou, em vez de desenhar grafico de zeros
+    if (!m.tot) {
+      var aviso = !marcados(SE) ? 'Nenhum empreendimento selecionado'
+        : !marcados(SR) ? 'Nenhum responsável selecionado'
+          : 'Nenhuma tarefa neste recorte';
+      ['gLinha', 'gAging', 'gES', 'gPizza', 'gFases', 'gCarga', 'gHist'].forEach(function (id) {
+        document.getElementById(id).innerHTML = '<p class="zero">' + aviso + '.</p>';
+      });
+      ['legLinha', 'legAging', 'legES', 'legPizza', 'legFases', 'legCarga'].forEach(function (id) {
+        document.getElementById(id).innerHTML = '';
+      });
+      ['nLinha', 'nES', 'nScore', 'nCarga', 'nHist'].forEach(function (id) {
+        document.getElementById(id).textContent = aviso + '.';
+      });
+      document.getElementById('tScore').innerHTML = tabelaScore(m);
+      document.getElementById('tRisco').innerHTML = tabelaRisco(m);
+      document.getElementById('tWatch').innerHTML = tabelaWatch([]);
+      LINHAS = [];
+      montarChips();
+      pintarModal();
+      animarKpis();
+      ligarTips();
+      return;
+    }
+
     document.getElementById('gLinha').innerHTML = linhaMulti(m);
     document.getElementById('legLinha').innerHTML = legenda(m.porEmp.map(function (e) {
       return [e.nome, e.serie.reduce(function (s, v) { return s + v; }, 0), COR[e.i]];
@@ -770,7 +816,8 @@ td.tr2{white-space:nowrap}
       ? carga[0].nome + ' concentra ' + Math.round(100 * (carga[0].mae + carga[0].ativ) / (totMae + totAtiv))
       + '% da carga atribuída (' + (carga[0].mae + carga[0].ativ) + ' de ' + mil(totMae + totAtiv) + '). '
       + mil(m.semdono.length) + ' das ' + mil(abertas) + ' abertas não têm ninguém'
-      + (sobra ? '. O gráfico mostra os 8 primeiros; outras ' + sobra + ' pessoas têm carga menor.' : '.')
+      + (sobra ? '. O gráfico mostra os ' + TETO_CARGA + ' primeiros; '
+        + (sobra === 1 ? 'outra pessoa tem' : 'outras ' + sobra + ' pessoas têm') + ' carga menor.' : '.')
       : 'Nenhuma tarefa atribuída neste corte.';
 
     document.getElementById('gHist').innerHTML = area(m.hist.map(function (x) { return x[1]; }),
@@ -907,7 +954,7 @@ td.tr2{white-space:nowrap}
     document.getElementById('chM').innerHTML = '<span class="fl">Mês</span>'
       + '<button class="ch cm on">todos</button>'
       + MESES.map(function (m) { return '<button class="ch cm">' + m[1] + '</button>'; }).join('');
-    var emps = fEmp >= 0 ? [fEmp] : D.emps.map(function (_, i) { return i; });
+    var emps = empsOn();
     document.getElementById('chE').innerHTML = '<span class="fl">Empreendimento</span>'
       + '<button class="ch ce on">todos</button>'
       + emps.map(function (i) { return '<button class="ch ce" data-e="' + i + '">' + esc(D.emps[i]) + '</button>'; }).join('');
@@ -959,32 +1006,30 @@ td.tr2{white-space:nowrap}
 
   // ---------------------------------------------------------------- filtros
   function montarDropdowns() {
-    var alvo = document.querySelectorAll('.sbg');
-    var ops1 = ['Todos'].concat(D.emps);
-    var ops2 = ['Todos'].concat(D.resp).concat(['Sem responsável']);
-    alvo.forEach(function (host) {
-      host.innerHTML = dropdown('Empreendimento', ops1, 'emp') + dropdown('Responsável', ops2, 'resp');
+    document.querySelectorAll('.sbg').forEach(function (host) {
+      host.innerHTML = dropdown('Empreendimento', D.emps, 'emp') + dropdown('Responsável', NOMES_RESP, 'resp');
     });
     document.querySelectorAll('.dd').forEach(function (d) {
-      var b = d.querySelector('.ddb'), v = d.querySelector('.ddv');
-      b.addEventListener('click', function (e) {
+      var sel = d.dataset.k === 'emp' ? SE : SR;
+      d.querySelector('.ddb').addEventListener('click', function (e) {
         e.stopPropagation();
         var abrir = !d.classList.contains('open');
         document.querySelectorAll('.dd').forEach(function (o) { o.classList.remove('open'); });
         d.classList.toggle('open', abrir);
       });
-      d.querySelectorAll('.ddi').forEach(function (it, i) {
-        it.addEventListener('click', function (e) {
-          e.stopPropagation();
-          v.textContent = it.textContent;
-          d.classList.remove('open');
-          var tipo = d.dataset.k;
-          document.querySelectorAll('.dd[data-k="' + tipo + '"]').forEach(function (o) {
-            o.querySelector('.ddv').textContent = it.textContent;
-            o.querySelectorAll('.ddi').forEach(function (x, k) { x.classList.toggle('on', k === i); });
-          });
-          if (tipo === 'emp') fEmp = i - 1;
-          else fResp = i === 0 ? -2 : (i === ops2.length - 1 ? -1 : i - 1);
+      // marcar nao fecha o popup: so o clique fora fecha, senao seria um item por abertura
+      d.querySelector('.ddm').addEventListener('click', function (e) { e.stopPropagation(); });
+      d.querySelector('.ddall').addEventListener('click', function () {
+        var todos = marcados(sel) === sel.length;
+        for (var i = 0; i < sel.length; i++) sel[i] = !todos;
+        sincronizar();
+        pintar();
+      });
+      d.querySelectorAll('.ddls .ddi').forEach(function (it) {
+        it.addEventListener('click', function () {
+          var i = +it.dataset.i;
+          sel[i] = !sel[i];
+          sincronizar();
           pintar();
         });
       });
@@ -992,16 +1037,44 @@ td.tr2{white-space:nowrap}
     document.addEventListener('click', function () {
       document.querySelectorAll('.dd').forEach(function (d) { d.classList.remove('open'); });
     });
+    sincronizar();
   }
 
-  function dropdown(rot, ops, k) {
+  // o estado do filtro vive em SE/SR; as duas folhas so refletem o mesmo estado
+  function sincronizar() {
+    document.querySelectorAll('.dd').forEach(function (d) {
+      var emp = d.dataset.k === 'emp';
+      var sel = emp ? SE : SR, nomes = emp ? D.emps : NOMES_RESP;
+      d.querySelector('.ddv').textContent = rotulo(sel, nomes);
+      d.querySelectorAll('.ddls .ddi').forEach(function (it) {
+        it.classList.toggle('on', !!sel[+it.dataset.i]);
+      });
+      var n = marcados(sel), all = d.querySelector('.ddall');
+      all.classList.toggle('on', n === sel.length);
+      all.classList.toggle('ind', n > 0 && n < sel.length);
+    });
+  }
+
+  function rotulo(sel, nomes) {
+    var n = marcados(sel);
+    if (n === sel.length) return 'Todos';
+    if (!n) return 'Nenhum';
+    if (n === 1) {
+      for (var i = 0; i < sel.length; i++) if (sel[i]) return nomes[i];
+    }
+    return n + ' de ' + sel.length;
+  }
+
+  function dropdown(rot, nomes, k) {
     return '<div class="dd" data-k="' + k + '"><button class="ddb"><span class="ddt">'
-      + '<span class="ddl">' + rot + '</span><span class="ddv">' + ops[0] + '</span></span>'
+      + '<span class="ddl">' + rot + '</span><span class="ddv">Todos</span></span>'
       + '<svg class="chev" viewBox="0 0 10 6" width="9" height="6"><path d="M1 1l4 4 4-4" fill="none" '
       + 'stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>'
-      + '<div class="ddm">' + ops.map(function (o, i) {
-        return '<button class="ddi' + (i === 0 ? ' on' : '') + '">' + esc(o) + '</button>';
-      }).join('') + '</div></div>';
+      + '<div class="ddm"><button class="ddi ddall on"><i class="ck"></i>Todos</button>'
+      + '<span class="ddsep"></span><div class="ddls">'
+      + nomes.map(function (o, i) {
+        return '<button class="ddi on" data-i="' + i + '"><i class="ck"></i>' + esc(o) + '</button>';
+      }).join('') + '</div></div></div>';
   }
 
   // ---------------------------------------------------------------- escala
