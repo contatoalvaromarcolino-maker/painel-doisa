@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O fluxo de prospecção no ClickUp · Brisa Empreendimentos</title>
+<link rel="stylesheet" href="assets/brisa-deck.css">
+  <script src="assets/echarts.min.js"></script>
+  <style>
+    .flow{display:grid; grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; align-items:stretch; gap:8px; margin:6px 0 14px}
+    .flow .fl{background:#fff; border:1px solid var(--line); border-top:3px solid var(--laranja); border-radius:12px; padding:10px 12px}
+    .flow .fl-n{font-size:11px; font-weight:800; letter-spacing:.06em; color:var(--indigo)}
+    .flow .fl-d{font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.35}
+    .flow .fl-ar{align-self:center; color:var(--laranja); font-size:20px; font-weight:800}
+    @media(max-width:900px){.flow{grid-template-columns:1fr} .flow .fl-ar{display:none}}
+    .print{text-align:center}
+    .print img{max-height:248px; width:auto; max-width:100%; border:1px solid var(--line); border-radius:8px; box-shadow:0 2px 10px rgba(20,25,60,.08)}
+    .print .cap{font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.4}
+    .steps.tres{grid-template-columns:repeat(3,1fr)}
+    .steps.cinco{grid-template-columns:repeat(5,1fr)}
+    @media(max-width:900px){.steps.tres,.steps.cinco{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}}
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-logo"><img class="sb-logo-img" src="assets/brisa-logo-oficial.png" alt="Brisa Empreendimentos"></div>
+      <div class="sb-sub">BRISA EMPREENDIMENTOS</div>
+    </div>
+    <div class="study-id">
+      <b>O fluxo de prospecção no ClickUp</b><br>
+      Fortaleza · CE<br>
+      <b>Preparado por</b> Arvo Gestão e Consultoria<br>
+      19/08/2026
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sb-foot">CONFIDENCIAL · uso interno Brisa/Arvo</div>
+  </aside>
+
+  <main class="content" id="content">
+
+    <!-- ══ 1 · CAPA ══ -->
+    <section class="sec capa" data-num="">
+      <div class="slide-body">
+        <div class="cap-brand-plate cascade-item">
+          <img class="cap-logo" src="assets/brisa-logo-oficial.png" alt="Brisa Empreendimentos">
+        </div>
+        <div class="cap-kicker cascade-item" data-delay="1">PROSPECÇÃO DE TERRENOS</div>
+        <h1 class="cap-title cascade-item" data-delay="2">O fluxo de prospecção no ClickUp</h1>
+        <p class="cap-sub cascade-item" data-delay="3">
+          A primeira etapa construída, e o tamanho do caminho que ela abre.
+          Preparado por Arvo Gestão e Consultoria · 19/08/2026
+        </p>
+      </div>
+      <svg class="cap-waves" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,38 C240,66 480,10 720,30 C960,50 1200,14 1440,34 L1440,64 L0,64 Z" fill="#91E2FA" opacity=".28"/>
+        <path d="M0,46 C260,22 520,58 780,40 C1040,22 1240,52 1440,42 L1440,64 L0,64 Z" fill="#00B0F2" opacity=".22"/>
+      </svg>
+    </section>
+
+    <!-- ══ 2 · AS 14 ETAPAS + A PROSPECÇÃO ══ -->
+    <section class="sec" data-nav="O caminho inteiro" data-num="01">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">01</span><span class="tt">O caminho inteiro, e onde a prospecção entra</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          Quatorze etapas separam o primeiro dado de um terreno da entrega das chaves. Duas estão
+          construídas e rodando. As outras doze já existem como classificação, então nenhuma tarefa
+          futura nasce sem lugar.
+        </p>
+
+        <div class="table-wrap cascade-item" data-delay="2">
+          <table>
+            <thead>
+              <tr><th>Etapa</th><th>Situação</th><th>Etapa</th><th>Situação</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>01. Levantamento de Dados</td><td><span class="pill ok">No ar</span></td><td>08. Licenciamento</td><td><span class="pill info">Mapeada</span></td></tr>
+              <tr><td>02. Estudo de Massa</td><td><span class="pill ok">No ar</span></td><td>09. Registro de Incorporação</td><td><span class="pill info">Mapeada</span></td></tr>
+              <tr><td>03. Viabilidade Inicial GO/NO GO</td><td><span class="pill info">Mapeada</span></td><td>10. Lançamento do Empreendimento</td><td><span class="pill info">Mapeada</span></td></tr>
+              <tr><td>04. Aquisição de Terreno</td><td><span class="pill info">Mapeada</span></td><td>11. Financiamento Bancário</td><td><span class="pill info">Mapeada</span></td></tr>
+              <tr><td>05. Concepção do Produto</td><td><span class="pill info">Mapeada</span></td><td>12. BackOffice</td><td><span class="pill info">Mapeada</span></td></tr>
+              <tr><td>06. Viabilidade e Orçamento</td><td><span class="pill info">Mapeada</span></td><td>13. Preparação para Obra</td><td><span class="pill info">Mapeada</span></td></tr>
+              <tr><td>07. Projetos</td><td><span class="pill info">Mapeada</span></td><td>14. Pós-Entrega</td><td><span class="pill info">Mapeada</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout cascade-item" data-delay="3">
+          <div class="ct">O que a prospecção resolve</div>
+          <p>A prospecção é a etapa 01 somada à 02, e responde uma pergunta só: este terreno serve?
+          Para responder é preciso documentação, zoneamento, mercado e conta fechada, e cada uma
+          dessas quatro coisas mora com uma pessoa diferente. O fluxo existe para que a resposta
+          não dependa de quem está na sala no dia.</p>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 3 · O QUE EXISTE DENTRO + A ORDEM ══ -->
+    <section class="sec" data-nav="O que existe dentro" data-num="02">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">02</span><span class="tt">O conteúdo, e a ordem que ele impõe</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          A prospecção não chegou como lista de afazeres em branco. Ela chegou com o método já
+          escrito dentro, e com doze travas que ligam uma tarefa à outra: enquanto a anterior não
+          fecha, a seguinte não abre, e quem tentar pular recebe o aviso na hora.
+        </p>
+
+        <div class="kpi-grid">
+          <div class="kpi cascade-item" data-delay="2">
+            <div class="k-label">Tarefas</div>
+            <div class="k-value">16</div>
+          </div>
+          <div class="kpi cascade-item" data-delay="2">
+            <div class="k-label">Pontos de checagem</div>
+            <div class="k-value">61</div>
+          </div>
+          <div class="kpi cascade-item" data-delay="3">
+            <div class="k-label">Travas de ordem</div>
+            <div class="k-value">12</div>
+          </div>
+          <div class="kpi cascade-item" data-delay="3">
+            <div class="k-label">Campos de registro</div>
+            <div class="k-value">10</div>
+          </div>
+        </div>
+
+        <div class="steps tres">
+          <div class="step cascade-item" data-delay="4">
+            <div class="s-n">1</div>
+            <div class="s-t">Dados do terreno</div>
+            <div class="s-d">Físicos e legais: escritura, matrícula, ficha do imóvel, dimensões.</div>
+          </div>
+          <div class="step cascade-item" data-delay="4">
+            <div class="s-n">2</div>
+            <div class="s-t">Parecer técnico-legal</div>
+            <div class="s-d">A leitura jurídica do que os documentos sustentam, e do que não sustentam.</div>
+          </div>
+          <div class="step cascade-item" data-delay="5">
+            <div class="s-n">3</div>
+            <div class="s-t">Mercado e zoneamento</div>
+            <div class="s-d">Pesquisa de mercado e os parâmetros urbanísticos do lote.</div>
+          </div>
+          <div class="step cascade-item" data-delay="5">
+            <div class="s-n">4</div>
+            <div class="s-t">Viabilidade inicial</div>
+            <div class="s-d">Estudo econômico inicial e viabilidade de implantação.</div>
+          </div>
+          <div class="step cascade-item" data-delay="6">
+            <div class="s-n">5</div>
+            <div class="s-t">Concepção e orçamento</div>
+            <div class="s-d">Unidades tipo, engenharia e orçamento por área equivalente.</div>
+          </div>
+          <div class="step cascade-item" data-delay="6">
+            <div class="s-n">6</div>
+            <div class="s-t">Aquisição</div>
+            <div class="s-d">A compra vem no fim, depois da conta fechada.</div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 4 · O QUE UMA TAREFA COBRA ══ -->
+    <section class="sec" data-nav="O que uma tarefa cobra" data-num="03">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">03</span><span class="tt">O que uma tarefa cobra</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          Exemplo real: a tarefa <b>01.02. Obter dados Legais do Terreno</b>, aberta.
+        </p>
+
+        <div class="two-col">
+          <div class="card cascade-item" data-delay="2">
+            <h4>Checklist de dados legais do terreno</h4>
+            <ul>
+              <li>Escritura ou título aquisitivo</li>
+              <li>Certidão da matrícula, última averbação, com áreas e dimensões</li>
+              <li>Ficha do imóvel na prefeitura ou cadastro do Incra</li>
+              <li>Preenchimento do checklist "Dados Legais"</li>
+              <li>Validação da documentação física do terreno</li>
+              <li>Parecer sobre a documentação legal</li>
+            </ul>
+          </div>
+
+          <div class="cascade-item" data-delay="3">
+            <p class="sec-lead">
+              Seis itens, nenhum deles lembrado de cabeça. Quem assume a tarefa encontra a lista
+              pronta e vai marcando. São 15 listas como essa só dentro da prospecção, e cabe uma
+              em cada uma das quatorze etapas.
+            </p>
+            <div class="callout info">
+              <div class="ct">Não é burocracia, é rastreio</div>
+              <p>Um empreendimento leva anos entre o primeiro terreno e a entrega, e no caminho a
+              informação se perde: quem pediu a certidão, qual versão do projeto foi aprovada, por
+              que o orçamento mudou. O checklist não cria trabalho. Ele evita o retrabalho de
+              descobrir tudo de novo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 5 · DECISÃO VIRA REGISTRO ══ -->
+    <section class="sec" data-nav="Decisão vira registro" data-num="04">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">04</span><span class="tt">Decisão vira registro</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          Dez campos acompanham cada tarefa. São eles que transformam conversa em rastro.
+        </p>
+
+        <div class="table-wrap cascade-item" data-delay="2">
+          <table>
+            <thead>
+              <tr><th>Campo</th><th>O que registra</th><th>Valores</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Parecer</td><td>A decisão tomada</td><td>Aprovado · Reprovado · Aprovado com ressalvas</td></tr>
+              <tr><td>Exige parecer?</td><td>Se a tarefa precisa de decisão formal</td><td>Sim · Não</td></tr>
+              <tr><td>Aplicação</td><td>Se a tarefa vale para este empreendimento</td><td>Aplicável · Não aplicável</td></tr>
+              <tr><td>Fase de Projeto</td><td>Em que estágio o projeto está</td><td>Oito fases, de a iniciar a concluídas</td></tr>
+              <tr><td>Protocolo 1 e 2</td><td>Número do protocolo no órgão</td><td>Texto livre</td></tr>
+              <tr><td>Data Protocolo 1</td><td>Quando foi protocolado</td><td>Data</td></tr>
+              <tr><td>Links e Anexos</td><td>O documento que sustenta a decisão</td><td>Endereço e arquivo</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout cascade-item" data-delay="3">
+          <div class="ct">Leitura</div>
+          <p>Daqui a um ano dá para saber quem aprovou o quê, quando, e com base em qual documento,
+          sem depender da memória de ninguém nem de uma conversa arquivada.</p>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 6 · O QUE A ESTRUTURA DEVOLVE ══ -->
+    <section class="sec" data-nav="O que a estrutura devolve" data-num="05">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">05</span><span class="tt">O que essa estrutura devolve em qualidade e em tempo</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          Duas medidas do que muda quando o processo sai da cabeça das pessoas e passa a morar na
+          ferramenta. A da esquerda é rigor: quantas conferências cada tarefa cobra antes de deixar
+          alguém dar a etapa por encerrada. A da direita é tempo: quanto do trabalho de montar o
+          processo você faz uma vez só.
+        </p>
+
+        <div class="chart-grid">
+          <div class="chart-card cascade-item" data-delay="2">
+            <div class="cc-title">PONTOS DE CHECAGEM POR TAREFA</div>
+            <div class="cc-note">61 conferências nas 16 tarefas construídas &middot; duas tarefas, de parecer e de pesquisa, controlam por campo e anexo em vez de checklist</div>
+            <div class="cc-canvas chart-check"></div>
+          </div>
+          <div class="chart-card cascade-item" data-delay="3">
+            <div class="cc-title">TRABALHO DE MONTAGEM POR EMPREENDIMENTO</div>
+            <div class="cc-note">medição em sete empreendimentos reais: de 76% a 87% das tarefas se repetem com o mesmo nome. O gráfico mostra o pior caso</div>
+            <div class="cc-canvas chart-reuso"></div>
+          </div>
+        </div>
+
+        <div class="callout cascade-item" data-delay="4">
+          <div class="ct">Qualidade aqui não é discurso</div>
+          <p>São 61 conferências e 12 travas de ordem que impedem uma etapa de começar antes de a
+          anterior fechar. O ganho de tempo vem depois: o primeiro empreendimento paga a montagem,
+          e do segundo em diante sobra pouco mais de um quinto de trabalho novo.</p>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <script>
+    (function () {
+      var sec = document.currentScript.previousElementSibling;
+      function start() {
+        var base = {
+          grid: { left: 34, right: 12, top: 16, bottom: 42 },
+          tooltip: { trigger: 'axis' },
+          textStyle: { fontFamily: 'Inter, Arial, sans-serif', fontSize: 11, color: '#6C7390' },
+          xAxis: { type: 'category', axisLine: { lineStyle: { color: '#DBE0EC' } }, axisTick: { show: false } },
+          yAxis: { type: 'value', splitLine: { lineStyle: { color: '#EEF1F8' } }, axisLine: { show: false } }
+        };
+        var a = echarts.init(sec.querySelector('.chart-check'));
+        a.setOption(Object.assign({}, base, {
+          xAxis: Object.assign({}, base.xAxis, {
+            data: ['01.01', '01.02', '01.03', '01.04', '01.05', '01.06', '01.07', '02.01', '02.02', '02.03', '02.04', '02.05', '02.06', '02.07', '02.08', '02.09'],
+            axisLabel: { rotate: 60, fontSize: 9 }
+          }),
+          series: [{ type: 'bar', barWidth: '58%',
+            itemStyle: { color: '#3C3F99', borderRadius: [4, 4, 0, 0] },
+            data: [5, 6, 0, 0, 5, 4, 3, 2, 11, 4, 4, 5, 4, 1, 4, 3] }]
+        }));
+        var b = echarts.init(sec.querySelector('.chart-reuso'));
+        b.setOption(Object.assign({}, base, {
+          grid: { left: 42, right: 16, top: 34, bottom: 46 },
+          yAxis: Object.assign({}, base.yAxis, { max: 100, interval: 20, axisLabel: { formatter: '{value}%' } }),
+          xAxis: Object.assign({}, base.xAxis, {
+            data: ['Primeiro\nempreendimento', 'Do segundo\nem diante'],
+            axisLabel: { fontSize: 10, interval: 0, lineHeight: 13 }
+          }),
+          series: [{ type: 'bar', barWidth: '38%',
+            label: { show: true, position: 'top', formatter: '{c}%', color: '#3C3F99', fontWeight: 700, fontSize: 12 },
+            itemStyle: { color: function (d) { return d.dataIndex === 0 ? '#3C3F99' : '#FF8728'; }, borderRadius: [6, 6, 0, 0] },
+            data: [100, 24] }]
+        }));
+        window.addEventListener('resize', function () { a.resize(); b.resize(); });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+      else start();
+    })();
+    </script>
+
+    <!-- ══ 6 · A TELA DE TRABALHO ══ -->
+    <section class="sec" data-nav="A tela de trabalho" data-num="06">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">06</span><span class="tt">A tela de trabalho</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          A view <b>Fase Legal</b> é onde o dia acontece: as tarefas agrupadas pela etapa de
+          desenvolvimento, com os campos de registro visíveis na própria linha.
+        </p>
+
+        <div class="img-grid" style="grid-template-columns:1fr; max-width:760px">
+          <div class="img-inset cascade-item" data-delay="2">
+            <div class="img-ph">CAPTURA PENDENTE<br>view Fase Legal, lista agrupada por Etapas Desenvolvimento</div>
+            <div class="img-cap"><b>Fase Legal</b>, a lista de trabalho agrupada por etapa.</div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 7 · O QUADRO POR FASE ══ -->
+    <section class="sec" data-nav="O quadro por fase" data-num="07">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">07</span><span class="tt">O quadro por fase</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          A mesma informação, vista de outro ângulo. O <b>Quadro Fases</b> mostra as tarefas como
+          cartões por situação, e serve para a reunião semanal, quando a pergunta é o que está
+          parado e por quê.
+        </p>
+
+        <div class="img-grid" style="grid-template-columns:1fr; max-width:640px">
+          <div class="img-inset cascade-item" data-delay="2">
+            <div class="img-ph">CAPTURA PENDENTE<br>view Quadro Fases, board por situação</div>
+            <div class="img-cap"><b>Quadro Fases</b>, o mesmo trabalho em cartões.</div>
+          </div>
+        </div>
+
+        <div class="callout cascade-item" data-delay="3">
+          <div class="ct">Contexto</div>
+          <p>Existe ainda uma terceira visão, <b>Novidades</b>, que registra o que mudou e quem
+          mudou, sem ninguém precisar avisar.</p>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 8 · IA EM CIMA DO FLUXO ══ -->
+    <section class="sec" data-nav="IA em cima do fluxo" data-num="08">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">08</span><span class="tt">O que a IA faz por cima de tudo isso</span></div>
+
+        <p class="sec-lead cascade-item" data-delay="1">
+          O ClickUp guarda o que foi combinado. Quem alimenta ainda é gente, e é aí que a maioria
+          das implantações morre: a reunião acontece, a decisão fica na cabeça de quem estava lá e
+          ninguém tem tempo de virar aquilo em tarefa. Este trecho já roda hoje, em operação de
+          incorporação, e é o que mantém o quadro vivo depois do terceiro mês.
+        </p>
+
+        <div class="flow cascade-item" data-delay="2">
+          <div class="fl"><div class="fl-n">ATA</div><div class="fl-d">A gravação da reunião vira documento pronto, com decisões e ações.</div></div>
+          <div class="fl-ar">›</div>
+          <div class="fl"><div class="fl-n">CLICKUP</div><div class="fl-d">Cada ação entra na lista do empreendimento certo, sem redigitação.</div></div>
+          <div class="fl-ar">›</div>
+          <div class="fl"><div class="fl-n">AÇÕES CRIADAS</div><div class="fl-d">Com responsável, prazo e prioridade. Uma pessoa aprova pelo celular.</div></div>
+          <div class="fl-ar">›</div>
+          <div class="fl"><div class="fl-n">RASTREAMENTO</div><div class="fl-d">E-mail diário por pessoa, relatório da semana e painel do período.</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="print cascade-item" data-delay="3">
+            <img src="assets/ata-brisa-capa.png" alt="Capa da ata de reunião da Brisa gerada pelo sistema">
+            <div class="cap">Ata da reunião de 29/07/2026, gerada pelo sistema na identidade de vocês.</div>
+          </div>
+          <div class="print cascade-item" data-delay="4">
+            <img src="assets/ata-brisa-acoes.png" alt="Lista de ações da mesma ata, com responsável e prazo">
+            <div class="cap">A mesma ata, no bloco de ações: cada linha já sai com responsável e prazo. É essa lista que vira tarefa no ClickUp.</div>
+          </div>
+        </div>
+
+        <div class="callout cascade-item" data-delay="5">
+          <div class="ct">Onde o tempo volta</div>
+          <p>Ninguém escreve ata, ninguém redigita tarefa, ninguém persegue quem está devendo e
+          ninguém monta relatório à mão. E nada disso inventa dado: sem etapa, campo e responsável,
+          a IA não tem em cima de que trabalhar.</p>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <!-- ══ 9 · O TAMANHO DO CAMINHO ══ -->
+    <section class="sec" data-nav="O tamanho do caminho" data-num="09">
+      <div class="slide-body">
+        <div class="sec-title cascade-item"><span class="num">09</span><span class="tt">Dezesseis tarefas de um caminho que passa de quinhentas</span></div>
+        <p class="sec-lead cascade-item" data-delay="1">
+          A prospecção é a agulha. O palheiro é o empreendimento inteiro. Numa operação com as
+          quatorze etapas montadas, um único empreendimento carrega de 121 a 536 tarefas entre
+          principais e subtarefas, e o processo é o mesmo de um terreno para o outro: de 76% a 87%
+          das tarefas se repetem com o mesmo nome. O segundo empreendimento custa uma fração do
+          primeiro.
+        </p>
+
+        <div class="two-col">
+          <div class="card cascade-item" data-delay="2">
+            <h4>O que roda ao redor das etapas</h4>
+            <ul>
+              <li><b>Registro de incorporação:</b> a montagem do RGI e o acompanhamento até o registro.</li>
+              <li><b>Controle de licenças:</b> cada alvará e cada prazo com dono e vencimento.</li>
+              <li><b>Fluxo de projetos:</b> as disciplinas, as versões e as aprovações.</li>
+              <li><b>Personalização de unidades:</b> pedido do cliente virando ordem de obra.</li>
+              <li><b>Comercial e marketing:</b> lançamento, campanha e ata de reunião.</li>
+              <li><b>BackOffice financeiro:</b> o dinheiro amarrado ao que a obra consome.</li>
+              <li><b>Sprint mensal por equipe:</b> o que cada frente entrega no mês.</li>
+            </ul>
+          </div>
+
+          <div class="cascade-item" data-delay="3">
+            <div class="chart-card">
+              <div class="cc-title">TAREFAS POR EMPREENDIMENTO</div>
+              <div class="cc-note">sete empreendimentos reais, entre tarefas principais e subtarefas</div>
+              <div class="cc-canvas chart-tarefas" style="height:150px"></div>
+            </div>
+            <div class="callout info">
+              <div class="ct">Por onde continua</div>
+              <p>A ordem natural é seguir o terreno: viabilidade e GO/NO GO, aquisição, concepção
+              do produto. Cada etapa nova entra do mesmo jeito, e a anterior continua funcionando
+              enquanto isso.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-sign">ARVO GESTÃO E CONSULTORIA · BRISA EMPREENDIMENTOS</div>
+    </section>
+
+    <script>
+    (function () {
+      var sec = document.currentScript.previousElementSibling;
+      function start() {
+        var c = echarts.init(sec.querySelector('.chart-tarefas'));
+        c.setOption({
+          grid: { left: 42, right: 12, top: 18, bottom: 26 },
+          tooltip: { trigger: 'axis' },
+          textStyle: { fontFamily: 'Inter, Arial, sans-serif', fontSize: 11, color: '#6C7390' },
+          xAxis: { type: 'category', data: ['1', '2', '3', '4', '5', '6', '7'],
+            axisLine: { lineStyle: { color: '#DBE0EC' } }, axisTick: { show: false } },
+          yAxis: { type: 'value', splitLine: { lineStyle: { color: '#EEF1F8' } }, axisLine: { show: false } },
+          series: [{ type: 'bar', barWidth: '52%',
+            label: { show: true, position: 'top', color: '#6C7390', fontSize: 10 },
+            itemStyle: { color: '#00B0F2', borderRadius: [4, 4, 0, 0] },
+            data: [536, 509, 347, 288, 200, 180, 121] }]
+        });
+        window.addEventListener('resize', function () { c.resize(); });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+      else start();
+    })();
+    </script>
+
+    <!-- ══ 11 · ENCERRAMENTO ══ -->
+    <section class="sec capa" data-nav="Encerramento" data-num="">
+      <div class="slide-body">
+        <div class="cap-kicker cascade-item">FECHAMENTO</div>
+        <h1 class="cap-title cascade-item" data-delay="1">O método deixou o papel</h1>
+        <p class="cap-sub cascade-item" data-delay="2">
+          A prospecção da Brisa está construída, com as travas de ordem, as checagens e os campos
+          de registro. As outras doze etapas já têm lugar reservado, e entram do mesmo jeito
+          quando for a hora.
+        </p>
+        <p class="cap-sub cascade-item" data-delay="3" style="margin-top:26px; font-size:13px">
+          Arvo Gestão e Consultoria
+        </p>
+      </div>
+      <svg class="cap-waves" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,38 C240,66 480,10 720,30 C960,50 1200,14 1440,34 L1440,64 L0,64 Z" fill="#91E2FA" opacity=".28"/>
+        <path d="M0,46 C260,22 520,58 780,40 C1040,22 1240,52 1440,42 L1440,64 L0,64 Z" fill="#00B0F2" opacity=".22"/>
+      </svg>
+    </section>
+
+  </main>
+</div>
+
+<div class="deck-nav">
+  <button id="btnPrev" title="Anterior">&#8249;</button>
+  <span id="slidePos">1 / 1</span>
+  <button id="btnNext" title="Próximo">&#8250;</button>
+  <button id="btnFull" title="Tela cheia">&#9974;</button>
+  <span class="hint">← → navega · F tela cheia</span>
+</div>
+
+<script src="assets/brisa-deck.js"></script>
+</body>
+</html>
