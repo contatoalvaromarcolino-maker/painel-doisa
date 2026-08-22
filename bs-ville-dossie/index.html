@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GOLF VILLE — dossiê de reformulação da apresentação</title>
+<style>
+:root{
+  --bg:#080B12; --bg-2:#0C111C; --panel:rgba(255,255,255,.045); --panel-2:rgba(255,255,255,.075);
+  --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.18);
+  --text:#E8ECF5; --muted:#93A0BC; --dim:#6B7794;
+  --indigo:#5B60D6; --indigo-soft:rgba(91,96,214,.16);
+  --orange:#FF8728; --orange-soft:rgba(255,135,40,.14);
+  --cyan:#00B0F2; --cyan-soft:rgba(0,176,242,.13);
+  --ok:#3DD68C; --ok-soft:rgba(61,214,140,.13);
+  --warn:#FFC24B; --warn-soft:rgba(255,194,75,.13);
+  --crit:#FF6B6B; --crit-soft:rgba(255,107,107,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1100px 700px at 12% -10%, rgba(91,96,214,.20), transparent 60%),
+    radial-gradient(900px 600px at 92% 108%, rgba(255,135,40,.13), transparent 62%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  display:grid; grid-template-columns:288px 1fr; min-height:100vh;
+}
+
+/* ---------- sidebar ---------- */
+aside{
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border-right:1px solid var(--line);
+  padding:26px 20px; display:flex; flex-direction:column; gap:20px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.brand{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.brand strong{display:block;font-size:19px;letter-spacing:-.3px;color:var(--text);margin-top:6px;text-transform:none}
+.sb-sub{font-size:12.5px;color:var(--muted);border-left:2px solid var(--orange);padding-left:10px}
+nav{display:flex;flex-direction:column;gap:2px;margin-top:2px}
+nav button{
+  all:unset; cursor:pointer; display:flex; gap:10px; align-items:baseline;
+  padding:8px 10px; border-radius:8px; font-size:12.8px; color:var(--muted); line-height:1.35;
+}
+nav button:hover{background:var(--panel);color:var(--text)}
+nav button.on{background:var(--indigo-soft);color:var(--text);box-shadow:inset 2px 0 0 var(--indigo)}
+nav button i{font-style:normal;font-variant-numeric:tabular-nums;color:var(--dim);font-size:11px;min-width:15px}
+nav button.on i{color:var(--indigo)}
+.sb-foot{margin-top:auto;font-size:10.5px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;border-top:1px solid var(--line);padding-top:14px}
+
+/* ---------- palco ---------- */
+main{position:relative;padding:40px 46px 96px;overflow-y:auto;height:100vh}
+section{display:none;animation:in .22s ease-out}
+section.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){section{animation:none}}
+
+.kicker{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);font-weight:600}
+h1{font-size:31px;line-height:1.2;letter-spacing:-.6px;font-weight:700;margin:9px 0 12px;max-width:22ch}
+h2{font-size:27px;line-height:1.22;letter-spacing:-.5px;font-weight:700;margin:8px 0 10px;max-width:26ch}
+.lede{font-size:15.5px;color:var(--muted);max-width:78ch;margin-bottom:22px}
+h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;margin:26px 0 11px}
+p{max-width:78ch;margin-bottom:11px}
+p+p{margin-top:0}
+strong{color:#fff;font-weight:600}
+em{font-style:normal;color:var(--orange)}
+.q{color:var(--text);font-style:italic}
+
+.grid{display:grid;gap:13px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1180px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 17px}
+.card h4{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:8px}
+.card p{font-size:13.6px;color:var(--muted);max-width:none;margin:0}
+.card p+p{margin-top:8px}
+.card.accent{border-color:rgba(255,135,40,.34);background:var(--orange-soft)}
+.card.accent h4{color:var(--orange)}
+.card.ind{border-color:rgba(91,96,214,.38);background:var(--indigo-soft)}
+.card.ind h4{color:#9FA3F0}
+
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 16px}
+.kpi .lb{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.kpi .vl{font-size:27px;font-weight:700;letter-spacing:-.9px;margin-top:6px;font-variant-numeric:tabular-nums;line-height:1.05}
+.kpi .un{font-size:12px;color:var(--muted);margin-top:3px}
+.kpi.o .vl{color:var(--orange)} .kpi.c .vl{color:var(--cyan)} .kpi.k .vl{color:var(--ok)} .kpi.r .vl{color:var(--crit)}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:13px;margin:6px 0 4px}
+table{border-collapse:collapse;width:100%;font-size:13.2px;min-width:560px}
+th{text-align:left;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:600;
+   padding:11px 13px;background:rgba(255,255,255,.035);border-bottom:1px solid var(--line-2);white-space:nowrap}
+td{padding:10px 13px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+td strong{color:#fff}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.tag{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.t-ok{background:var(--ok-soft);color:var(--ok)}
+.t-open{background:var(--warn-soft);color:var(--warn)}
+.t-blk{background:var(--crit-soft);color:var(--crit)}
+.t-dep{background:var(--cyan-soft);color:var(--cyan)}
+
+.rank{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.rk{font-size:12px;font-variant-numeric:tabular-nums;padding:5px 9px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted)}
+.rk b{color:var(--text);font-weight:600}
+.rk.win{border-color:rgba(61,214,140,.45);background:var(--ok-soft)}
+.rk.win b,.rk.win{color:var(--ok)}
+.rk.base{border-color:rgba(255,135,40,.45);background:var(--orange-soft);color:var(--orange)}
+.rk.base b{color:var(--orange)}
+
+.quote{border-left:3px solid var(--orange);background:var(--orange-soft);border-radius:0 11px 11px 0;
+       padding:13px 16px;margin:12px 0;max-width:78ch}
+.quote p{font-size:14.4px;color:var(--text);font-style:italic;margin:0}
+.quote cite{display:block;font-style:normal;font-size:11.5px;color:var(--dim);margin-top:7px;letter-spacing:.04em}
+
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:14px 0 6px}
+.st{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:13px}
+.st b{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;font-weight:600}
+.ar{color:var(--dim);font-size:17px}
+.st.hot{border-color:rgba(255,107,107,.4);background:var(--crit-soft)}
+.st.hot b{color:var(--crit)}
+
+ol.steps{list-style:none;counter-reset:s;max-width:78ch}
+ol.steps li{counter-increment:s;position:relative;padding-left:36px;margin-bottom:13px;color:var(--muted);font-size:14px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:7px;
+  background:var(--indigo-soft);border:1px solid rgba(91,96,214,.45);color:#9FA3F0;
+  font-size:11.5px;font-weight:700;display:grid;place-items:center}
+ol.steps li strong{display:block;color:#fff;margin-bottom:2px;font-size:14.2px}
+
+section.cover.on{display:flex;min-height:calc(100vh - 118px);flex-direction:column;justify-content:center}
+.cover h1{font-size:46px;max-width:19ch;margin-bottom:16px}
+.cover .lede{font-size:17px;max-width:64ch}
+.rule{height:3px;width:64px;background:linear-gradient(90deg,var(--orange),var(--indigo));border-radius:2px;margin:20px 0 24px}
+
+footer{position:fixed;right:22px;bottom:14px;display:flex;align-items:center;gap:9px;z-index:9;
+  padding:6px 10px;border-radius:14px;background:rgba(8,11,18,.92);border:1px solid var(--line);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+footer button{all:unset;cursor:pointer;width:33px;height:33px;border-radius:9px;background:var(--panel-2);
+  border:1px solid var(--line-2);display:grid;place-items:center;color:var(--muted);font-size:15px}
+footer button:hover{color:var(--text);border-color:var(--indigo)}
+footer .pg{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+
+@media(max-width:900px){
+  body{grid-template-columns:1fr}
+  aside{position:static;height:auto;overflow:visible;flex-direction:column;gap:14px}
+  aside .sb-foot{display:none}
+  nav{max-height:none}
+  main{height:auto;overflow:visible;padding:26px 20px 92px}
+  .cover h1{font-size:33px}
+  h1{font-size:25px} h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">Dossiê interno<strong>GOLF VILLE</strong></div>
+  <div class="sb-sub">Reformulação da apresentação · levantamento de 22/08/2026</div>
+  <nav id="nav"></nav>
+  <div class="sb-foot">Uso interno · Arvo</div>
+</aside>
+
+<main id="stage">
+
+<section class="on cover" data-t="Capa">
+  <div class="kicker">Levantamento exaustivo · 22 de agosto de 2026</div>
+  <h1>Tudo o que foi dito sobre esta apresentação, num lugar só</h1>
+  <div class="rule"></div>
+  <p class="lede">Cinco fontes cruzadas: as viabilidades exportadas, a reunião de 20/08 com Gustavo e Judson, os comentários tela a tela do WhatsApp, o vídeo de comentários de 21/08 e as 21 simulações de exposição de caixa.</p>
+  <div class="grid g4" style="margin-top:8px">
+    <div class="kpi r"><div class="lb">O deck está sobre</div><div class="vl">868</div><div class="un">estudo de 17 anos, permuta 15%</div></div>
+    <div class="kpi k"><div class="lb">O Viabil vivo é</div><div class="vl">870</div><div class="un">9 anos, permuta 20%</div></div>
+    <div class="kpi o"><div class="lb">Pedidos mapeados</div><div class="vl">17</div><div class="un">telas com comentário</div></div>
+    <div class="kpi c"><div class="lb">Simulações rodadas</div><div class="vl">21</div><div class="un">S00 a S20, ranqueadas</div></div>
+  </div>
+</section>
+
+<section data-t="O achado que decide tudo">
+  <div class="kicker">Ponto de partida</div>
+  <h2>O deck no ar descreve um empreendimento que não é mais o que está sendo estudado</h2>
+  <p class="lede">Não é uma tela desatualizada nem um número a corrigir. É outra base inteira. Entre o estudo 868, que o deck publicado lê, e o estudo 870, que está no Viabil, mudou o produto, o preço, o calendário, a permuta e, por consequência, todos os indicadores.</p>
+  <div class="tw"><table>
+    <thead><tr><th>O que a tela diz hoje</th><th>O que o estudo 870 diz</th><th>Telas afetadas</th></tr></thead>
+    <tbody>
+      <tr><td>576 unidades, 18 por bloco</td><td><strong>704 unidades</strong>, 22 por bloco</td><td>02</td></tr>
+      <tr><td>74.647,68 m² privativos</td><td><strong>93.190,40 m²</strong></td><td>02, 03, 08, 13, 14</td></tr>
+      <tr><td>R$ 14.000/m²</td><td><strong>R$ 14.500/m²</strong></td><td>02, 08, 13</td></tr>
+      <tr><td>VGV bruto R$ 1.045.067.520</td><td><strong>R$ 1.351.260.800</strong></td><td>02, 13</td></tr>
+      <tr><td>Permuta 15% na rodada exportada</td><td><strong>20%</strong> nas oito fases</td><td>03</td></tr>
+      <tr><td>Passo de ~23 meses, ciclo de 17 anos</td><td><strong>passo de 12 meses</strong>, ciclo de 9 anos</td><td>05</td></tr>
+      <tr><td>Exposição máxima R$ 57,1 mi no 42º mês</td><td><strong>R$ 162,9 mi no 34º mês</strong></td><td>10, 11, 12, 13</td></tr>
+      <tr><td>Lucro R$ 152,9 mi · TIR 16,06% a.a.</td><td><strong>R$ 262,5 mi</strong> · TIR 1,10% a.m.</td><td>09, 10, 13</td></tr>
+      <tr><td>Payback 143º mês</td><td><strong>99º mês</strong></td><td>11, 13</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card accent"><h4>A tela 05 escreve o erro na cara</h4><p>O texto atual diz que o passo entre fases é de aproximadamente 23 meses. Foi essa frase que fez Judson estranhar às 23h56 de 19/08. O deck não errou — ele leu o Viabil.</p></div>
+    <div class="card"><h4>A exposição triplicou, e não é deterioração</h4><p>É o preço de comprimir o calendário de 17 para 9 anos. Comprimir o passo multiplicou a exposição por cerca de 2,9. O teto de 9 anos é a origem do problema de caixa, não um detalhe dele.</p></div>
+    <div class="card ind"><h4>Ordem obrigatória</h4><p>Nenhuma tela de número vale a pena mexer antes da reexportação. As exceções são as de texto puro — que são justamente as que precisam ser reescritas.</p></div>
+  </div>
+
+  <h3>E a área privativa ainda não tem um número eleito</h3>
+  <p>Três leituras estão vivas ao mesmo tempo, e a diferença entre a menor e a maior é de cerca de 23%. Enquanto uma delas não for escolhida, VGV, DRE, TIR e exposição estão todos calculados sobre uma metragem que o dono do empreendimento já registrou em ata como errada.</p>
+  <div class="grid g3">
+    <div class="card"><h4>74.647,68 m²</h4><p>O que o deck mostra hoje. Vem de 18 unidades por bloco — quatro pavimentos-tipo de quatro apartamentos mais duas coberturas. Os 2.332,74 m² por bloco são número órfão: não se reconstroem de nenhuma combinação inteira das tipologias das pranchas.</p></div>
+    <div class="card ind"><h4>93.190,40 m²</h4><p>O que a planilha de áreas devolve por parâmetro, com 22 unidades por bloco. É a base do estudo 870 e das 21 simulações.</p></div>
+    <div class="card accent"><h4>92.000 m²</h4><p>A conta de Gustavo na ata das 13h46 de 20/08: quatro unidades por andar, térreo mais cinco pavimentos, 32 blocos, unidade de cerca de 120 m² — 24 unidades por bloco.</p></div>
+  </div>
+</section>
+
+<section data-t="Os quatro números de exposição">
+  <div class="kicker">Fonte de confusão nº 1</div>
+  <h2>Quatro números de exposição circulam nesta frente, e nenhum deles está errado</h2>
+  <p class="lede">Eles aparecem em documentos diferentes da mesma frente, medindo coisas diferentes. Qualquer tela que fale de exposição precisa dizer qual dos dois lados está mostrando.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Número</th><th>De onde vem</th><th>O que mede</th></tr></thead>
+    <tbody>
+      <tr><td><strong>R$ 57,1 mi</strong> · 42º mês</td><td>estudo 868, telas 10 e 11</td><td>saldo sem financiamento, ciclo de 17 anos</td></tr>
+      <tr><td><strong>R$ 68,9 mi</strong> · 42º mês</td><td>estudo 868, telas 12 e 13</td><td>o mesmo, já com juros do funding</td></tr>
+      <tr><td><strong>R$ 201,5 mi</strong> · 59º mês</td><td>rodadas de passo 12, doc de cenários</td><td>ciclo de 9 anos, antes do 870</td></tr>
+      <tr><td><strong>R$ 162,9 mi</strong> · 34º mês</td><td>estudo 870 — base das 21 simulações</td><td>recursos próprios, ciclo de 9 anos</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:14px">O número vivo é <em>R$ 162,9 milhões</em>. O par dele com financiamento é R$ 195,9 milhões, no 35º mês.</p>
+  <div class="quote">
+    <p>Da maneira que está escrito, contradiz o custo de obras que adotamos nos inputs.</p>
+    <cite>Judson, sobre o cartão da tela 08 — o único comentário em que alguém usou a palavra "contradiz"</cite>
+  </div>
+  <p>O caso da tela 08 é o mesmo mecanismo em escala menor: o leitor via R$ 5.240,40 no destaque e R$ 4.400 no input, e não tinha como saber qual valia. A correção não mudou número nenhum — mudou a explicação de qual é o input e qual é o auxiliar.</p>
+</section>
+
+<section data-t="O que as 21 simulações devolveram">
+  <div class="kicker">Resposta à pergunta que segurou 8 dos 34 minutos</div>
+  <h2>Qual arranjo pede menos caixa no pior mês sem abrir mão do lucro</h2>
+  <p class="lede">Ranking por exposição de recursos próprios, em R$ milhões, do melhor para o pior.</p>
+  <div class="rank">
+    <span class="rk win"><b>S20</b> 53,1</span><span class="rk"><b>S19</b> 69,4</span><span class="rk"><b>S15</b> 94,0</span>
+    <span class="rk"><b>S18</b> 109,3</span><span class="rk"><b>S09</b> 123,6</span><span class="rk"><b>S14</b> 127,1</span>
+    <span class="rk"><b>S08</b> 128,4</span><span class="rk"><b>S10</b> 132,8</span><span class="rk"><b>S13</b> 145,0</span>
+    <span class="rk"><b>S02</b> 150,4</span><span class="rk"><b>S11</b> 151,7</span><span class="rk"><b>S01</b> 155,8</span>
+    <span class="rk"><b>S04</b> 156,0</span><span class="rk base"><b>S00</b> 162,9 base</span><span class="rk"><b>S03</b> 162,9</span>
+    <span class="rk"><b>S16</b> 162,9</span><span class="rk"><b>S17</b> 162,9</span><span class="rk"><b>S12</b> 163,3</span>
+    <span class="rk"><b>S07</b> 165,4</span><span class="rk"><b>S05</b> 165,7</span><span class="rk"><b>S06</b> 166,1</span>
+  </div>
+  <h3>As três leituras que saem do conjunto</h3>
+  <div class="grid g3">
+    <div class="card ind"><h4>O associativo é a alavanca dominante</h4><p>Sozinho, sem mexer em mais nada, tira R$ 69 milhões do pico e não custa um centavo de lucro. O repasse passa a entrar mês a mês conforme a obra anda, em vez de esperar as chaves.</p></div>
+    <div class="card"><h4>O desconto funciona, mas é dominado</h4><p>Diluir a área comum entre as fases ou puxar mais entrada do comprador alivia mais e de graça. O desconto de 20% na fase 1 só compensa junto com o associativo, e custa R$ 23,8 milhões de lucro.</p></div>
+    <div class="card"><h4>Mexer só na obra piora</h4><p>Esticar o prazo, encurtar ou empurrar o gasto para o fim afunda o caixa: as mensais do comprador terminam nas chaves, e adiar a obra adia a receita junto.</p></div>
+  </div>
+  <h3>O vencedor</h3>
+  <p><strong>S20</strong> combina crédito associativo, passo de 14 meses entre fases, clube distribuído em três entregas (fases 1, 3 e 5) e plano 15/45/40. Derruba o pico de R$ 162,9 para <em>R$ 53,1 milhões</em> sem abrir mão de lucro.</p>
+  <p>Isso responde diretamente o que segurou 8 dos 34 minutos da reunião de 20/08 — a tela "O que a conta não inclui", com a frase <span class="q">"entra na próxima rodada se a Brisa quiser testar"</span> selecionada na tela. A próxima rodada existe agora.</p>
+</section>
+
+<section data-t="Cada pedido, por tela">
+  <div class="kicker">Duas rodadas de comentários</div>
+  <h2>O que foi pedido em cada tela, e de quem veio</h2>
+  <p class="lede">Judson comentou tela a tela por WhatsApp às 00h28 de 20/08 — a mensagem está truncada no slide 8. O vídeo de 21/08, de 6min57s, tem Álvaro e Judson reconstruindo de memória o que Gustavo pediu, porque o áudio de Gustavo se perdeu na gravação.</p>
+  <div class="card ind" style="margin-bottom:14px"><h4>Atenção de método</h4><p>A numeração falada no vídeo é a antiga, com a tela 09 de desembolso ainda no deck. Toda aplicação de comentário precisa mapear a fala para a numeração atual antes de editar. A estrutura já mudou quatro vezes desde 19/08.</p></div>
+  <div class="tw"><table>
+    <thead><tr><th>Tela</th><th>Pedido</th><th>Fonte</th><th>Situação</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Capa</strong></td><td>Tirar "permuta física" e "as 8 fases"; só "estudo de viabilidade". Renomear BS VILLE para GOLF VILLE</td><td>vídeo</td><td><span class="tag t-ok">feito</span></td></tr>
+      <tr><td><strong>01</strong></td><td>Tirar os valores; título vira a tese do estudo; remover o painel "O QUE O ESTUDO DEVOLVEU"</td><td>vídeo · Judson</td><td><span class="tag t-open">painel pendente</span></td></tr>
+      <tr><td><strong>02</strong></td><td>Remover o cartão VGV Bruto. Incluir a tipologia do produto — torres, área de um apartamento, área de uma torre, e como se chegou nos 94 mil m²</td><td>vídeo</td><td><span class="tag t-open">aberto</span></td></tr>
+      <tr><td><strong>02</strong></td><td>Creditar a área privativa à planilha repassada do Golf Ville; destacar a área privativa de um bloco</td><td>Judson</td><td><span class="tag t-open">aberto</span></td></tr>
+      <tr><td><strong>03</strong></td><td>Tirar "(base 15%)" das três linhas; preço por m² só sobre área total; eliminar a linha de área líquida</td><td>vídeo</td><td><span class="tag t-dep">após reexportar</span></td></tr>
+      <tr><td><strong>04</strong></td><td>Título vira "Distribuição das 8 fases"</td><td>Judson</td><td><span class="tag t-ok">feito</span></td></tr>
+      <tr><td><strong>05</strong></td><td>Refletir o cronograma corrigido; na barra, deixar só o período de obra ou pintar o lançamento em cor distinta</td><td>Judson</td><td><span class="tag t-dep">após reexportar</span></td></tr>
+      <tr><td><strong>06</strong></td><td>"Isso aí é ok" — só remover comentários</td><td>vídeo · Judson</td><td><span class="tag t-ok">feito</span></td></tr>
+      <tr><td><strong>07</strong></td><td>Trocar as barras da área equivalente por gráfico de pizza</td><td>Judson · vídeo</td><td><span class="tag t-ok">pizza no ar</span></td></tr>
+      <tr><td><strong>08</strong></td><td>Reescrever "O NÚMERO QUE DECIDE", que contradizia o custo de obra dos inputs</td><td>Judson</td><td><span class="tag t-ok">feito</span></td></tr>
+      <tr><td><strong>09</strong></td><td>Remover a tela de desembolso inteira</td><td>vídeo</td><td><span class="tag t-ok">removida</span></td></tr>
+      <tr><td><strong>10</strong></td><td>"Ficou boa" — só remover comentário</td><td>vídeo</td><td><span class="tag t-ok">feito</span></td></tr>
+      <tr><td><strong>12</strong></td><td>Reescrever os comentários de forma mais técnica; tirar a cara de Excel; acrescentar gráfico de curva</td><td>vídeo</td><td><span class="tag t-open">parcial</span></td></tr>
+      <tr><td><strong>13</strong></td><td>Comparar com projeto de referência; deixar só o que interessa; "pegar aqueles KPI que a gente usa"</td><td>vídeo</td><td><span class="tag t-blk">depende de Gustavo</span></td></tr>
+      <tr><td><strong>14</strong></td><td>Tirar os comentários de análise antes de mandar a terceiro</td><td>reunião</td><td><span class="tag t-dep">após reexportar</span></td></tr>
+      <tr><td><strong>15</strong></td><td>"Não precisa ter isso aqui" — o último slide seria resultado, resumo</td><td>vídeo</td><td><span class="tag t-open">aberto</span></td></tr>
+      <tr><td><strong>nova</strong></td><td>Mostrar o perfil de venda e a velocidade de venda adotados no estudo</td><td>Gustavo, na apresentação de sexta 21/08</td><td><span class="tag t-blk">sem referência própria</span></td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:13px">O pedido novo tem um problema de origem: o empreendimento <strong>não tem referência própria</strong> de velocidade e perfil de venda. O caminho é partir do que os estudos anteriores usaram — decisão do Álvaro antes de a tela existir.</p>
+  <p>Fora do deck, na mesma frente: rodar a menor exposição de caixa (feito, nas 21 simulações), comentários no CAD, refazer a planilha de área pelo PDF do Golf Ville e terminar tudo no ClickUp.</p>
+  <div class="card accent" style="margin-top:14px"><h4>Uma incoerência a resolver antes de qualquer publicação</h4><p>A tela 15, criada na madrugada de 22/08, declara o cenário a <strong>R$ 14.000/m²</strong>. A rodada de simulação que ela promete comparar roda a <strong>R$ 14.500/m²</strong>. Os dois números não podem sair no mesmo material.</p></div>
+</section>
+
+<section data-t="As duas reuniões do dia 20">
+  <div class="kicker">Duas reuniões, duas atas, dois assuntos diferentes</div>
+  <h2>O que ficou decidido, e o que ficou como risco</h2>
+  <p class="lede">Às 13h46, por Teams, Gustavo e Víctor por 43 minutos — ata 004, nove decisões, oito ações, aprovação tácita por silêncio até 27/08. Às 20h14, Álvaro e Gustavo por 34 minutos — ata 005, que é a que discute o deck tela a tela. As seis decisões abaixo são da segunda.</p>
+  <div class="grid g2">
+    <div class="card ind"><h4>D01 · faseamento</h4><p>Refazer com passo de <strong>doze meses</strong>, incluídos os ~6 meses de venda que antecedem a obra de cada fase. É o item que destrava todos os outros.</p></div>
+    <div class="card"><h4>D02 · divisão do trabalho</h4><p>Judson no CAD e na conferência de áreas. Álvaro no Viabil e na apresentação.</p></div>
+    <div class="card"><h4>D03 · calendário</h4><p>Cenários de exposição para segunda 24/08. Apresentação ao grupo permanece sexta 21/08.</p></div>
+    <div class="card"><h4>D04 · base de dados</h4><p>Sai do material a menção à base de dados de outros empreendimentos usada para calibrar as rubricas. Varredura de 20/08: essa menção <strong>não existe</strong> no deck atual. O parecido é a tela 13, "na régua do painel comparativo" — se era isso, é decisão do Álvaro.</p></div>
+    <div class="card"><h4>D05 · duas camadas</h4><p>Comentários de análise ficam no material de trabalho e saem sempre que o arquivo vai para alguém de fora.</p></div>
+    <div class="card"><h4>D06 · curva de vendas</h4><p>Segue a mediana do estudo anterior, <strong>10 / 30 / 60</strong>, e não a tabela de 822. Se o deck disser de onde vem a curva, é isso que tem de dizer.</p></div>
+  </div>
+  <h3>O risco que a ata registra com todas as letras</h3>
+  <div class="quote">
+    <p>A hipótese não é ajuste de planilha — é outro produto. Decidida antes do Viabil, ou o estudo se refaz duas vezes.</p>
+    <cite>Ata, sobre o pavimento suprimido: R$ 1,045 bilhão com o produto de hoje, cerca de R$ 1,200 bilhão com o pavimento de volta</cite>
+  </div>
+  <p>O estudo 870, com R$ 1,351 bilhão de VGV e 704 unidades, já passou dos dois patamares. A decisão que a ata queria tomada antes do Viabil foi tomada dentro dele.</p>
+
+  <h3>O que Gustavo levantou na reunião das 13h46, e que muda o que a apresentação pode afirmar</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Metragem subestimada</h4><p>A área privativa do modelo está errada; a conta dele aponta 92.000 m². Falta também a etapa das casas. DRE e indicadores refletem premissa errada, e a TIR de hoje não representa o cenário real.</p></div>
+    <div class="card"><h4>Marketing subavaliado</h4><p>A rubrica de R$ 11 a 12 milhões pode ser insuficiente para o porte e o prazo do empreendimento.</p></div>
+    <div class="card accent"><h4>O alerta que atinge a tese</h4><p>A engenharia financeira do faseamento, que é justamente o que reduz a exposição, tem probabilidade determinada pelo mercado e não pelo cronograma: o lançamento de cada fase depende das vendas da anterior. <strong>O cenário de exposição precisa sair com a premissa de venda explícita ao lado, senão vira promessa de cronograma.</strong></p></div>
+  </div>
+</section>
+
+<section data-t="Linguagem">
+  <div class="kicker">O eixo do pedido</div>
+  <h2>O que as fontes efetivamente dizem sobre linguagem</h2>
+  <p class="lede">É pouco e é preciso — e vale mais que qualquer preferência inventada.</p>
+  <div class="quote">
+    <p>Muito filosófico, né?</p>
+    <cite>Minuto 21:00 da reunião — o único comentário direto sobre linguagem em toda a gravação</cite>
+  </div>
+  <p>Dezesseis segundos depois vem <span class="q">"Sim, entendi. Só a tabela, né?"</span>. A leitura mais provável é que uma tela estava explicando demais em prosa quando bastava mostrar o número. Não está fechado na ata — vale confirmar com quem falou.</p>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card accent"><h4>Contradição confunde mais que jargão</h4><p>A tela 08 é a prova. O leitor via R$ 5.240,40 no destaque e R$ 4.400 no input, e não tinha como saber qual valia. Nenhum número mudou na correção — mudou a explicação de qual é o input e qual é o auxiliar.</p></div>
+    <div class="card"><h4>Gráfico errado confunde tanto quanto texto errado</h4><p>A barra que juntava lançamento e obra na tela 05 fez Judson concluir que "uma fase só tá começando quando a outra termina", quando ela começa 12 meses antes do fim da anterior. Daí os dois pedidos de legibilidade: só a obra na barra, e pizza no lugar das barras da tela 07.</p></div>
+    <div class="card"><h4>Creditar a fonte do dado é sobre confiança</h4><p>Dizer que a área privativa veio da planilha repassada do Golf Ville não é formalidade. Quem lê precisa saber de onde saiu o número.</p></div>
+    <div class="card"><h4>Cenário comparado na mesma tela funciona</h4><p>A única referência direta a como alguém do lado da Brisa consome o material: "fazer um painel igual àquele de Tibau que a Sofia gosta, que ela fica brincando de botar um sobre o outro".</p></div>
+  </div>
+  <h3>O que o vídeo de comentários pediu, com as palavras dele</h3>
+  <p>A gravação de 21/08 é a fonte mais direta sobre linguagem, e o pedido aparece quatro vezes com formulações diferentes que apontam para o mesmo lugar.</p>
+  <div class="quote">
+    <p>Colocar esses comentários de forma mais técnica… para tirar a cara de Excel.</p>
+    <cite>04:30–04:56, tela 12 — o trecho "tirar a cara de Excel" saiu marcado como incerto nas duas passadas do Whisper</cite>
+  </div>
+  <div class="quote">
+    <p>Retirar esse comentário e melhorar essa visualização… o ideal é deixar só o que realmente interessa. Pegar aqueles KPI que a gente usa.</p>
+    <cite>05:12–05:31, tela 14</cite>
+  </div>
+  <div class="quote">
+    <p>O último slide seria resultado, né, resumo, resumo.</p>
+    <cite>05:45–05:54, tela 15 — o deck hoje termina em outra coisa</cite>
+  </div>
+  <p>"Mais técnica" aqui não quer dizer mais jargão. As duas frases que vêm coladas são "tirar a cara de Excel" e "deixar só o que realmente interessa": o pedido é trocar prosa explicativa de planilha por indicador nomeado, não encher a tela de vocabulário de engenharia.</p>
+  <h3>O padrão que ninguém enunciou e está em nove telas</h3>
+  <p>Nas telas 01, 03, 05, 06, 08, 09, 10, 12 e 14 a fala termina em alguma variação de <span class="q">"retirar esse comentário"</span> — nove das quinze. Em três delas (06, 10 e parte da 01) esse é o único pedido: o conteúdo está aprovado, o que sobra é o comentário de análise ao lado. Some com a leitura de <span class="q">"só a tabela, né?"</span> e o eixo da reformulação fica claro: a tela mostra o número e cala; a explicação vive na fala de quem apresenta, não no slide.</p>
+  <h3>A ressalva que não pode ser esquecida</h3>
+  <p><strong>Não há uma única fala de Gustavo sobre o que ele entende ou não.</strong> O áudio dele não foi capturado na gravação — canais esquerdo e direito bit a bit idênticos, −91 dB, o Desktop Audio do OBS nunca foi escrito. Tudo o que a ata atribui a ele é inferência do lado do Álvaro. A reformulação da linguagem se apoia em Judson e no próprio Álvaro, não em Gustavo.</p>
+</section>
+
+<section data-t="O padrão que não se negocia">
+  <div class="kicker">Padrão 5 da casa · travado desde 04/07/2026</div>
+  <h2>O que a reformulação não pode tocar</h2>
+  <div class="grid g3">
+    <div class="card"><h4>Paleta</h4><p>Índigo #3C3F99, #2A2D75 e #1F2158; laranja #FF8728; ciano #00B0F2; fundo branco. Fora da paleta não entra cor — gráfico de quatro séries usa índigo, laranja, ciano e um tom do índigo.</p></div>
+    <div class="card"><h4>Tipografia e logo</h4><p>Inter com Arial de reserva, nenhuma fonte viaja com o deck. Logo sempre a imagem real, nunca redesenhado nem recolorido; sobre índigo vai dentro de placa branca.</p></div>
+    <div class="card accent"><h4>Assinatura é Arvo</h4><p>Nenhum arquivo, classe ou string pode carregar o nome da outra casa nem o do agente dela. A guarda é determinística e roda antes de publicar.</p></div>
+    <div class="card"><h4>Self-contained</h4><p>Zero CDN. ECharts local, imagem local ou base64, nenhum link de fonte. O deck abre sem internet.</p></div>
+    <div class="card"><h4>Dado único</h4><p>Número que aparece em tabela e em gráfico sai da mesma fonte no HTML. Slide alto rola, não corta. CSS escopado, nunca <code>!important</code> no tema.</p></div>
+    <div class="card"><h4>Publicação</h4><p>R13 em todas as telas mais 1366×768 e mobile. Externo leva cifra, no repositório próprio painel-brisa — o endereço da Brisa não pode trazer o nome de outra casa no meio.</p></div>
+  </div>
+  <h3>A classe de erro que já custou caro</h3>
+  <p>A regra <code>.cascade-item</code> <strong>nunca</strong> leva <code>!important</code>. Com ele, o <code>animation:none</code> inline perde a disputa e a cascata congela em todos os slides.</p>
+</section>
+
+<section data-t="A ordem em que destrava">
+  <div class="kicker">Cadeia de dependência</div>
+  <h2>Nada no deck avança antes da reexportação</h2>
+  <div class="flow">
+    <span class="st hot"><b>trava</b>obra da linha 17</span><span class="ar">→</span>
+    <span class="st hot"><b>trava</b>B26 / B27 e os 28%</span><span class="ar">→</span>
+    <span class="st"><b>passo 1</b>refazer o Viabil</span><span class="ar">→</span>
+    <span class="st"><b>passo 2</b>reexportar</span><span class="ar">→</span>
+    <span class="st"><b>passo 3</b>refazer o deck</span><span class="ar">→</span>
+    <span class="st"><b>passo 4</b>painel de cenários</span>
+  </div>
+  <h3>O que ainda trava</h3>
+  <ol class="steps">
+    <li><strong>O total da obra da linha 17</strong>Continua mostrando R$ 147.777.960, que é exatamente 3 × R$ 49.259.320. O total das oito fases é R$ 394.074.560.</li>
+    <li><strong>B26 não propaga</strong>Corrigir a célula não se espalha pela planilha, e B26 alimenta B27, que carrega os 28% de despesa sem obra.</li>
+    <li><strong>A rampa do subsolo</strong>A pergunta sobre o parâmetro de 30 nunca teve resposta na gravação. Se faltar margem, muda a área de garagem e o efeito volta até a planilha de entrada.</li>
+    <li><strong>Guardar a versão de 16 anos</strong>Judson pediu explicitamente: "se der, salva como uma nova pra não perder essa, pode ser que ele queira essa opção mais extensa". São dois cenários, não um substituindo o outro.</li>
+  </ol>
+</section>
+
+<section data-t="Lacunas e armadilhas">
+  <div class="kicker">Fecha o levantamento</div>
+  <h2>O que só o Álvaro pode fechar</h2>
+  <ol class="steps">
+    <li><strong>O comentário completo de Judson, de 00h28 de 20/08</strong>O print para no slide 8. As telas 09 a 15 e o encerramento nunca foram lidos. Conferido no pixel: a mensagem está colapsada no "Ler mais" do WhatsApp, não recortada — não há OCR que resolva. Só abrindo a conversa.</li>
+    <li><strong>Se o cenário de 9 anos substitui o de 16, ou se os dois vão juntos para Gustavo</strong>O de 16 anos está pronto, exportado e publicado. O de 9 é o que falta.</li>
+    <li><strong>Se a comparação de indicadores com empreendimentos de referência entra nas telas</strong>Pergunta feita aos 23min57 e sem resposta na gravação. Ação A08, responsável Gustavo.</li>
+  </ol>
+  <h3>E uma armadilha para quem retomar a frente</h3>
+  <p>Três registros do vault ainda afirmam que o deck está intacto e que nenhum comentário foi aplicado: a pendência P0, o prompt de continuidade e o resumo da sessão de 21/08 às 19h. <strong>Não estão mais certos.</strong> A rodada da madrugada de 22/08 editou o deck às 02h57, refez o R13 às 03h07 e republicou o relatório consolidado às 03h12, sem deixar registro em nenhum dos três. A verificação por histórico do git que a sessão citou não podia provar nada — o HTML do deck não é rastreado pelo git.</p>
+  <p>A fonte confiável hoje é o relatório consolidado na versão de 22/08 03h12, com as marcas "Feito 22/08" ao lado de cada linha, e o diff do deck contra o backup anterior à rodada. Quem retomar pelo protocolo de sessão vai reaplicar comentário já aplicado.</p>
+
+  <h3>Um número que se move em três direções ao mesmo tempo</h3>
+  <p>A comissão de venda aparece de três formas incompatíveis: o Álvaro determinou em 19/08 que está incluída e o deck deixou de dizer que ficava de fora; o modelo do Viabil traz o campo zerado, e enquanto ele estiver zerado o lucro está superestimado e a exposição subestimada; e o motor das simulações a cobra por outro caminho, a 5,20%. As três leituras não são a mesma coisa.</p>
+
+  <h3>O que este levantamento libera para começar já</h3>
+  <p>As telas de texto puro, que não dependem de número: o painel da tela 01, a tipologia da tela 02, a pizza da tela 07, o registro da fonte da área privativa e a tela final de resumo que o vídeo pediu no lugar da atual tela 15.</p>
+  <p>E o material da tela que gerou mais conversa: as 21 simulações já respondem <em>qual arranjo pede menos caixa no pior mês sem abrir mão do lucro</em> — que é exatamente a pergunta que a tela "O que a conta não inclui" deixou aberta.</p>
+</section>
+
+</main>
+
+<footer>
+  <button id="pv" aria-label="Anterior">‹</button>
+  <span class="pg" id="pg">1 / 10</span>
+  <button id="nx" aria-label="Próximo">›</button>
+</footer>
+
+<script>
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('#stage section'));
+  var nav=document.getElementById('nav'), pg=document.getElementById('pg'), i=0;
+  secs.forEach(function(s,k){
+    var b=document.createElement('button');
+    b.innerHTML='<i>'+String(k).padStart(2,'0')+'</i><span>'+s.getAttribute('data-t')+'</span>';
+    b.onclick=function(){go(k)};
+    nav.appendChild(b);
+  });
+  var btns=[].slice.call(nav.children);
+  function go(k){
+    if(k<0||k>=secs.length)return;
+    secs[i].classList.remove('on'); btns[i].classList.remove('on');
+    i=k;
+    secs[i].classList.add('on'); btns[i].classList.add('on');
+    pg.textContent=(i+1)+' / '+secs.length;
+    document.getElementById('stage').scrollTop=0;
+    window.scrollTo(0,0);
+  }
+  document.getElementById('pv').onclick=function(){go(i-1)};
+  document.getElementById('nx').onclick=function(){go(i+1)};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'){go(i+1)}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){go(i-1)}
+    else if(e.key==='Home'){go(0)}
+    else if(e.key==='End'){go(secs.length-1)}
+  });
+  go(0);
+})();
+</script>
+</body>
+</html>
