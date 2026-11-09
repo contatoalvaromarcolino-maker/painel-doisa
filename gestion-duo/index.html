@@ -1026,6 +1026,10 @@
 <script>
 const WORKER_URL = 'https://srv1430902.hstgr.cloud/gestion-proxy';
 const BACKLOG_LIST = '901715519091';   // Acoes - Confidencial (DUO)
+// Item 9c: o painel le as DUAS listas (aditivo). A antiga continua sendo a primeira;
+// a nova ('DUO - Acoes') entra por ultimo. Escrita nao manda lista: o proxy resolve pela tarefa.
+const LISTA_NOVA = '901718122727';
+const BACKLOG_LISTS = [BACKLOG_LIST, LISTA_NOVA];
 const TEAM_ID     = '90171115290';
 
 const PALETTE = {
@@ -1056,6 +1060,7 @@ const AURORA = [
 ];
 
 const LIST_NAMES = {
+  '901718122727': 'DUO - Ações',
   '901713574304': 'Backlog - Ações ATAs',
   '901712739243': 'Administrativo',
   '901712739247': 'RGI',
@@ -1144,11 +1149,28 @@ async function fetchPaged(url) {
   }
   return all;
 }
-async function fetchBacklog()    { return fetchPaged(`${WORKER_URL}/list/${BACKLOG_LIST}/task?include_closed=true`); }
+async function fetchBacklog()    {
+  // DUO: une as duas listas por id de tarefa e marca de qual lista cada uma veio
+  const porLista = await Promise.all(BACKLOG_LISTS.map(async lid => {
+    const ts = await fetchPaged(`${WORKER_URL}/list/${lid}/task?include_closed=true`);
+    return ts.map(t => Object.assign(t, { _lista_origem: lid }));
+  }));
+  const vistos = new Map();
+  for (const t of porLista.flat()) if (!vistos.has(t.id)) vistos.set(t.id, t);
+  return [...vistos.values()];
+}
 async function fetchGestionAll() { return []; }   // DUO: as 2 colunas saem da lista confidencial
 async function fetchMembers()    {
-  try { const r = await fetch(`${WORKER_URL}/workspace-members?list_id=${BACKLOG_LIST}`); if (!r.ok) return []; const d = await r.json(); return d.members || []; }
-  catch { return []; }
+  const vistos = new Map();
+  for (const lid of BACKLOG_LISTS) {
+    try {
+      const r = await fetch(`${WORKER_URL}/workspace-members?list_id=${lid}`);
+      if (!r.ok) continue;
+      const d = await r.json();
+      for (const m of (d.members || [])) { const k = (m.username || m.email || m.id || '').toString().toLowerCase(); if (!vistos.has(k)) vistos.set(k, m); }
+    } catch { /* lista sem membros nao derruba o painel */ }
+  }
+  return [...vistos.values()];
 }
 async function fetchDeltas()     {
   return null;   // DUO: o snapshot /deltas cobre so a lista publica
@@ -1168,6 +1190,7 @@ const state = {
   colPend:  { tarefa:null, responsavel:null, prazo:null, idade:null },
   colAcomp: { tarefa:null, responsavel:null, status:null, prazo:null },
   alvosTriagem: [],
+  alvosPorLista: {},
 };
 
 // ─── Helpers de filtro por coluna ──────────────────────────
@@ -1680,7 +1703,7 @@ function renderBacklogTable(tasks) {
   const rows = sorted.map(t => {
     const code = shortCode(t.id);
     const taskCell = `<a class="task-code" href="https://app.clickup.com/t/${escHTML(t.id)}" target="_blank" rel="noopener" title="${escHTML(t.name)} — abrir no ClickUp">${escHTML(code)}</a>`;
-    const listOpts = (state.alvosTriagem || []).map(s =>
+    const listOpts = (state.alvosPorLista[t.list?.id || t.list_id || t._lista_origem] || state.alvosTriagem || []).map(s =>
       `<option value="${escHTML(s.status)}">${escHTML(statusText({status: s.status}))}</option>`
     ).join('');
     return `<tr>
@@ -2255,14 +2278,19 @@ async function load() {
   document.getElementById('update-time').textContent = 'Atualizando…';
 
   try {
-    const [backlog, gestionAll, members, deltas, statuses] = await Promise.all([
-      fetchBacklog(), fetchGestionAll(), fetchMembers(), fetchDeltas(), getStatusesForList(BACKLOG_LIST)
+    const [backlog, gestionAll, members, deltas, statusesPorLista] = await Promise.all([
+      fetchBacklog(), fetchGestionAll(), fetchMembers(), fetchDeltas(),
+      Promise.all(BACKLOG_LISTS.map(async lid => [lid, await getStatusesForList(lid)]))
     ]);
-    // Alvos de triagem = os status da lista que NAO sao data (a data e a origem, nao o destino)
-    state.alvosTriagem = (statuses || []).filter(s => !RE_STATUS_DATA.test(s.status || ''));
+    // Alvos de triagem = os status da lista que NAO sao data (a data e a origem, nao o destino);
+    // cada lista tem os seus, e a tarefa so pode ir para um status da lista dona dela
+    state.alvosPorLista = {};
+    for (const [lid, sts] of statusesPorLista) state.alvosPorLista[lid] = (sts || []).filter(s => !RE_STATUS_DATA.test(s.status || ''));
+    state.alvosTriagem = state.alvosPorLista[BACKLOG_LIST] || [];
     const isCancelled = (t) => {
       const s = (t.status?.status || '').toLowerCase();
-      return s === 'cancelado' || s === 'cancelled' || s === 'canceled';
+      return s === 'cancelado' || s === 'cancelled' || s === 'canceled'
+        || s === '🗑 excluir' || s === '🗑 excluídas';
     };
     // Uma lista so, particionada pela etapa de triagem (a coluna-data).
     const vivas = backlog.filter(t => !isCancelled(t));
